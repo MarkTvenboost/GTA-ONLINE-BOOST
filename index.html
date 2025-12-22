@@ -12,41 +12,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Rajdhani', 'sans-serif'],
-          },
+          fontFamily: { sans: ['Inter','sans-serif'], display: ['Rajdhani','sans-serif'] },
           colors: {
-            ink: {
-              950: '#05070f',
-              900: '#0b1223',
-              800: '#111c33',
-              700: '#1b2a4a',
-            },
-            neon: {
-              green: '#2ecc71',
-              blue: '#2d74da',
-              purple: '#8b5cf6',
-            }
-          },
-          boxShadow: {
-            soft: "0 20px 60px rgba(0,0,0,.45)",
-            glowg: "0 0 30px rgba(46, 204, 113, .18)",
-            glowb: "0 0 30px rgba(45, 116, 218, .18)"
+            ink: { 950:'#05070f', 900:'#0b1223', 800:'#111c33' },
+            neon: { green:'#2ecc71', blue:'#2d74da', purple:'#8b5cf6', pink:'#ec4899' }
           },
           keyframes: {
-            floaty: { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-6px)" } },
-            fadeUp: { "0%": { opacity: 0, transform: "translateY(14px)" }, "100%": { opacity: 1, transform: "translateY(0)" } },
-            pop: { "0%": { transform: "scale(.96)", opacity: 0 }, "100%": { transform: "scale(1)", opacity: 1 } },
+            fadeUp: { "0%": { opacity:0, transform:"translateY(14px)" }, "100%": { opacity:1, transform:"translateY(0)" } },
+            pop: { "0%": { opacity:0, transform:"scale(.97)" }, "100%": { opacity:1, transform:"scale(1)" } },
+            shimmer: { "0%": { transform:"translateX(-120%)" }, "100%": { transform:"translateX(120%)" } }
           },
-          animation: {
-            floaty: "floaty 4s ease-in-out infinite",
-            fadeUp: "fadeUp .45s ease-out both",
-            pop: "pop .25s ease-out both",
-          }
+          animation: { fadeUp:"fadeUp .45s ease-out both", pop:"pop .22s ease-out both", shimmer:"shimmer 2.2s ease-in-out infinite" }
         }
       }
     }
@@ -59,70 +37,81 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    body { background: #05070f; color: #f8fafc; overflow-x: hidden; }
-    .mesh {
-      position: fixed; inset: 0; z-index: -1;
+    body { background:#05070f; color:#f8fafc; overflow-x:hidden; }
+    .mesh{
+      position:fixed; inset:0; z-index:-2;
       background:
-        radial-gradient(700px 400px at 15% 15%, rgba(139,92,246,.18), transparent 60%),
-        radial-gradient(700px 400px at 85% 20%, rgba(45,116,218,.18), transparent 60%),
-        radial-gradient(800px 600px at 65% 85%, rgba(46,204,113,.14), transparent 60%),
+        radial-gradient(900px 520px at 12% 12%, rgba(139,92,246,.18), transparent 60%),
+        radial-gradient(800px 450px at 88% 18%, rgba(45,116,218,.18), transparent 60%),
+        radial-gradient(900px 650px at 55% 88%, rgba(46,204,113,.14), transparent 60%),
         linear-gradient(180deg, #05070f, #0b1223 60%, #05070f);
-      filter: saturate(115%);
+      filter:saturate(115%);
     }
-    .glass {
-      background: rgba(17, 28, 51, .55);
-      border: 1px solid rgba(255,255,255,.08);
+    .noise{
+      position:fixed; inset:0; z-index:-1;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.13'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay; opacity:.25; pointer-events:none;
+    }
+    .glass{
+      background: rgba(17,28,51,.55);
+      border:1px solid rgba(255,255,255,.09);
       backdrop-filter: blur(16px);
     }
-    .glass-strong {
-      background: rgba(5, 7, 15, .78);
-      border-top: 1px solid rgba(255,255,255,.08);
+    .glass-strong{
+      background: rgba(5,7,15,.78);
+      border-top: 1px solid rgba(255,255,255,.09);
       backdrop-filter: blur(18px);
     }
-    .ring-soft {
-      box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+    .ring-soft{ box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset; }
+    .btn{ transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .btn:active{ transform: scale(.985); }
+    .shiny{
+      position:relative; overflow:hidden;
     }
-    .btn {
-      transition: transform .2s ease, filter .2s ease, background .2s ease, border-color .2s ease;
+    .shiny:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      transform: translateX(-120%);
+      animation: shimmer 2.2s ease-in-out infinite;
+      pointer-events:none;
     }
-    .btn:active { transform: scale(.98); }
   </style>
 </head>
 
 <body>
   <div class="mesh"></div>
+  <div class="noise"></div>
   <div id="root"></div>
 
   <script type="text/babel" data-presets="env,react">
-    /******************* ВАЖНО: ВСТАВЬ СЮДА ТВОЙ Apps Script URL *******************/
-    const SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzWwZYbz9PM-X3uO4gEwMiyJaIvUYu_L5GIhAjLuTens6lHA__dxGRdsIPLMXfSFyUu/exec";
-    /******************************************************************************/
+    // ✅ URL таблицы (Apps Script WebApp)
+    const SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwYPMU_I2z1Fkg3alW8e-G4jw4JRoqUptM0XL72NtSo5Yrqd9mu7bXAOTZ2kTZCRrQT/exec";
 
-    /* ================= ДАННЫЕ ================= */
+    /* ================= ДАННЫЕ (без изменений, только добавлены tag у некоторых) ================= */
     const PLATFORMS = [
-      { id: "Steam", label: "Steam", icon: "Gamepad2", tone: "pc" },
-      { id: "Epic", label: "Epic Games", icon: "Zap", tone: "pc" },
-      { id: "Rockstar", label: "Rockstar", icon: "Star", tone: "pc" },
-      { id: "PS", label: "PlayStation 4/5", icon: "Gamepad", tone: "ps" },
+      { id:"Steam", label:"Steam", icon:"Gamepad2", tone:"pc" },
+      { id:"Epic", label:"Epic Games", icon:"Zap", tone:"pc" },
+      { id:"Rockstar", label:"Rockstar", icon:"Star", tone:"pc" },
+      { id:"PS", label:"PlayStation 4/5", icon:"Gamepad", tone:"ps" },
     ];
 
-    // PC
     const PC_MONEY_PACKS = [
-      { val: 15, label: "15 млн", price: 115 },
-      { val: 20, label: "20 млн", price: 140 },
+      { val: 15, label: "15 млн", price: 115, tag: "Старт" },
+      { val: 20, label: "20 млн", price: 140, tag: "Хит" },
       { val: 30, label: "30 млн", price: 230 },
       { val: 40, label: "40 млн", price: 325 },
-      { val: 50, label: "50 млн", price: 420 },
+      { val: 50, label: "50 млн", price: 420, tag: "Выгодно" },
       { val: 60, label: "60 млн", price: 210 },
       { val: 70, label: "70 млн", price: 605 },
       { val: 80, label: "80 млн", price: 700 },
       { val: 90, label: "90 млн", price: 790 },
-      { val: 100, label: "100 млн", price: 885 },
+      { val: 100, label: "100 млн", price: 885, tag: "Топ" },
       { val: 125, label: "125 млн", price: 1025 },
       { val: 150, label: "150 млн", price: 1120 },
       { val: 200, label: "200 млн", price: 1210 },
       { val: 350, label: "350 млн", price: 1400 },
-      { val: 500, label: "500 млн", price: 1535 },
+      { val: 500, label: "500 млн", price: 1535, tag: "Макс" },
       { val: 750, label: "750 млн", price: 1720 },
       { val: 1000, label: "1 млрд", price: 1815 },
       { val: 1500, label: "1.5 млрд", price: 2050 },
@@ -131,131 +120,158 @@
     ];
 
     const PC_LEVELS_MAIN = [
-      { id: "lvl_none", label: "Не менять", price: 0 },
-      { id: "lvl_50", label: "50 LVL", price: 25 },
-      { id: "lvl_100", label: "100 LVL", price: 50 },
-      { id: "lvl_120", label: "120 LVL", price: 75 },
-      { id: "lvl_777", label: "777 LVL", price: 100 },
-      { id: "lvl_8000", label: "8000 LVL", price: 150 },
+      { id:"lvl_none", label:"Не менять", price:0 },
+      { id:"lvl_50", label:"50 LVL", price:25 },
+      { id:"lvl_100", label:"100 LVL", price:50 },
+      { id:"lvl_120", label:"120 LVL", price:75 },
+      { id:"lvl_777", label:"777 LVL", price:100 },
+      { id:"lvl_8000", label:"8000 LVL", price:150 },
     ];
 
     const PC_LEVELS_EXTRA = [
-      { id: "rep_car", label: "Автоклуб 1000 LVL", price: 100 },
-      { id: "rep_arena", label: "Арена 1000 LVL", price: 100 },
-      { id: "rep_crew", label: "Банда 1000 LVL", price: 100 },
+      { id:"rep_car", label:"Автоклуб 1000 LVL", price:100 },
+      { id:"rep_arena", label:"Арена 1000 LVL", price:100 },
+      { id:"rep_crew", label:"Банда 1000 LVL", price:100 },
     ];
 
     const PC_UNLOCKS = [
-      { id: "unl_all_30", label: "Открыть всё (Выгода 30%)", price: 250, highlight: true },
-      { id: "unl_skills", label: "Навыки персонажа", price: 50 },
-      { id: "unl_run", label: "Быстрый бег и перезарядка", price: 50 },
-      { id: "unl_lsc", label: "Тюнинг (LSC)", price: 50 },
-      { id: "unl_gun", label: "Оружие", price: 50 },
-      { id: "unl_tattoo", label: "Татуировки", price: 50 },
-      { id: "unl_cloth", label: "Одежда", price: 50 },
-      { id: "unl_hair", label: "Прически", price: 50 },
+      { id:"unl_all_30", label:"Открыть всё (Выгода 30%)", price:250, highlight:true },
+      { id:"unl_skills", label:"Навыки персонажа", price:50 },
+      { id:"unl_run", label:"Быстрый бег и перезарядка", price:50 },
+      { id:"unl_lsc", label:"Тюнинг (LSC)", price:50 },
+      { id:"unl_gun", label:"Оружие", price:50 },
+      { id:"unl_tattoo", label:"Татуировки", price:50 },
+      { id:"unl_cloth", label:"Одежда", price:50 },
+      { id:"unl_hair", label:"Прически", price:50 },
     ];
 
     const PC_VEHICLES = [
-      { id: "veh_kosatka", label: "Kosatka (Подлодка)", price: 100 },
-      { id: "veh_shotaro", label: "Shotaro (Мотоцикл)", price: 100 },
-      { id: "veh_blista", label: "Go Go Monkey Blista", price: 100 },
-      { id: "veh_removed", label: "Удалённое авто (название в чат)", price: 100 },
+      { id:"veh_kosatka", label:"Kosatka (Подлодка)", price:100 },
+      { id:"veh_shotaro", label:"Shotaro (Мотоцикл)", price:100 },
+      { id:"veh_blista", label:"Go Go Monkey Blista", price:100 },
+      { id:"veh_removed", label:"Удаленное авто (название в чат)", price:100 },
     ];
 
     const PC_SPECIAL = [
-      { id: "spec_all_50", label: "Открыть всё (Выгода 50%)", price: 1450, highlight: true, icon: "Crown" },
-      { id: "spec_achiev", label: "Все достижения", price: 150 },
-      { id: "spec_bunker_res", label: "Разработки бункера", price: 150 },
-      { id: "spec_bunker_rng", label: "Награды тира бункера", price: 150 },
-      { id: "spec_gender", label: "Изменить пол персонажа", price: 150 },
-      { id: "spec_career", label: "Пройти карьеру", price: 150 },
-      { id: "spec_skip_tut", label: "Пропуск обучения", price: 150 },
-      { id: "spec_skip_cut", label: "Пропуск катсцен", price: 150 },
-      { id: "spec_clear_rep", label: "Очистить репорты", price: 150 },
-      { id: "spec_clear_psy", label: "Очистить психику", price: 150 },
-      { id: "spec_nightclub", label: "Популярность клуба", price: 150 },
-      { id: "spec_susp", label: "Сбросить подозрительность", price: 150 },
-      { id: "spec_dunce", label: "Снять колпак «Dunce»", price: 150 },
+      { id:"spec_all_50", label:"Открыть всё (Выгода 50%)", price:1450, highlight:true, icon:"Crown" },
+      { id:"spec_achiev", label:"Все достижения", price:150 },
+      { id:"spec_bunker_res", label:"Разработки бункера", price:150 },
+      { id:"spec_bunker_rng", label:"Награды тира бункера", price:150 },
+      { id:"spec_gender", label:"Изменить пол персонажа", price:150 },
+      { id:"spec_career", label:"Пройти карьеру", price:150 },
+      { id:"spec_skip_tut", label:"Пропуск обучения", price:150 },
+      { id:"spec_skip_cut", label:"Пропуск катсцен", price:150 },
+      { id:"spec_clear_rep", label:"Очистить репорты", price:150 },
+      { id:"spec_clear_psy", label:"Очистить психику", price:150 },
+      { id:"spec_nightclub", label:"Популярность клуба", price:150 },
+      { id:"spec_susp", label:"Сбросить подозрительность", price:150 },
+      { id:"spec_dunce", label:"Снять колпак «Dunce»", price:150 },
     ];
 
     const PC_EXTRAS = [
-      { id: "ex_priority", label: "⏰ Приоритетный заказ", price: 200 },
-      { id: "ex_consult", label: "🧐 Консультация", price: 100 },
-      { id: "ex_tip", label: "😎 Чаевые накрутчику", price: 100 },
+      { id:"ex_priority", label:"⏰ Приоритетный заказ", price:200 },
+      { id:"ex_consult", label:"🧐 Консультация", price:100 },
+      { id:"ex_tip", label:"😎 Чаевые накрутчику", price:100 },
     ];
 
-    // PlayStation
     const PS_MONEY_CARS = [
-      { id: 'ps_m_none', label: "Не нужно / Возьму наличкой", price: 0 },
-      { id: 'ps_m_15', label: "15 млн (Машинами)", price: 765 },
-      { id: 'ps_m_20', label: "20 млн (Машинами)", price: 935 },
-      { id: 'ps_m_25', label: "25 млн (Машинами)", price: 1020 },
-      { id: 'ps_m_30', label: "30 млн (Машинами)", price: 1105 },
-      { id: 'ps_m_40', label: "40 млн (Машинами)", price: 1190 },
-      { id: 'ps_m_50', label: "50 млн (Машинами)", price: 1360 },
-      { id: 'ps_m_75', label: "75 млн (Машинами)", price: 1700 },
-      { id: 'ps_m_100', label: "100 млн (Машинами)", price: 2040 },
-      { id: 'ps_m_150', label: "150 млн (Машинами)", price: 2380 },
-      { id: 'ps_m_200', label: "200 млн (Машинами)", price: 3060 },
-      { id: 'ps_m_300', label: "300 млн (Машинами)", price: 4080 },
-      { id: 'ps_m_400', label: "400 млн (Машинами)", price: 4590 },
-      { id: 'ps_m_500', label: "500 млн (Машинами)", price: 5100 },
-      { id: 'ps_m_750', label: "750 млн (Машинами)", price: 6800 },
+      { id:'ps_m_none', label:"Возьму наличкой / Не нужно", price:0 },
+      { id:'ps_m_15', label:"15 млн (Машинами)", price:765 },
+      { id:'ps_m_20', label:"20 млн (Машинами)", price:935 },
+      { id:'ps_m_25', label:"25 млн (Машинами)", price:1020 },
+      { id:'ps_m_30', label:"30 млн (Машинами)", price:1105 },
+      { id:'ps_m_40', label:"40 млн (Машинами)", price:1190 },
+      { id:'ps_m_50', label:"50 млн (Машинами)", price:1360 },
+      { id:'ps_m_75', label:"75 млн (Машинами)", price:1700 },
+      { id:'ps_m_100', label:"100 млн (Машинами)", price:2040 },
+      { id:'ps_m_150', label:"150 млн (Машинами)", price:2380 },
+      { id:'ps_m_200', label:"200 млн (Машинами)", price:3060 },
+      { id:'ps_m_300', label:"300 млн (Машинами)", price:4080 },
+      { id:'ps_m_400', label:"400 млн (Машинами)", price:4590 },
+      { id:'ps_m_500', label:"500 млн (Машинами)", price:5100 },
+      { id:'ps_m_750', label:"750 млн (Машинами)", price:6800 },
     ];
 
     const PS_MONEY_CASH = [
-      { id: 'ps_c_none', label: "Наличка не нужна", price: 0 },
-      { id: 'ps_c_30', label: "30 млн (Наличкой)", price: 1190 },
-      { id: 'ps_c_40', label: "40 млн (Наличкой)", price: 1360 },
+      { id:'ps_c_none', label:"Не нужна наличка", price:0 },
+      { id:'ps_c_30', label:"30 млн (Наличкой)", price:1190 },
+      { id:'ps_c_40', label:"40 млн (Наличкой)", price:1360 },
     ];
 
     const PS_LEVELS = [
-      { id: 'ps_l_none', label: "Уровень не нужен", price: 0 },
-      { id: 'ps_l_100', label: "LVL 100", price: 2500 },
-      { id: 'ps_l_120', label: "LVL 120", price: 3000 },
-      { id: 'ps_l_135', label: "LVL 135", price: 3500 },
-      { id: 'ps_l_150', label: "LVL 150", price: 4500 },
+      { id:'ps_l_none', label:"Уровень не нужен", price:0 },
+      { id:'ps_l_100', label:"LVL 100", price:2500 },
+      { id:'ps_l_120', label:"LVL 120", price:3000 },
+      { id:'ps_l_135', label:"LVL 135", price:3500 },
+      { id:'ps_l_150', label:"LVL 150", price:4500 },
     ];
 
     const REQUISITES = [
-      { label: "СБП (Любой банк)", num: "+7-914-172-85-17", icon: "Smartphone" },
-      { label: "Карта Сбер", num: "2202 2032 9079 4421", icon: "CreditCard" },
-      { label: "Карта Тбанк", num: "2200 7001 1816 8359", icon: "CreditCard" },
+      { label:"СБП (Любой банк)", num:"+7-914-172-85-17", icon:"Smartphone" },
+      { label:"Банковская карта Сбер", num:"2202 2032 9079 4421", icon:"CreditCard" },
+      { label:"Банковская карта Тбанк", num:"2200 7001 1816 8359", icon:"CreditCard" },
     ];
 
-    /* ================= UI ================= */
+    /* ================= UI helpers ================= */
     const Icon = ({ name, className }) => {
       React.useEffect(() => lucide.createIcons(), [name]);
       return <i data-lucide={name} className={className}></i>;
     };
 
-    const Chip = ({ active, children, onClick, tone }) => {
-      const accent = tone === "ps" ? "border-neon-blue/60 text-white shadow-glowb" : "border-neon-green/60 text-white shadow-glowg";
+    const money = (n) => `${n} RUB`;
+
+    const Pill = ({ active, onClick, children, tone }) => {
+      const on = tone==="ps"
+        ? "border-neon-blue/60 bg-white/10 text-white shadow-[0_0_28px_rgba(45,116,218,.16)]"
+        : "border-neon-green/60 bg-white/10 text-white shadow-[0_0_28px_rgba(46,204,113,.16)]";
       return (
         <button onClick={onClick}
-          className={`btn px-4 py-2 rounded-xl border ring-soft ${active ? accent : "border-white/10 text-white/70 hover:text-white hover:border-white/20"} bg-white/5`}>
+          className={`btn px-4 py-2 rounded-2xl border ring-soft ${active ? on : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
           {children}
         </button>
       );
     };
 
-    const money = (n) => `${n} RUB`;
+    const CardTitle = ({ step, icon, accent, title, desc }) => (
+      <div className="flex items-start gap-3">
+        <div className="w-11 h-11 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+          <Icon name={icon} className={accent} />
+        </div>
+        <div>
+          <div className="text-xs text-white/50 uppercase tracking-widest">Шаг {step}</div>
+          <div className="text-xl font-display font-extrabold">{title}</div>
+          {desc && <div className="text-sm text-white/55 mt-1">{desc}</div>}
+        </div>
+      </div>
+    );
 
-    function App() {
+    const Section = ({ children, className="" }) => (
+      <section className={`glass rounded-3xl p-6 border border-white/10 animate-fadeUp ${className}`}>
+        {children}
+      </section>
+    );
+
+    const Chip = ({ text }) => (
+      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-white/80">
+        {text}
+      </span>
+    );
+
+    function App(){
       const [platform, setPlatform] = React.useState("Steam");
       const isPlayStation = platform === "PS";
       const tone = isPlayStation ? "ps" : "pc";
       const accentText = isPlayStation ? "text-neon-blue" : "text-neon-green";
       const accentBg = isPlayStation ? "bg-neon-blue" : "bg-neon-green";
 
-      // PC state
+      // PC
       const [useMoney, setUseMoney] = React.useState(true);
       const [moneyIdx, setMoneyIdx] = React.useState(0);
+      const [moneyQuery, setMoneyQuery] = React.useState("");
       const [levelId, setLevelId] = React.useState("lvl_none");
       const [selected, setSelected] = React.useState(new Set());
 
-      // PS state
+      // PS
       const [psConsole, setPsConsole] = React.useState("PS4");
       const [psCarMoney, setPsCarMoney] = React.useState(PS_MONEY_CARS[0]);
       const [psCashMoney, setPsCashMoney] = React.useState(PS_MONEY_CASH[0]);
@@ -263,94 +279,124 @@
       const [psReq200k, setPsReq200k] = React.useState(false);
       const [psReqPlus, setPsReqPlus] = React.useState(false);
 
-      // modal + order
+      // order/modal
       const [isModal, setIsModal] = React.useState(false);
-      const [accountId, setAccountId] = React.useState("");
+      const [login, setLogin] = React.useState("");
+      const [password, setPassword] = React.useState("");
       const [contacts, setContacts] = React.useState("");
       const [comment, setComment] = React.useState("");
       const [paidConfirmed, setPaidConfirmed] = React.useState(false);
       const [submitting, setSubmitting] = React.useState(false);
       const [successId, setSuccessId] = React.useState(null);
 
+      const allPcExtras = React.useMemo(() => ([...PC_LEVELS_EXTRA, ...PC_UNLOCKS, ...PC_VEHICLES, ...PC_SPECIAL, ...PC_EXTRAS]), []);
+
       const toggle = (id) => {
         const next = new Set(selected);
-        if (next.has(id)) next.delete(id); else next.add(id);
+        next.has(id) ? next.delete(id) : next.add(id);
         setSelected(next);
       };
 
-      const allPcExtras = React.useMemo(() => ([
-        ...PC_LEVELS_EXTRA, ...PC_UNLOCKS, ...PC_VEHICLES, ...PC_SPECIAL, ...PC_EXTRAS
-      ]), []);
-
-      const getItems = () => {
+      const getItems = React.useCallback(() => {
         const items = [];
-
         if (isPlayStation) {
-          items.push({ label: `Консоль: ${psConsole}`, price: 0 });
-          if (psCarMoney.id !== "ps_m_none") items.push({ label: psCarMoney.label, price: psCarMoney.price });
-          if (psCashMoney.id !== "ps_c_none") items.push({ label: psCashMoney.label, price: psCashMoney.price });
-          if (psLevel.id !== "ps_l_none") items.push({ label: `Уровень: ${psLevel.label}`, price: psLevel.price });
-          if (psReq200k) items.push({ label: "Нет 200.000$ на балансе (комиссия)", price: 500 });
-          if (psReqPlus) items.push({ label: "Нет подписки PS+ (комиссия)", price: 500 });
+          items.push({ label:`🎮 Консоль: ${psConsole}`, price:0 });
+          if (psCarMoney.id !== "ps_m_none") items.push({ label:`🚗 ${psCarMoney.label}`, price:psCarMoney.price });
+          if (psCashMoney.id !== "ps_c_none") items.push({ label:`💵 ${psCashMoney.label}`, price:psCashMoney.price });
+          if (psLevel.id !== "ps_l_none") items.push({ label:`⭐ Уровень: ${psLevel.label}`, price:psLevel.price });
+          if (psReq200k) items.push({ label:"⚠ Нет 200.000$ на балансе (комиссия)", price:500 });
+          if (psReqPlus) items.push({ label:"⚠ Нет подписки PS+ (комиссия)", price:500 });
           return items;
         }
 
-        // PC
-        if (useMoney) items.push({ label: `Валюта: ${PC_MONEY_PACKS[moneyIdx].label}`, price: PC_MONEY_PACKS[moneyIdx].price });
-        else items.push({ label: "Валюта: не нужна", price: 0 });
+        if (useMoney) items.push({ label:`💰 Валюта: ${PC_MONEY_PACKS[moneyIdx].label}`, price:PC_MONEY_PACKS[moneyIdx].price });
+        else items.push({ label:"💰 Валюта: не нужна", price:0 });
 
         const lvl = PC_LEVELS_MAIN.find(x => x.id === levelId);
-        if (lvl && lvl.price > 0) items.push({ label: `Уровень: ${lvl.label}`, price: lvl.price });
+        if (lvl && lvl.price > 0) items.push({ label:`⭐ Уровень: ${lvl.label}`, price:lvl.price });
 
-        allPcExtras.filter(x => selected.has(x.id)).forEach(x => items.push({ label: x.label, price: x.price }));
+        allPcExtras.filter(x => selected.has(x.id)).forEach(x => items.push({ label:`✅ ${x.label}`, price:x.price }));
         return items;
-      };
+      }, [isPlayStation, psConsole, psCarMoney, psCashMoney, psLevel, psReq200k, psReqPlus, useMoney, moneyIdx, levelId, selected, allPcExtras]);
 
-      const totalPrice = React.useMemo(() => getItems().reduce((s, i) => s + (i.price || 0), 0), [
-        platform, psConsole, psCarMoney, psCashMoney, psLevel, psReq200k, psReqPlus,
-        useMoney, moneyIdx, levelId, selected
-      ]);
+      const totalPrice = React.useMemo(() => getItems().reduce((s,i)=>s+(i.price||0),0), [getItems]);
 
-      const genOrderId = () => "ORD-" + Math.random().toString(16).slice(2, 10).toUpperCase();
-
-      const sendToSheet = async () => {
-        if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.includes("PASTE_")) {
-          throw new Error("Не вставлен SHEETS_WEBAPP_URL (Apps Script Web App).");
-        }
-
-        const payload = {
-          orderId: genOrderId(),
-          platform: isPlayStation ? `PlayStation (${psConsole})` : PLATFORMS.find(p=>p.id===platform)?.label || platform,
-          total: totalPrice,
-          accountId: accountId.trim(),
-          contacts: contacts.trim(),
-          comment: comment.trim(),
-          paidConfirmed: !!paidConfirmed,
-          items: getItems()
-        };
-
-        const res = await fetch(SHEETS_WEBAPP_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload),
+      const filteredMoneyPacks = React.useMemo(() => {
+        const q = moneyQuery.trim().toLowerCase();
+        if (!q) return PC_MONEY_PACKS;
+        return PC_MONEY_PACKS.filter(p => {
+          const hay = `${p.label} ${p.val} ${p.price}`.toLowerCase();
+          return hay.includes(q);
         });
+      }, [moneyQuery]);
 
-        const json = await res.json();
-        if (!json.ok) throw new Error(json.error || "Ошибка записи в таблицу");
-        return json.orderId;
+      const grouped = React.useMemo(() => {
+        const items = getItems();
+        const groups = [
+          { title: "База", items: [] },
+          { title: "Опции", items: [] },
+        ];
+        items.forEach(x => {
+          if (
+            x.label.includes("Валюта") ||
+            x.label.includes("Уровень") ||
+            x.label.includes("Консоль") ||
+            x.label.includes("Деньги")
+          ) groups[0].items.push(x);
+          else groups[1].items.push(x);
+        });
+        return groups.filter(g => g.items.length > 0);
+      }, [getItems]);
+
+      const genOrderId = () => "ORD-" + Math.random().toString(16).slice(2,10).toUpperCase();
+
+      const resetAll = () => {
+        // PC reset
+        setUseMoney(true);
+        setMoneyIdx(0);
+        setMoneyQuery("");
+        setLevelId("lvl_none");
+        setSelected(new Set());
+        // PS reset
+        setPsCarMoney(PS_MONEY_CARS[0]);
+        setPsCashMoney(PS_MONEY_CASH[0]);
+        setPsLevel(PS_LEVELS[0]);
+        setPsReq200k(false);
+        setPsReqPlus(false);
       };
 
       const submit = async (e) => {
         e.preventDefault();
-        if (!accountId.trim() || !contacts.trim()) return;
+        if (!login.trim() || !password.trim() || !contacts.trim()) return;
 
         setSubmitting(true);
         try {
-          const id = await sendToSheet();
-          setSuccessId(id);
+          const orderId = genOrderId();
+          const payload = {
+            orderId,
+            platform: isPlayStation ? `PlayStation (${psConsole})` : (PLATFORMS.find(p=>p.id===platform)?.label || platform),
+            total: totalPrice,
+            login: login.trim(),
+            password: password.trim(),
+            contacts: contacts.trim(),
+            comment: comment.trim(),
+            paidConfirmed: !!paidConfirmed,
+            items: getItems()
+          };
+
+          // ✅ no-cors чтобы GitHub Pages стабильно отправлял
+          await fetch(SHEETS_WEBAPP_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload),
+          });
+
+          setSuccessId(orderId);
           window.confetti({ particleCount: 170, spread: 70, origin: { y: 0.6 } });
+
         } catch (err) {
-          alert("Ошибка: " + (err?.message || "не удалось отправить заказ"));
+          alert("Ошибка отправки. Попробуйте еще раз.");
           console.error(err);
         } finally {
           setSubmitting(false);
@@ -360,18 +406,15 @@
       if (successId) {
         return (
           <div className="min-h-screen flex items-center justify-center p-4">
-            <div className={`glass max-w-md w-full p-8 rounded-3xl shadow-soft animate-pop border ${tone==="ps"?"border-neon-blue/25":"border-neon-green/25"}`}>
-              <div className={`w-16 h-16 rounded-2xl ${tone==="ps"?"bg-neon-blue":"bg-neon-green"} flex items-center justify-center text-white mb-6 shadow-soft`}>
+            <div className={`glass max-w-md w-full p-8 rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,.5)] border ${tone==="ps"?"border-neon-blue/25":"border-neon-green/25"} animate-pop`}>
+              <div className={`w-16 h-16 rounded-2xl ${accentBg} flex items-center justify-center text-white mb-6 shiny`}>
                 <Icon name="check-circle" className="w-8 h-8" />
               </div>
-              <h1 className="text-3xl font-display font-extrabold">Заказ принят</h1>
+              <h1 className="text-3xl font-display font-extrabold">Заказ отправлен</h1>
               <p className="text-white/70 mt-2">Номер: <span className={`${accentText} font-bold`}>{successId}</span></p>
-              <p className="text-white/60 mt-3 text-sm">Бустер увидит заказ в таблице со статусом <b>NEW</b>.</p>
-
-              <button
-                onClick={() => window.location.reload()}
-                className="btn mt-6 w-full py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white font-semibold"
-              >
+              <p className="text-white/55 mt-3 text-sm">Бустер увидит заказ в таблице со статусом <b>NEW</b>.</p>
+              <button onClick={() => window.location.reload()}
+                className="btn mt-6 w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 text-white font-semibold">
                 Новый заказ
               </button>
             </div>
@@ -381,345 +424,353 @@
 
       return (
         <div className="pb-28">
-          {/* Header */}
-          <header className="pt-12 pb-8 px-4 text-center">
-            <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-2xl border border-white/10 shadow-soft animate-fadeUp">
-              <span className={`w-2 h-2 rounded-full ${tone==="ps"?"bg-neon-blue":"bg-neon-green"} animate-floaty`}></span>
-              <span className="text-white/70 text-sm">Моментальный расчёт • Чистая корзина • Таблица заказов</span>
-            </div>
+          {/* HERO */}
+          <header className="pt-12 pb-8 px-4">
+            <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
+              <div className="animate-fadeUp">
+                <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-2xl border border-white/10 ring-soft">
+                  <span className={`w-2 h-2 rounded-full ${accentBg}`}></span>
+                  <span className="text-white/70 text-sm">Премиум оформление • мгновенный расчёт • заказ в таблицу</span>
+                </div>
 
-            <h1 className="mt-6 text-5xl md:text-6xl font-display font-extrabold tracking-tight animate-fadeUp">
-              GTA ONLINE <span className={accentText}>BOOST</span>
-            </h1>
-            <p className="mt-3 text-white/60 max-w-2xl mx-auto animate-fadeUp">
-              Собери пак услуг и отправь заказ — бустер сразу увидит его в Google-таблице.
-            </p>
+                <h1 className="mt-6 text-5xl md:text-6xl font-display font-extrabold tracking-tight">
+                  GTA ONLINE <span className={accentText}>BOOST</span>
+                </h1>
+
+                <p className="mt-3 text-white/60 max-w-xl">
+                  Собери пак, проверь итог и отправь заказ. Всё аккуратно и быстро — без лишнего шума.
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="glass rounded-2xl px-4 py-3 border border-white/10">
+                    <div className="text-xs text-white/50 uppercase tracking-widest">Скорость</div>
+                    <div className="font-semibold">Моментальный расчёт</div>
+                  </div>
+                  <div className="glass rounded-2xl px-4 py-3 border border-white/10">
+                    <div className="text-xs text-white/50 uppercase tracking-widest">Контроль</div>
+                    <div className="font-semibold">Заказы в таблице</div>
+                  </div>
+                  <div className="glass rounded-2xl px-4 py-3 border border-white/10">
+                    <div className="text-xs text-white/50 uppercase tracking-widest">Комфорт</div>
+                    <div className="font-semibold">Понятная корзина</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Summary panel */}
+              <div className="animate-fadeUp">
+                <div className="glass rounded-3xl p-6 border border-white/10 shadow-[0_25px_70px_rgba(0,0,0,.45)]">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-xs text-white/50 uppercase tracking-widest">Итоговая цена</div>
+                      <div className={`text-4xl font-display font-extrabold ${accentText}`}>{money(totalPrice)}</div>
+                      <div className="text-white/55 text-sm mt-1">Пересчитывается автоматически</div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button onClick={()=>setIsModal(true)}
+                        className={`btn ${accentBg} shiny text-white font-bold px-6 py-3 rounded-2xl hover:brightness-110`}>
+                        Оформить
+                      </button>
+                      <button onClick={resetAll}
+                        className="btn px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 text-white/80">
+                        Сброс
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 pt-5 border-t border-white/10">
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-white/50 uppercase tracking-widest">Текущий состав</div>
+                      <div className="text-xs text-white/45">Группировка</div>
+                    </div>
+
+                    <div className="mt-3 max-h-52 overflow-auto pr-2">
+                      {grouped.map((g, gi) => (
+                        <div key={gi} className="mb-4">
+                          <div className="text-[11px] text-white/45 uppercase tracking-widest mb-2">{g.title}</div>
+                          <div className="space-y-2 text-sm">
+                            {g.items.map((i, idx) => (
+                              <div key={idx} className="flex justify-between text-white/75 gap-3">
+                                <span className="truncate">{i.label}</span>
+                                <span className="font-semibold">{i.price ? `${i.price}₽` : "—"}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
           </header>
 
           <main className="max-w-6xl mx-auto px-4 grid gap-6">
-            {/* Platform */}
-            <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-              <div className="flex items-center justify-between gap-3 flex-wrap">
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                    <Icon name="monitor" className={accentText} />
-                  </div>
-                  <div>
-                    <div className="text-sm text-white/60">Шаг 1</div>
-                    <div className="text-xl font-display font-bold">Платформа</div>
-                  </div>
-                </div>
-
-                <div className="flex gap-2 flex-wrap justify-end">
-                  {PLATFORMS.map(p => (
-                    <Chip key={p.id} active={platform===p.id} onClick={()=>setPlatform(p.id)} tone={p.tone}>
-                      <span className="inline-flex items-center gap-2">
-                        <Icon name={p.icon} className="w-4 h-4" />
-                        {p.label}
-                      </span>
-                    </Chip>
-                  ))}
-                </div>
+            {/* PLATFORM */}
+            <Section>
+              <CardTitle step="1" icon="monitor" accent={accentText} title="Платформа" desc="Выберите, где играете." />
+              <div className="mt-4 flex flex-wrap gap-2">
+                {PLATFORMS.map(p => (
+                  <Pill key={p.id} active={platform===p.id} onClick={()=>setPlatform(p.id)} tone={p.tone}>
+                    <span className="inline-flex items-center gap-2">
+                      <Icon name={p.icon} className="w-4 h-4" />
+                      {p.label}
+                    </span>
+                  </Pill>
+                ))}
               </div>
-            </section>
+            </Section>
 
-            {isPlayStation ? (
-              <>
-                {/* PS console */}
-                <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <Icon name="gamepad-2" className={accentText}/>
-                    </div>
-                    <div>
-                      <div className="text-sm text-white/60">Шаг 2</div>
-                      <div className="text-xl font-display font-bold">Версия консоли</div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    {["PS4","PS5"].map(v => (
-                      <button key={v} onClick={()=>setPsConsole(v)}
-                        className={`btn flex-1 py-3 rounded-2xl border ${psConsole===v ? "border-neon-blue/60 bg-white/10 text-white shadow-glowb" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
-                        {v}
-                      </button>
-                    ))}
-                  </div>
-                </section>
-
-                {/* PS money cars */}
-                <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <Icon name="car" className={accentText}/>
-                    </div>
-                    <div>
-                      <div className="text-sm text-white/60">Шаг 3</div>
-                      <div className="text-xl font-display font-bold">Деньги машинами (Deluxo)</div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-white/55 mb-4">Самый безопасный способ: забиваем гаражи авто, ты продаёшь.</p>
-
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                    {PS_MONEY_CARS.map(m => (
-                      <button key={m.id} onClick={()=>setPsCarMoney(m)}
-                        className={`btn p-3 rounded-2xl border text-left flex items-center justify-between
-                          ${psCarMoney.id===m.id ? "border-neon-blue/60 bg-white/10 text-white shadow-glowb" : "border-white/10 bg-white/5 text-white/75 hover:text-white hover:bg-white/8"}`}>
-                        <div className="font-semibold">{m.label}</div>
-                        <div className="text-sm opacity-80">{m.price ? `+${m.price}₽` : "0₽"}</div>
-                      </button>
-                    ))}
-                  </div>
-                </section>
-
-                {/* PS cash + level */}
-                <div className="grid lg:grid-cols-2 gap-6">
-                  <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                        <Icon name="banknote" className={accentText}/>
-                      </div>
-                      <div>
-                        <div className="text-sm text-white/60">Шаг 4</div>
-                        <div className="text-xl font-display font-bold">Наличка</div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      {PS_MONEY_CASH.map(m => (
-                        <button key={m.id} onClick={()=>setPsCashMoney(m)}
-                          className={`btn w-full p-3 rounded-2xl border text-left flex items-center justify-between
-                            ${psCashMoney.id===m.id ? "border-neon-blue/60 bg-white/10 text-white shadow-glowb" : "border-white/10 bg-white/5 text-white/75 hover:text-white hover:bg-white/8"}`}>
-                          <div className="font-semibold">{m.label}</div>
-                          <div className="text-sm opacity-80">{m.price ? `+${m.price}₽` : "0₽"}</div>
+            {/* плавная анимация смены PC/PS */}
+            <div key={platform} className="animate-fadeUp">
+              {isPlayStation ? (
+                <>
+                  {/* PS console */}
+                  <Section>
+                    <CardTitle step="2" icon="gamepad-2" accent={accentText} title="Версия консоли" desc="Укажите PS4 или PS5." />
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      {["PS4","PS5"].map(v => (
+                        <button key={v} onClick={()=>setPsConsole(v)}
+                          className={`btn py-3 rounded-2xl border ${psConsole===v ? "border-neon-blue/60 bg-white/10 text-white" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
+                          {v}
                         </button>
                       ))}
                     </div>
-                  </section>
+                  </Section>
 
-                  <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                        <Icon name="star" className={accentText}/>
-                      </div>
-                      <div>
-                        <div className="text-sm text-white/60">Шаг 5</div>
-                        <div className="text-xl font-display font-bold">Уровень</div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      {PS_LEVELS.map(l => (
-                        <button key={l.id} onClick={()=>setPsLevel(l)}
-                          className={`btn w-full p-3 rounded-2xl border text-left flex items-center justify-between
-                            ${psLevel.id===l.id ? "border-neon-blue/60 bg-white/10 text-white shadow-glowb" : "border-white/10 bg-white/5 text-white/75 hover:text-white hover:bg-white/8"}`}>
-                          <div className="font-semibold">{l.label}</div>
-                          <div className="text-sm opacity-80">{l.price ? `+${l.price}₽` : "0₽"}</div>
+                  {/* PS money cars */}
+                  <Section>
+                    <CardTitle step="3" icon="car" accent={accentText} title="Деньги машинами (Deluxo)" desc="Самый безопасный способ: забиваем гаражи авто, вы продаёте." />
+                    <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                      {PS_MONEY_CARS.map(m => (
+                        <button key={m.id} onClick={()=>setPsCarMoney(m)}
+                          className={`btn p-3 rounded-2xl border text-left flex justify-between items-center gap-3
+                            ${psCarMoney.id===m.id ? "border-neon-blue/60 bg-white/10 text-white" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
+                          <span className="font-semibold">{m.label}</span>
+                          <span className="text-sm opacity-80">{m.price ? `+${m.price}₽` : "0₽"}</span>
                         </button>
                       ))}
                     </div>
-                  </section>
-                </div>
+                  </Section>
 
-                {/* Requirements */}
-                <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <Icon name="alert-triangle" className="text-yellow-300"/>
-                    </div>
-                    <div>
-                      <div className="text-sm text-white/60">Важно</div>
-                      <div className="text-xl font-display font-bold">Требования</div>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-3">
-                    <label className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        <input type="checkbox" checked={psReq200k} onChange={(e)=>setPsReq200k(e.target.checked)} />
-                        <span className="text-white/80">У меня нет 200.000$ на балансе</span>
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* PS cash */}
+                    <Section>
+                      <CardTitle step="4" icon="banknote" accent={accentText} title="Наличка" desc="Выберите опцию налички (если нужно)." />
+                      <div className="mt-4 space-y-2">
+                        {PS_MONEY_CASH.map(m => (
+                          <button key={m.id} onClick={()=>setPsCashMoney(m)}
+                            className={`btn w-full p-3 rounded-2xl border text-left flex justify-between items-center gap-3
+                              ${psCashMoney.id===m.id ? "border-neon-blue/60 bg-white/10 text-white" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
+                            <span className="font-semibold">{m.label}</span>
+                            <span className="text-sm opacity-80">{m.price ? `+${m.price}₽` : "0₽"}</span>
+                          </button>
+                        ))}
                       </div>
-                      <span className="text-yellow-300 font-semibold">+500₽</span>
-                    </label>
+                    </Section>
 
-                    <label className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        <input type="checkbox" checked={psReqPlus} onChange={(e)=>setPsReqPlus(e.target.checked)} />
-                        <span className="text-white/80">У меня нет подписки PS+</span>
+                    {/* PS level */}
+                    <Section>
+                      <CardTitle step="5" icon="star" accent={accentText} title="Уровень" desc="Выберите уровень аккаунта." />
+                      <div className="mt-4 space-y-2">
+                        {PS_LEVELS.map(l => (
+                          <button key={l.id} onClick={()=>setPsLevel(l)}
+                            className={`btn w-full p-3 rounded-2xl border text-left flex justify-between items-center gap-3
+                              ${psLevel.id===l.id ? "border-neon-blue/60 bg-white/10 text-white" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
+                            <span className="font-semibold">{l.label}</span>
+                            <span className="text-sm opacity-80">{l.price ? `+${l.price}₽` : "0₽"}</span>
+                          </button>
+                        ))}
                       </div>
-                      <span className="text-yellow-300 font-semibold">+500₽</span>
-                    </label>
-                  </div>
-                </section>
-              </>
-            ) : (
-              <>
-                {/* PC money */}
-                <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                  <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                        <Icon name="banknote" className={accentText}/>
-                      </div>
-                      <div>
-                        <div className="text-sm text-white/60">Шаг 2</div>
-                        <div className="text-xl font-display font-bold">Валюта</div>
-                      </div>
-                    </div>
-
-                    <label className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 px-4 py-2 flex items-center gap-2 text-white/80">
-                      <input type="checkbox" checked={!useMoney} onChange={(e)=>setUseMoney(!e.target.checked)} />
-                      Мне не нужна валюта
-                    </label>
+                    </Section>
                   </div>
 
-                  <div className={`${!useMoney ? "opacity-30 pointer-events-none grayscale" : ""}`}>
-                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-                      {PC_MONEY_PACKS.map((pk, idx) => (
-                        <button key={idx} onClick={()=>setMoneyIdx(idx)}
-                          className={`btn p-3 rounded-2xl border text-center
-                          ${moneyIdx===idx ? "border-neon-green/60 bg-white/10 text-white shadow-glowg" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
-                          <div className="font-semibold">{pk.label}</div>
-                          <div className="text-xs opacity-80">{pk.price ? `+${pk.price}₽` : "0₽"}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-
-                {/* PC level */}
-                <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <Icon name="star" className={accentText}/>
-                    </div>
-                    <div>
-                      <div className="text-sm text-white/60">Шаг 3</div>
-                      <div className="text-xl font-display font-bold">Уровень</div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {PC_LEVELS_MAIN.map(l => (
-                      <button key={l.id} onClick={()=>setLevelId(l.id)}
-                        className={`btn px-4 py-2 rounded-2xl border
-                        ${levelId===l.id ? "border-neon-green/60 bg-white/10 text-white shadow-glowg" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
-                        <span className="font-semibold">{l.label}</span>
-                        {l.price>0 && <span className="ml-2 text-white/70 text-sm">+{l.price}₽</span>}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="mt-5 grid md:grid-cols-3 gap-2">
-                    {PC_LEVELS_EXTRA.map(item => (
-                      <label key={item.id} className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
+                  {/* PS req */}
+                  <Section>
+                    <CardTitle step="6" icon="alert-triangle" accent="text-yellow-300" title="Требования" desc="Если чего-то нет — отметьте. Это добавит комиссию." />
+                    <div className="mt-4 grid md:grid-cols-2 gap-3">
+                      <label className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
-                          <span className="text-white/80">{item.label}</span>
+                          <input type="checkbox" checked={psReq200k} onChange={(e)=>setPsReq200k(e.target.checked)} />
+                          <span className="text-white/80">У меня нет 200.000$ на балансе</span>
                         </div>
-                        <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
+                        <span className="text-yellow-300 font-semibold">+500₽</span>
                       </label>
-                    ))}
-                  </div>
-                </section>
 
-                {/* PC options */}
-                <div className="grid lg:grid-cols-2 gap-6">
-                  <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                        <Icon name="unlock" className={accentText}/>
-                      </div>
-                      <div className="text-xl font-display font-bold">Разблокировки</div>
+                      <label className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" checked={psReqPlus} onChange={(e)=>setPsReqPlus(e.target.checked)} />
+                          <span className="text-white/80">У меня нет подписки PS+</span>
+                        </div>
+                        <span className="text-yellow-300 font-semibold">+500₽</span>
+                      </label>
                     </div>
-                    <div className="space-y-2">
-                      {PC_UNLOCKS.map(item => (
+                  </Section>
+                </>
+              ) : (
+                <>
+                  {/* PC money */}
+                  <Section>
+                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                      <CardTitle step="2" icon="banknote" accent={accentText} title="Валюта" desc="Выберите пакет или отключите валюту." />
+                      <label className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 px-4 py-2 flex items-center gap-2 text-white/80">
+                        <input type="checkbox" checked={!useMoney} onChange={(e)=>setUseMoney(!e.target.checked)} />
+                        Мне не нужна валюта
+                      </label>
+                    </div>
+
+                    <div className={`mt-4 ${!useMoney ? "opacity-30 pointer-events-none grayscale" : ""}`}>
+                      {/* поиск */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="flex-1">
+                          <input
+                            value={moneyQuery}
+                            onChange={(e)=>setMoneyQuery(e.target.value)}
+                            placeholder="Поиск по валюте: 20, 50, 100…"
+                            className="w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={()=>setMoneyQuery("")}
+                          className="btn px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 text-white/80"
+                        >
+                          Сброс
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                        {filteredMoneyPacks.map((pk) => {
+                          const idx = PC_MONEY_PACKS.indexOf(pk);
+                          return (
+                            <button key={pk.label} onClick={()=>setMoneyIdx(idx)}
+                              className={`btn p-3 rounded-2xl border text-center relative
+                                ${moneyIdx===idx ? "border-neon-green/60 bg-white/10 text-white shadow-[0_0_28px_rgba(46,204,113,.14)]" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
+                              <div className="flex items-center justify-center gap-2">
+                                <span className="font-semibold">{pk.label}</span>
+                                {pk.tag && <Chip text={pk.tag} />}
+                              </div>
+                              <div className="text-xs opacity-80 mt-1">{pk.price ? `+${pk.price}₽` : "0₽"}</div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </Section>
+
+                  {/* PC level */}
+                  <Section>
+                    <CardTitle step="3" icon="star" accent={accentText} title="Уровень и репутация" desc="Один уровень + дополнительные репутации." />
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {PC_LEVELS_MAIN.map(l => (
+                        <button key={l.id} onClick={()=>setLevelId(l.id)}
+                          className={`btn px-4 py-2 rounded-2xl border
+                            ${levelId===l.id ? "border-neon-green/60 bg-white/10 text-white" : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/8"}`}>
+                          <span className="font-semibold">{l.label}</span>
+                          {l.price>0 && <span className="ml-2 text-white/70 text-sm">+{l.price}₽</span>}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="mt-5 grid md:grid-cols-3 gap-2">
+                      {PC_LEVELS_EXTRA.map(item => (
+                        <label key={item.id} className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
+                            <span className="text-white/80">{item.label}</span>
+                          </div>
+                          <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
+                        </label>
+                      ))}
+                    </div>
+                  </Section>
+
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* unlocks */}
+                    <Section>
+                      <CardTitle step="4" icon="unlock" accent={accentText} title="Разблокировки" desc="Отметьте нужные пункты." />
+                      <div className="mt-4 space-y-2">
+                        {PC_UNLOCKS.map(item => (
+                          <label key={item.id} className={`btn cursor-pointer rounded-2xl border p-4 flex items-center justify-between gap-3
+                            ${item.highlight ? "border-neon-green/35 bg-white/8" : "border-white/10 bg-white/5 hover:bg-white/8"}`}>
+                            <div className="flex items-center gap-3">
+                              <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
+                              <span className={`${item.highlight ? "text-neon-green font-semibold" : "text-white/80"}`}>{item.label}</span>
+                            </div>
+                            <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
+                          </label>
+                        ))}
+                      </div>
+                    </Section>
+
+                    {/* vehicles + extras */}
+                    <Section>
+                      <CardTitle step="5" icon="car" accent={accentText} title="Транспорт и дополнительно" desc="Транспорт + доп. услуги." />
+                      <div className="mt-4 space-y-2">
+                        {PC_VEHICLES.map(item => (
+                          <label key={item.id} className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
+                              <span className="text-white/80">{item.label}</span>
+                            </div>
+                            <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
+                          </label>
+                        ))}
+                      </div>
+
+                      <div className="mt-6 pt-6 border-t border-white/10 space-y-2">
+                        {PC_EXTRAS.map(item => (
+                          <label key={item.id} className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
+                              <span className="text-white/80">{item.label}</span>
+                            </div>
+                            <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
+                          </label>
+                        ))}
+                      </div>
+                    </Section>
+                  </div>
+
+                  {/* special */}
+                  <Section>
+                    <CardTitle step="6" icon="crown" accent="text-yellow-300" title="Особые услуги" desc="Редкие и расширенные опции." />
+                    <div className="mt-4 grid md:grid-cols-2 xl:grid-cols-3 gap-2">
+                      {PC_SPECIAL.map(item => (
                         <label key={item.id} className={`btn cursor-pointer rounded-2xl border p-4 flex items-center justify-between gap-3
-                          ${item.highlight ? "border-neon-green/35 bg-white/8" : "border-white/10 bg-white/5 hover:bg-white/8"}`}>
+                          ${item.highlight ? "border-yellow-300/30 bg-yellow-300/5" : "border-white/10 bg-white/5 hover:bg-white/8"}`}>
                           <div className="flex items-center gap-3">
                             <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
-                            <span className={`${item.highlight ? "text-neon-green font-semibold" : "text-white/80"}`}>{item.label}</span>
+                            <span className={`${item.highlight ? "text-yellow-300 font-semibold" : "text-white/80"}`}>{item.label}</span>
                           </div>
                           <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
                         </label>
                       ))}
                     </div>
-                  </section>
-
-                  <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                        <Icon name="car" className={accentText}/>
-                      </div>
-                      <div className="text-xl font-display font-bold">Транспорт + Дополнительно</div>
-                    </div>
-
-                    <div className="space-y-2">
-                      {PC_VEHICLES.map(item => (
-                        <label key={item.id} className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
-                            <span className="text-white/80">{item.label}</span>
-                          </div>
-                          <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
-                        </label>
-                      ))}
-                    </div>
-
-                    <div className="mt-6 pt-6 border-t border-white/10 space-y-2">
-                      {PC_EXTRAS.map(item => (
-                        <label key={item.id} className="btn cursor-pointer rounded-2xl border border-white/10 bg-white/5 hover:bg-white/8 p-4 flex items-center justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
-                            <span className="text-white/80">{item.label}</span>
-                          </div>
-                          <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
-                        </label>
-                      ))}
-                    </div>
-                  </section>
-                </div>
-
-                {/* PC special */}
-                <section className="glass rounded-3xl p-6 shadow-soft animate-fadeUp">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      <Icon name="crown" className="text-yellow-300"/>
-                    </div>
-                    <div className="text-xl font-display font-bold">Особые услуги</div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-2">
-                    {PC_SPECIAL.map(item => (
-                      <label key={item.id} className={`btn cursor-pointer rounded-2xl border p-4 flex items-center justify-between gap-3
-                        ${item.highlight ? "border-yellow-300/30 bg-yellow-300/5" : "border-white/10 bg-white/5 hover:bg-white/8"}`}>
-                        <div className="flex items-center gap-3">
-                          <input type="checkbox" checked={selected.has(item.id)} onChange={()=>toggle(item.id)} />
-                          <span className={`${item.highlight ? "text-yellow-300 font-semibold" : "text-white/80"}`}>{item.label}</span>
-                        </div>
-                        <span className={`${accentText} font-semibold`}>+{item.price}₽</span>
-                      </label>
-                    ))}
-                  </div>
-                </section>
-              </>
-            )}
+                  </Section>
+                </>
+              )}
+            </div>
           </main>
 
-          {/* Sticky Footer */}
+          {/* Sticky footer */}
           <div className="fixed bottom-0 left-0 w-full glass-strong px-4 py-4 z-40">
             <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
               <div>
-                <div className="text-xs text-white/50 uppercase tracking-widest">Итоговая цена</div>
+                <div className="text-xs text-white/50 uppercase tracking-widest">Итог</div>
                 <div className={`text-3xl font-display font-extrabold ${accentText}`}>{money(totalPrice)}</div>
               </div>
-
-              <button
-                onClick={()=>setIsModal(true)}
-                className={`btn ${accentBg} text-white font-bold px-7 py-3 rounded-2xl shadow-soft hover:brightness-110`}
-              >
-                Оформить заказ
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={resetAll}
+                  className="btn px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 text-white/80">
+                  Сброс
+                </button>
+                <button onClick={()=>setIsModal(true)}
+                  className={`btn ${accentBg} shiny text-white font-bold px-7 py-3 rounded-2xl hover:brightness-110`}>
+                  Оформить заказ
+                </button>
+              </div>
             </div>
           </div>
 
@@ -728,125 +779,160 @@
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
               <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={()=>setIsModal(false)}></div>
 
-              <div className="relative w-full max-w-2xl glass rounded-3xl shadow-soft border border-white/10 overflow-hidden animate-pop">
-                <div className="p-6 border-b border-white/10 flex items-center justify-between">
-                  <div>
-                    <div className="text-sm text-white/60">Оформление</div>
-                    <div className="text-2xl font-display font-extrabold">Заказ</div>
+              <div className="relative w-full max-w-3xl glass rounded-3xl border border-white/10 overflow-hidden max-h-[90vh] flex flex-col animate-pop">
+                {/* header */}
+                <div className="p-6 border-b border-white/10 shrink-0">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-xs text-white/50 uppercase tracking-widest">Оформление</div>
+                      <div className="text-2xl font-display font-extrabold">Заказ</div>
+                    </div>
+                    <button onClick={()=>setIsModal(false)}
+                      className="btn w-10 h-10 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center">
+                      <Icon name="x" className="w-5 h-5" />
+                    </button>
                   </div>
-                  <button onClick={()=>setIsModal(false)} className="btn w-10 h-10 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center">
-                    <Icon name="x" className="w-5 h-5" />
-                  </button>
                 </div>
 
-                <div className="p-6 grid lg:grid-cols-2 gap-6">
-                  {/* Cart */}
-                  <div className="rounded-3xl bg-white/5 border border-white/10 p-5">
-                    <div className="text-xs text-white/60 uppercase tracking-widest mb-3">Корзина</div>
-                    <div className="space-y-2 text-sm">
-                      {getItems().map((i, idx) => (
-                        <div key={idx} className="flex justify-between gap-3 text-white/80">
-                          <div className="pr-2">{i.label}</div>
-                          <div className="font-semibold">{i.price ? `${i.price}₽` : "—"}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-end">
-                      <div className="text-white/60 text-sm">Итого</div>
-                      <div className={`text-2xl font-display font-extrabold ${accentText}`}>{money(totalPrice)}</div>
-                    </div>
-                  </div>
-
-                  {/* Payment + form */}
-                  <div className="space-y-4">
+                {/* body scroll */}
+                <div className="p-6 overflow-y-auto grow">
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* cart */}
                     <div className="rounded-3xl bg-white/5 border border-white/10 p-5">
-                      <div className="text-xs text-white/60 uppercase tracking-widest mb-3">Оплата</div>
-                      <div className="space-y-2">
-                        {REQUISITES.map((r, idx) => (
-                          <div key={idx} className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 border border-white/10 p-3">
-                            <div className="flex items-center gap-3">
-                              <div className={`w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center ${accentText}`}>
-                                <Icon name={r.icon} className="w-5 h-5" />
-                              </div>
-                              <div>
-                                <div className="font-semibold">{r.label}</div>
-                                <div className="text-xs text-white/50">Комиссия 0%</div>
-                              </div>
-                            </div>
-                            <button
-                              className="btn text-xs px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10"
-                              onClick={() => navigator.clipboard.writeText(String(r.num).replace(/\s/g,'').trim())}
-                              type="button"
-                            >
-                              Скопировать
-                            </button>
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-white/50 uppercase tracking-widest">Корзина</div>
+                        <button type="button" onClick={resetAll}
+                          className="btn text-xs px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white/80">
+                          Сбросить выбор
+                        </button>
+                      </div>
+
+                      <div className="mt-3 space-y-2 text-sm max-h-72 overflow-auto pr-2">
+                        {getItems().map((i, idx) => (
+                          <div key={idx} className="flex justify-between gap-3 text-white/75">
+                            <span className="truncate">{i.label}</span>
+                            <span className="font-semibold">{i.price ? `${i.price}₽` : "—"}</span>
                           </div>
                         ))}
                       </div>
-                      <div className="mt-3 text-xs text-red-300/90">
-                        ⚠ Переведи <b>{totalPrice}₽</b> по реквизитам и отметь “Я оплатил”.
+
+                      {/* sticky total */}
+                      <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-end sticky bottom-0 bg-[#0b1223]/80 backdrop-blur rounded-2xl px-3 py-3">
+                        <div className="text-white/60 text-sm">Итого</div>
+                        <div className={`text-2xl font-display font-extrabold ${accentText}`}>{money(totalPrice)}</div>
                       </div>
                     </div>
 
-                    <form onSubmit={submit} className="rounded-3xl bg-white/5 border border-white/10 p-5 space-y-3">
-                      <div className="text-xs text-white/60 uppercase tracking-widest">Контакты</div>
-
-                      <div>
-                        <label className="text-xs text-white/50">ID аккаунта (без пароля)</label>
-                        <input
-                          value={accountId}
-                          onChange={(e)=>setAccountId(e.target.value)}
-                          required
-                          placeholder={isPlayStation ? "PSN ID / Email" : "Steam/Epic/Social Nick/Email"}
-                          className="mt-1 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white"
-                        />
-                        <div className="mt-1 text-[11px] text-white/45">
-                          Пароль не нужен. Для входа бустер согласует доступ отдельно.
+                    {/* payment + form */}
+                    <div className="space-y-4">
+                      <div className="rounded-3xl bg-white/5 border border-white/10 p-5">
+                        <div className="text-xs text-white/50 uppercase tracking-widest mb-3">Оплата</div>
+                        <div className="space-y-2">
+                          {REQUISITES.map((r, idx) => (
+                            <div key={idx} className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 border border-white/10 p-3">
+                              <div className="flex items-center gap-3">
+                                <div className={`w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center ${accentText}`}>
+                                  <Icon name={r.icon} className="w-5 h-5" />
+                                </div>
+                                <div>
+                                  <div className="font-semibold">{r.label}</div>
+                                  <div className="text-xs text-white/50">Комиссия 0%</div>
+                                </div>
+                              </div>
+                              <button type="button"
+                                className="btn text-xs px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10"
+                                onClick={() => navigator.clipboard.writeText(String(r.num).replace(/\s/g,'').trim())}>
+                                Скопировать
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-3 text-xs text-red-300/90">
+                          ⚠ Переведи <b>{totalPrice}₽</b> по реквизитам и отметь “Я оплатил”.
                         </div>
                       </div>
 
-                      <div>
-                        <label className="text-xs text-white/50">Куда писать о готовности?</label>
-                        <input
-                          value={contacts}
-                          onChange={(e)=>setContacts(e.target.value)}
-                          required
-                          placeholder="Ссылка на VK или Telegram"
-                          className="mt-1 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-xs text-white/50">Комментарий (необязательно)</label>
-                        <textarea
-                          value={comment}
-                          onChange={(e)=>setComment(e.target.value)}
-                          placeholder="Например: время, нюансы, что важно"
-                          className="mt-1 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white min-h-[90px]"
-                        ></textarea>
-                      </div>
-
-                      <label className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 border border-white/10 p-4 cursor-pointer">
-                        <div className="flex items-center gap-3">
-                          <input type="checkbox" checked={paidConfirmed} onChange={(e)=>setPaidConfirmed(e.target.checked)} />
-                          <span className="text-white/80 font-semibold">Я оплатил</span>
+                      <form onSubmit={submit} className="rounded-3xl bg-white/5 border border-white/10 p-5 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs text-white/50 uppercase tracking-widest">Данные для выполнения</div>
+                          <Chip text="Только в таблицу" />
                         </div>
-                        <span className={`text-sm ${accentText} font-semibold`}>{money(totalPrice)}</span>
-                      </label>
 
-                      <button
-                        disabled={submitting || !paidConfirmed}
-                        className={`btn w-full py-3 rounded-2xl font-bold text-white ${accentBg} hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed`}
-                      >
-                        {submitting ? "Отправляю..." : "Отправить заказ в таблицу"}
-                      </button>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-xs text-white/60">Логин</label>
+                            <input
+                              required
+                              value={login}
+                              onChange={(e)=>setLogin(e.target.value)}
+                              placeholder={isPlayStation ? "PSN Email / Login" : "Steam/Epic/Social Login"}
+                              className="mt-1 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs text-white/60">Пароль</label>
+                            <input
+                              required
+                              type="password"
+                              value={password}
+                              onChange={(e)=>setPassword(e.target.value)}
+                              placeholder="Пароль от игры"
+                              className="mt-1 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white"
+                            />
+                          </div>
+                        </div>
 
-                      <div className="text-[11px] text-white/40">
-                        Нажимая “Отправить”, ты подтверждаешь корректность данных.
-                      </div>
-                    </form>
+                        <div>
+                          <label className="text-xs text-white/60">Ваш тг или вк</label>
+                          <input
+                            required
+                            value={contacts}
+                            onChange={(e)=>setContacts(e.target.value)}
+                            placeholder="Например: @nickname или https://vk.com/..."
+                            className="mt-1 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-xs text-white/60">Комментарий (необязательно)</label>
+                          <textarea
+                            value={comment}
+                            onChange={(e)=>setComment(e.target.value)}
+                            placeholder="Время, нюансы, что важно"
+                            className="mt-1 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 focus:border-white/25 outline-none text-white min-h-[90px]"
+                          ></textarea>
+                        </div>
+
+                        <label className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 border border-white/10 p-4 cursor-pointer">
+                          <div className="flex items-center gap-3">
+                            <input type="checkbox" checked={paidConfirmed} onChange={(e)=>setPaidConfirmed(e.target.checked)} />
+                            <span className="text-white/85 font-semibold">Я оплатил</span>
+                          </div>
+                          <span className={`text-sm ${accentText} font-semibold`}>{money(totalPrice)}</span>
+                        </label>
+
+                        <div className="text-[11px] text-white/45">
+                          Данные отправляются в таблицу для выполнения заказа. Ограничьте доступ к таблице только доверенным людям.
+                        </div>
+
+                        <button
+                          disabled={submitting || !paidConfirmed}
+                          className={`btn w-full py-3 rounded-2xl font-bold text-white ${accentBg} shiny hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed`}
+                        >
+                          {submitting ? "Отправляю..." : "Я оплатил — отправить заказ"}
+                        </button>
+                      </form>
+                    </div>
                   </div>
                 </div>
+
+                {/* footer small */}
+                <div className="px-6 py-4 border-t border-white/10 shrink-0 bg-black/20">
+                  <div className="text-xs text-white/50">
+                    Если форма не помещается — внутри есть прокрутка. Ничего не “растягивается”.
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
