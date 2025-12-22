@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BOOST Admin — Статусы</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{
+      background: radial-gradient(900px 520px at 12% 12%, rgba(139,92,246,.18), transparent 60%),
+                  radial-gradient(800px 450px at 88% 18%, rgba(45,116,218,.18), transparent 60%),
+                  radial-gradient(900px 650px at 55% 88%, rgba(46,204,113,.14), transparent 60%),
+                  linear-gradient(180deg, #05070f, #0b1223 60%, #05070f);
+      color:#fff;
+    }
+    .glass{background:rgba(17,28,51,.55); border:1px solid rgba(255,255,255,.10); backdrop-filter: blur(14px);}
+  </style>
+</head>
+<body class="min-h-screen p-4">
+  <div class="max-w-xl mx-auto glass rounded-3xl p-6 mt-10">
+    <h1 class="text-3xl font-extrabold mb-2">BOOST Admin</h1>
+    <p class="text-white/60 mb-6">Меняй статусы заказов (только для бустера).</p>
+
+    <label class="text-sm text-white/70">URL Apps Script (exec)</label>
+    <input id="url" class="w-full mt-1 mb-4 px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none"
+      value="https://script.google.com/macros/s/AKfycbzWwZYbz9PM-X3uO4gEwMiyJaIvUYu_L5GIhAjLuTens6lHA__dxGRdsIPLMXfSFyUu/exec" />
+
+    <label class="text-sm text-white/70">Секретный ключ (ADMIN_KEY)</label>
+    <input id="key" type="password" class="w-full mt-1 mb-4 px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none"
+      placeholder="Введи ADMIN_KEY из Code.gs" />
+
+    <label class="text-sm text-white/70">OrderID</label>
+    <input id="orderId" class="w-full mt-1 mb-4 px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none"
+      placeholder="Например: ORD-1A2B3C4D" />
+
+    <label class="text-sm text-white/70">Статус</label>
+    <select id="status" class="w-full mt-1 mb-6 px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none">
+      <option value="NEW">NEW</option>
+      <option value="IN_WORK">IN_WORK</option>
+      <option value="DONE">DONE</option>
+      <option value="CANCELED">CANCELED</option>
+    </select>
+
+    <div class="flex gap-2">
+      <button id="setBtn" class="flex-1 py-3 rounded-2xl bg-emerald-500 font-bold hover:brightness-110">
+        Обновить статус
+      </button>
+      <button id="checkBtn" class="flex-1 py-3 rounded-2xl bg-white/10 border border-white/10 font-bold hover:bg-white/15">
+        Проверить
+      </button>
+    </div>
+
+    <div id="out" class="mt-6 text-sm text-white/70 whitespace-pre-wrap"></div>
+  </div>
+
+<script>
+  const out = (t) => document.getElementById("out").textContent = t;
+
+  async function getJSON(url){
+    const r = await fetch(url, { method:"GET" });
+    return await r.json();
+  }
+
+  document.getElementById("checkBtn").onclick = async () => {
+    const base = document.getElementById("url").value.trim();
+    const orderId = document.getElementById("orderId").value.trim();
+    if(!base || !orderId) return out("Нужно указать URL и OrderID");
+    const u = `${base}?action=status&orderId=${encodeURIComponent(orderId)}`;
+    try{
+      const j = await getJSON(u);
+      out(JSON.stringify(j, null, 2));
+    }catch(e){
+      out("Ошибка запроса: " + e);
+    }
+  };
+
+  document.getElementById("setBtn").onclick = async () => {
+    const base = document.getElementById("url").value.trim();
+    const key = document.getElementById("key").value.trim();
+    const orderId = document.getElementById("orderId").value.trim();
+    const status = document.getElementById("status").value;
+    if(!base || !key || !orderId) return out("Нужно URL, ключ и OrderID");
+
+    const u = `${base}?action=updateStatus&key=${encodeURIComponent(key)}&orderId=${encodeURIComponent(orderId)}&status=${encodeURIComponent(status)}`;
+    try{
+      const j = await getJSON(u);
+      out(JSON.stringify(j, null, 2));
+    }catch(e){
+      out("Ошибка запроса: " + e);
+    }
+  };
+</script>
+</body>
+</html>
