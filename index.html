@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GTA ONLINE BOOST — Оформление заказа</title>
 
+  <!-- Fonts (элитнее) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -16,22 +17,24 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Manrope', 'ui-sans-serif', 'system-ui'],
-            display: ['Rajdhani', 'ui-sans-serif', 'system-ui']
+            sans: ['Inter', 'system-ui'],
+            display: ['Orbitron', 'system-ui']
           },
           boxShadow: {
-            glow: '0 0 0 1px rgba(255,255,255,.06), 0 0 40px rgba(16,185,129,.10)',
-            glowBlue: '0 0 0 1px rgba(255,255,255,.06), 0 0 40px rgba(59,130,246,.16)'
+            glow: '0 0 0 1px rgba(255,255,255,.06), 0 0 50px rgba(16,185,129,.14)',
+            glowBlue: '0 0 0 1px rgba(255,255,255,.06), 0 0 55px rgba(59,130,246,.20)'
           },
           keyframes: {
-            floaty: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-8px)' } },
+            floaty: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-10px)' } },
             shimmer: { '0%': { transform:'translateX(-120%)' }, '100%': { transform:'translateX(120%)' } },
             pop: { '0%': { transform:'scale(.96)', opacity:.0 }, '100%': { transform:'scale(1)', opacity:1 } },
+            slideDown: { '0%': { transform:'translateY(-6px)', opacity:0 }, '100%': { transform:'translateY(0)', opacity:1 } },
           },
           animation: {
-            floaty: 'floaty 6s ease-in-out infinite',
+            floaty: 'floaty 7s ease-in-out infinite',
             shimmer: 'shimmer 1.8s ease-in-out infinite',
-            pop: 'pop .18s ease-out both'
+            pop: 'pop .18s ease-out both',
+            slideDown: 'slideDown .18s ease-out both'
           }
         }
       }
@@ -42,26 +45,58 @@
     :root{
       --bg0:#050810;
       --bg1:#070c18;
-      --stroke: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.10);
       --txt: rgba(255,255,255,.92);
 
-      --accent:#10b981; /* emerald */
-      --accent2:#22c55e;
+      --accent:#22c55e; /* emerald */
+      --accent2:#10b981;
 
-      --psAccent:#3b82f6; /* blue */
-      --psAccent2:#60a5fa;
+      --psAccent:#60a5fa; /* blue */
+      --psAccent2:#3b82f6;
+
+      /* Card look */
+      --cardA: rgba(255,255,255,.09);
+      --cardB: rgba(255,255,255,.03);
+      --chipA: rgba(255,255,255,.06);
+      --chipB: rgba(255,255,255,.03);
+
+      /* Preset backgrounds */
+      --bgRad1: rgba(34,197,94,.12);
+      --bgRad2: rgba(99,102,241,.12);
+      --bgRad3: rgba(244,63,94,.07);
+    }
+
+    /* Style presets: Elite(default) / Neon / Minimal */
+    body.preset-neon{
+      --bgRad1: rgba(168,85,247,.18);
+      --bgRad2: rgba(34,211,238,.14);
+      --bgRad3: rgba(251,113,133,.10);
+      --accent:#a855f7;
+      --accent2:#22d3ee;
+      --cardA: rgba(255,255,255,.10);
+      --cardB: rgba(255,255,255,.03);
+    }
+    body.preset-minimal{
+      --bgRad1: rgba(255,255,255,.06);
+      --bgRad2: rgba(255,255,255,.05);
+      --bgRad3: rgba(255,255,255,.04);
+      --accent:#e5e7eb;
+      --accent2:#9ca3af;
+      --cardA: rgba(255,255,255,.06);
+      --cardB: rgba(255,255,255,.02);
     }
 
     body{
       color: var(--txt);
       background:
-        radial-gradient(1100px 700px at 15% 10%, rgba(16,185,129,.12), transparent 60%),
-        radial-gradient(900px 600px at 70% 20%, rgba(99,102,241,.12), transparent 60%),
-        radial-gradient(900px 700px at 50% 90%, rgba(244,63,94,.07), transparent 60%),
+        radial-gradient(1100px 700px at 15% 10%, var(--bgRad1), transparent 60%),
+        radial-gradient(900px 600px at 70% 20%, var(--bgRad2), transparent 60%),
+        radial-gradient(900px 700px at 50% 90%, var(--bgRad3), transparent 60%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x: hidden;
     }
 
+    /* PS mode: keep the same but slightly bluer vibe */
     body.ps{
       background:
         radial-gradient(1100px 700px at 15% 10%, rgba(59,130,246,.16), transparent 60%),
@@ -71,61 +106,83 @@
     }
 
     .glass{
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      background: linear-gradient(180deg, var(--cardA), var(--cardB));
       border: 1px solid var(--stroke);
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
 
     .chip{
-      border: 1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, var(--chipA), var(--chipB));
       transition: .18s ease;
     }
-    .chip:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.14); }
+    .chip:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
+    .chip:active{ transform: scale(.985); }
 
+    /* OPTION — compact, elite, like your screenshots */
     .option{
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.08);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
-      transition: .18s ease;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 22px;
+      padding: 12px 14px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease;
       position: relative;
       overflow: hidden;
     }
-    .option:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.16); }
-    .option:before{
+    .option:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.22);
+      filter: brightness(1.03);
+    }
+    .option:active{ transform: scale(.985); }
+
+    .option::before{
       content:"";
       position:absolute;
-      inset:-60% auto -60% -80%;
+      inset:-70% auto -70% -80%;
       width: 60%;
       transform: rotate(18deg);
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
-      opacity:.0;
+      opacity:0;
     }
-    .option:hover:before{ opacity:1; animation: shimmer 1.9s ease-in-out infinite; }
+    .option:hover::before{ opacity:1; animation: shimmer 1.9s ease-in-out infinite; }
 
     .option.selected{
-      border-color: color-mix(in oklab, var(--accent) 65%, rgba(255,255,255,.20));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 0 50px rgba(16,185,129,.14);
+      border-color: color-mix(in oklab, var(--accent) 70%, rgba(255,255,255,.18));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 12px 40px rgba(34,197,94,.18);
     }
     body.ps .option.selected{
-      border-color: color-mix(in oklab, var(--psAccent) 70%, rgba(255,255,255,.18));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 0 50px rgba(59,130,246,.18);
+      border-color: color-mix(in oklab, var(--psAccent) 72%, rgba(255,255,255,.18));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 12px 42px rgba(96,165,250,.22);
+    }
+
+    .option.selected::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:22px;
+      background: radial-gradient(120px 60px at top left, rgba(34,197,94,.25), transparent 60%);
+      pointer-events:none;
+    }
+    body.ps .option.selected::after{
+      background: radial-gradient(120px 60px at top left, rgba(96,165,250,.28), transparent 60%);
     }
 
     .badge{
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.07);
     }
 
     .price{ color: var(--accent); font-weight: 800; }
-    body.ps .price{ color: var(--psAccent2); }
+    body.ps .price{ color: var(--psAccent); }
+    body.preset-minimal .price{ color: rgba(255,255,255,.85); }
 
-    .sectionTitle{ font-family: Rajdhani, system-ui; letter-spacing: .6px; }
+    .sectionTitle{ font-family: Orbitron, system-ui; letter-spacing: .7px; }
 
     .stickybar{
-      background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.25));
+      background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.28));
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid rgba(255,255,255,.08);
@@ -145,15 +202,15 @@
 
     .field{
       background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
       outline: none;
       transition: .15s ease;
     }
     .field:focus{
-      border-color: rgba(255,255,255,.20);
-      box-shadow: 0 0 0 3px rgba(16,185,129,.14);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 0 0 3px rgba(34,197,94,.18);
     }
-    body.ps .field:focus{ box-shadow: 0 0 0 3px rgba(59,130,246,.18); }
+    body.ps .field:focus{ box-shadow: 0 0 0 3px rgba(96,165,250,.22); }
 
     #fxCanvas{ position: fixed; inset:0; pointer-events:none; z-index: 80; display:none; }
     #fxCanvas.show{ display:block; }
@@ -161,14 +218,15 @@
     .pulseDot{
       width:10px; height:10px; border-radius:999px;
       background: var(--accent);
-      box-shadow: 0 0 0 0 rgba(16,185,129,.6);
+      box-shadow: 0 0 0 0 rgba(34,197,94,.6);
       animation: pulse 1.4s infinite;
     }
-    body.ps .pulseDot{ background: var(--psAccent); box-shadow: 0 0 0 0 rgba(59,130,246,.7); }
+    body.ps .pulseDot{ background: var(--psAccent2); box-shadow: 0 0 0 0 rgba(59,130,246,.7); }
+
     @keyframes pulse{
-      0%{ box-shadow: 0 0 0 0 rgba(16,185,129,.55); }
-      70%{ box-shadow: 0 0 0 14px rgba(16,185,129,0); }
-      100%{ box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+      0%{ box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
+      70%{ box-shadow: 0 0 0 14px rgba(34,197,94,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(34,197,94,0); }
     }
 
     .toast{
@@ -180,31 +238,53 @@
       display:none;
     }
     .toast.show{ display:block; }
+
+    /* Accordion (скрытые шаги после шага 2) */
+    .accHeader{
+      cursor:pointer;
+      user-select:none;
+      transition: .18s ease;
+    }
+    .accHeader:hover{ transform: translateY(-1px); }
+    .accBody{
+      overflow:hidden;
+      height: 0;
+      transition: height .22s ease;
+    }
+    .acc.open .accBody{
+      /* height set by JS */
+    }
+
+    /* Mobile polish */
+    @media (max-width: 640px){
+      .option{ padding: 11px 12px; border-radius: 18px; }
+      .sectionTitle{ letter-spacing: .5px; }
+    }
   </style>
 </head>
 
-<body>
+<body class="preset-elite">
   <div class="pointer-events-none fixed inset-0 -z-10">
     <div class="absolute -top-20 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-30 animate-floaty"
-         style="background: radial-gradient(circle at 30% 30%, rgba(16,185,129,.55), transparent 60%);"></div>
+         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), transparent 60%);"></div>
     <div class="absolute top-10 right-[-140px] w-[520px] h-[520px] rounded-full blur-3xl opacity-25 animate-floaty"
-         style="animation-delay:-2.1s;background: radial-gradient(circle at 30% 30%, rgba(99,102,241,.6), transparent 60%);"></div>
+         style="animation-delay:-2.1s;background: radial-gradient(circle at 30% 30%, rgba(99,102,241,.50), transparent 60%);"></div>
     <div class="absolute bottom-[-220px] left-[25%] w-[720px] h-[720px] rounded-full blur-3xl opacity-20 animate-floaty"
-         style="animation-delay:-3.8s;background: radial-gradient(circle at 30% 30%, rgba(244,63,94,.55), transparent 62%);"></div>
+         style="animation-delay:-3.8s;background: radial-gradient(circle at 30% 30%, rgba(244,63,94,.45), transparent 62%);"></div>
   </div>
 
   <canvas id="fxCanvas"></canvas>
 
-  <header class="max-w-6xl mx-auto px-4 pt-8 pb-6">
-    <div class="glass rounded-3xl p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4">
+  <header class="max-w-6xl mx-auto px-4 pt-7 pb-5">
+    <div class="glass rounded-3xl p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-3">
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl grid place-items-center border border-white/10"
+        <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
              style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
           <span class="text-xl">⭐</span>
         </div>
         <div>
           <div class="font-display text-2xl md:text-3xl font-extrabold tracking-wide">GTA ONLINE BOOST</div>
-          <div class="text-white/55 text-sm md:text-base">Выбор платформы → услуги → заявка → номер заказа.</div>
+          <div class="text-white/55 text-sm md:text-base">Платформа → услуги → заявка → номер заказа.</div>
         </div>
       </div>
 
@@ -213,6 +293,14 @@
           <div class="pulseDot"></div>
           <div class="text-sm text-white/70">Онлайн • принимаем заказы</div>
         </div>
+
+        <!-- STYLE PRESETS -->
+        <div class="chip rounded-2xl px-2 py-2 flex items-center gap-2">
+          <button id="presetElite" class="chip rounded-xl px-3 py-2 text-xs font-semibold text-white/85 hover:text-white">Elite</button>
+          <button id="presetNeon" class="chip rounded-xl px-3 py-2 text-xs font-semibold text-white/85 hover:text-white">Neon</button>
+          <button id="presetMinimal" class="chip rounded-xl px-3 py-2 text-xs font-semibold text-white/85 hover:text-white">Minimal</button>
+        </div>
+
         <button id="btnAdmin" class="chip rounded-2xl px-4 py-2 text-sm font-semibold text-white/85 hover:text-white">
           Админ-панель
         </button>
@@ -225,86 +313,86 @@
 
   <main class="max-w-6xl mx-auto px-4 pb-40">
     <!-- STEP 1 -->
-    <section class="glass rounded-3xl p-5 md:p-6 mb-6">
+    <section class="glass rounded-3xl p-4 md:p-5 mb-5">
       <div class="flex items-start gap-4">
-        <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
+        <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
              style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
           <span class="text-lg">🕹️</span>
         </div>
         <div class="flex-1">
-          <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 1 — Платформа</div>
+          <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 1 — Платформа</div>
           <div class="text-white/55 text-sm md:text-base">ПК (Steam/Epic/Rockstar) — один прайс. PlayStation — отдельный (синие тона).</div>
         </div>
       </div>
 
-      <div class="mt-5 grid md:grid-cols-2 gap-4">
-        <div class="glass rounded-3xl p-4 md:p-5">
+      <div class="mt-4 grid md:grid-cols-2 gap-3">
+        <div class="glass rounded-3xl p-4">
           <div class="flex items-center justify-between">
             <div>
-              <div class="font-display text-lg font-bold">ПК версия</div>
+              <div class="font-display text-base md:text-lg font-bold">ПК версия</div>
               <div class="text-white/55 text-sm">Steam / Epic Games / Rockstar</div>
             </div>
             <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Единый прайс</span>
           </div>
 
-          <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <button class="option rounded-2xl px-4 py-4 text-left" data-platform="steam" data-group="pc">
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <button class="option text-left" data-platform="steam" data-group="pc">
               <div class="flex items-center justify-between">
-                <div class="font-bold">Steam</div>
-                <span class="text-xs text-white/50">ПК</span>
+                <div class="font-semibold">Steam</div>
+                <span class="text-xs text-white/55">ПК</span>
               </div>
               <div class="text-white/55 text-sm mt-1">Классический запуск</div>
             </button>
 
-            <button class="option rounded-2xl px-4 py-4 text-left" data-platform="epic" data-group="pc">
+            <button class="option text-left" data-platform="epic" data-group="pc">
               <div class="flex items-center justify-between">
-                <div class="font-bold">Epic Games</div>
-                <span class="text-xs text-white/50">ПК</span>
+                <div class="font-semibold">Epic Games</div>
+                <span class="text-xs text-white/55">ПК</span>
               </div>
               <div class="text-white/55 text-sm mt-1">EGS аккаунт</div>
             </button>
 
-            <button class="option rounded-2xl px-4 py-4 text-left" data-platform="rockstar" data-group="pc">
+            <button class="option text-left" data-platform="rockstar" data-group="pc">
               <div class="flex items-center justify-between">
-                <div class="font-bold">Rockstar</div>
-                <span class="text-xs text-white/50">ПК</span>
+                <div class="font-semibold">Rockstar</div>
+                <span class="text-xs text-white/55">ПК</span>
               </div>
               <div class="text-white/55 text-sm mt-1">Social Club</div>
             </button>
           </div>
         </div>
 
-        <div class="glass rounded-3xl p-4 md:p-5">
+        <div class="glass rounded-3xl p-4">
           <div class="flex items-center justify-between">
             <div>
-              <div class="font-display text-lg font-bold">PlayStation</div>
+              <div class="font-display text-base md:text-lg font-bold">PlayStation</div>
               <div class="text-white/55 text-sm">PS4 / PS5</div>
             </div>
             <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Свой прайс</span>
           </div>
 
-          <div class="mt-4 grid grid-cols-2 gap-3">
-            <button class="option rounded-2xl px-4 py-4 text-left" data-platform="ps4" data-group="ps">
+          <div class="mt-3 grid grid-cols-2 gap-2">
+            <button class="option text-left" data-platform="ps4" data-group="ps">
               <div class="flex items-center justify-between">
-                <div class="font-bold">PS4</div>
-                <span class="text-xs text-white/50">PS</span>
+                <div class="font-semibold">PS4</div>
+                <span class="text-xs text-white/55">PS</span>
               </div>
               <div class="text-white/55 text-sm mt-1">Обычная версия</div>
             </button>
 
-            <button class="option rounded-2xl px-4 py-4 text-left" data-platform="ps5" data-group="ps">
+            <button class="option text-left" data-platform="ps5" data-group="ps">
               <div class="flex items-center justify-between">
-                <div class="font-bold">PS5</div>
-                <span class="text-xs text-white/50">PS</span>
+                <div class="font-semibold">PS5</div>
+                <span class="text-xs text-white/55">PS</span>
               </div>
               <div class="text-white/55 text-sm mt-1">E&E</div>
             </button>
           </div>
 
-          <div class="mt-4 text-white/55 text-sm">
+          <div class="mt-3 text-white/55 text-sm">
             <div class="flex gap-2 items-start">
               <span>💡</span>
-              <div>В режиме PS сайт станет синеватым и цены будут PS (как на скрине).</div>
+              <div>В режиме PS сайт станет синеватым и цены будут PS.</div>
             </div>
           </div>
         </div>
@@ -312,166 +400,217 @@
     </section>
 
     <!-- Builder -->
-    <section id="builder" class="space-y-6 hidden">
+    <section id="builder" class="space-y-5 hidden">
 
       <!-- PC -->
-      <div id="pcBlock" class="space-y-6 hidden">
-        <section class="glass rounded-3xl p-5 md:p-6">
+      <div id="pcBlock" class="space-y-5 hidden">
+
+        <!-- STEP 2 (visible) -->
+        <section class="glass rounded-3xl p-4 md:p-5">
           <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-                 style="background: radial-gradient(circle at 30% 30%, rgba(16,185,129,.18), rgba(255,255,255,.03));">
+            <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                 style="background: radial-gradient(circle at 30% 30%, rgba(34,197,94,.18), rgba(255,255,255,.03));">
               <span class="text-lg">💰</span>
             </div>
             <div class="flex-1">
-              <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 2 — Валюта (ПК)</div>
+              <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 2 — Валюта (ПК)</div>
               <div class="text-white/55 text-sm md:text-base">
                 Выберите пакет. Если нужна только прокачка уровня/разблокировки — нажмите <b>«Валюта не нужна»</b>.
               </div>
             </div>
           </div>
-          <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3" id="pcMoneyGrid"></div>
+          <div class="mt-4 grid grid-cols-2 lg:grid-cols-3 gap-2" id="pcMoneyGrid"></div>
         </section>
 
-        <section class="glass rounded-3xl p-5 md:p-6">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-                 style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-              <span class="text-lg">⭐</span>
-            </div>
-            <div class="flex-1">
-              <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 3 — Уровень и репутация (ПК)</div>
-              <div class="text-white/55 text-sm md:text-base">Один уровень + дополнительные репутации.</div>
-            </div>
-          </div>
-
-          <div class="mt-5 grid md:grid-cols-2 gap-4">
-            <div class="glass rounded-3xl p-4">
-              <div class="font-bold text-white/90">Уровень</div>
-              <div class="text-white/55 text-sm mb-3">Выберите один вариант.</div>
-              <div class="grid sm:grid-cols-2 gap-3" id="pcLevelGrid"></div>
-            </div>
-
-            <div class="glass rounded-3xl p-4">
-              <div class="font-bold text-white/90">Доп. репутации</div>
-              <div class="text-white/55 text-sm mb-3">Можно несколько.</div>
-              <div class="grid gap-3" id="pcRepGrid"></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="grid lg:grid-cols-2 gap-6">
-          <div class="glass rounded-3xl p-5 md:p-6">
-            <div class="flex items-start gap-4">
-              <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
+        <!-- Hidden Steps (Accordion) -->
+        <div class="acc glass rounded-3xl p-4 md:p-5" id="accPcSteps">
+          <div class="accHeader flex items-center justify-between gap-3" data-acc="#accPcSteps">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
                    style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                <span class="text-lg">🔓</span>
+                <span class="text-lg">🧩</span>
               </div>
-              <div class="flex-1">
-                <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 4 — Разблокировки (ПК)</div>
-                <div class="text-white/55 text-sm md:text-base">Отметьте нужные пункты.</div>
+              <div>
+                <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаги 3–6 (ПК)</div>
+                <div class="text-white/55 text-sm">Нажмите, чтобы открыть/скрыть. Всё выбирается с анимацией.</div>
               </div>
             </div>
-            <div class="mt-5 grid gap-3" id="pcUnlocksGrid"></div>
+            <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Свернуть / Развернуть</span>
           </div>
 
-          <div class="glass rounded-3xl p-5 md:p-6">
-            <div class="flex items-start gap-4">
-              <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-                   style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                <span class="text-lg">🚗</span>
-              </div>
-              <div class="flex-1">
-                <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 5 — Транспорт и дополнительно (ПК)</div>
-                <div class="text-white/55 text-sm md:text-base">Транспорт + доп. услуги.</div>
-              </div>
-            </div>
+          <div class="accBody" data-body>
+            <div class="pt-4 space-y-5">
 
-            <div class="mt-5 grid gap-3" id="pcTransportGrid"></div>
+              <!-- STEP 3 -->
+              <section class="glass rounded-3xl p-4">
+                <div class="flex items-start gap-4">
+                  <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                       style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
+                    <span class="text-lg">⭐</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 3 — Уровень и репутация (ПК)</div>
+                    <div class="text-white/55 text-sm md:text-base">Один уровень + дополнительные репутации.</div>
+                  </div>
+                </div>
 
-            <div class="mt-5 glass rounded-3xl p-4">
-              <div class="font-bold text-white/90">Сервис</div>
-              <div class="text-white/55 text-sm mb-3">Ускорение/помощь по заказу.</div>
-              <div class="grid gap-3" id="pcServiceGrid"></div>
+                <div class="mt-4 grid md:grid-cols-2 gap-3">
+                  <div class="glass rounded-3xl p-4">
+                    <div class="font-bold text-white/90">Уровень</div>
+                    <div class="mt-3 grid grid-cols-2 gap-2" id="pcLevelGrid"></div>
+                  </div>
+
+                  <div class="glass rounded-3xl p-4">
+                    <div class="font-bold text-white/90">Доп. репутации</div>
+                    <div class="mt-3 grid grid-cols-1 gap-2" id="pcRepGrid"></div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- STEP 4 -->
+              <section class="glass rounded-3xl p-4">
+                <div class="flex items-start gap-4">
+                  <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                       style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
+                    <span class="text-lg">🔓</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 4 — Разблокировки (ПК)</div>
+                    <div class="text-white/55 text-sm md:text-base">Отметьте нужные пункты.</div>
+                  </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2" id="pcUnlocksGrid"></div>
+              </section>
+
+              <!-- STEP 5 -->
+              <section class="grid lg:grid-cols-2 gap-4">
+                <div class="glass rounded-3xl p-4">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
+                      <span class="text-lg">🚗</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 5 — Транспорт (ПК)</div>
+                      <div class="text-white/55 text-sm md:text-base">Транспорт + доп. услуги.</div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 grid grid-cols-1 gap-2" id="pcTransportGrid"></div>
+
+                  <div class="mt-4 glass rounded-3xl p-4">
+                    <div class="font-bold text-white/90">Сервис</div>
+                    <div class="mt-3 grid grid-cols-1 gap-2" id="pcServiceGrid"></div>
+                  </div>
+                </div>
+
+                <!-- STEP 6 -->
+                <div class="glass rounded-3xl p-4">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                         style="background: radial-gradient(circle at 30% 30%, rgba(245,158,11,.20), rgba(255,255,255,.03));">
+                      <span class="text-lg">👑</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 6 — Особые услуги (ПК)</div>
+                      <div class="text-white/55 text-sm md:text-base">Редкие и расширенные опции.</div>
+                    </div>
+                  </div>
+                  <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2" id="pcSpecialGrid"></div>
+                </div>
+              </section>
+
             </div>
           </div>
-        </section>
-
-        <section class="glass rounded-3xl p-5 md:p-6">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-                 style="background: radial-gradient(circle at 30% 30%, rgba(245,158,11,.20), rgba(255,255,255,.03));">
-              <span class="text-lg">👑</span>
-            </div>
-            <div class="flex-1">
-              <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 6 — Особые услуги (ПК)</div>
-              <div class="text-white/55 text-sm md:text-base">Редкие и расширенные опции.</div>
-            </div>
-          </div>
-          <div class="mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-3" id="pcSpecialGrid"></div>
-        </section>
+        </div>
       </div>
 
       <!-- PS -->
-      <div id="psBlock" class="space-y-6 hidden">
-        <section class="glass rounded-3xl p-5 md:p-6">
+      <div id="psBlock" class="space-y-5 hidden">
+
+        <!-- STEP 2 (visible) -->
+        <section class="glass rounded-3xl p-4 md:p-5">
           <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
+            <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
                  style="background: radial-gradient(circle at 30% 30%, rgba(59,130,246,.22), rgba(255,255,255,.03));">
               <span class="text-lg">🚘</span>
             </div>
             <div class="flex-1">
-              <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 2 — Деньги машинами (Deluxo)</div>
+              <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 2 — Деньги машинами (Deluxo)</div>
               <div class="text-white/55 text-sm md:text-base">Самый безопасный способ: забиваем гаражи авто, вы продаёте.</div>
             </div>
           </div>
-          <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3" id="psCarsGrid"></div>
+          <div class="mt-4 grid grid-cols-2 lg:grid-cols-3 gap-2" id="psCarsGrid"></div>
         </section>
 
-        <section class="grid lg:grid-cols-2 gap-6">
-          <div class="glass rounded-3xl p-5 md:p-6">
-            <div class="flex items-start gap-4">
-              <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
+        <!-- Hidden Steps (Accordion) -->
+        <div class="acc glass rounded-3xl p-4 md:p-5" id="accPsSteps">
+          <div class="accHeader flex items-center justify-between gap-3" data-acc="#accPsSteps">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
                    style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                <span class="text-lg">💵</span>
+                <span class="text-lg">🧩</span>
               </div>
-              <div class="flex-1">
-                <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 3 — Наличка</div>
-                <div class="text-white/55 text-sm md:text-base">Выберите опцию налички (если нужно).</div>
+              <div>
+                <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаги 3–5 (PS)</div>
+                <div class="text-white/55 text-sm">Нажмите, чтобы открыть/скрыть.</div>
               </div>
             </div>
-            <div class="mt-5 grid gap-3" id="psCashGrid"></div>
+            <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Свернуть / Развернуть</span>
           </div>
 
-          <div class="glass rounded-3xl p-5 md:p-6">
-            <div class="flex items-start gap-4">
-              <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-                   style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                <span class="text-lg">🧿</span>
-              </div>
-              <div class="flex-1">
-                <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 4 — Уровень</div>
-                <div class="text-white/55 text-sm md:text-base">Выберите уровень аккаунта.</div>
-              </div>
-            </div>
-            <div class="mt-5 grid gap-3" id="psLevelGrid"></div>
-          </div>
-        </section>
+          <div class="accBody" data-body>
+            <div class="pt-4 space-y-5">
 
-        <section class="glass rounded-3xl p-5 md:p-6">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-                 style="background: radial-gradient(circle at 30% 30%, rgba(250,204,21,.18), rgba(255,255,255,.03));">
-              <span class="text-lg">⚠️</span>
-            </div>
-            <div class="flex-1">
-              <div class="sectionTitle text-xl md:text-2xl font-extrabold">Шаг 5 — Требования</div>
-              <div class="text-white/55 text-sm md:text-base">Если чего-то нет — отметьте. Это добавит комиссию.</div>
+              <section class="grid lg:grid-cols-2 gap-4">
+                <div class="glass rounded-3xl p-4">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
+                      <span class="text-lg">💵</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 3 — Наличка</div>
+                      <div class="text-white/55 text-sm md:text-base">Выберите опцию налички (если нужно).</div>
+                    </div>
+                  </div>
+                  <div class="mt-4 grid grid-cols-1 gap-2" id="psCashGrid"></div>
+                </div>
+
+                <div class="glass rounded-3xl p-4">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
+                      <span class="text-lg">🧿</span>
+                    </div>
+                    <div class="flex-1">
+                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 4 — Уровень</div>
+                      <div class="text-white/55 text-sm md:text-base">Выберите уровень аккаунта.</div>
+                    </div>
+                  </div>
+                  <div class="mt-4 grid grid-cols-1 gap-2" id="psLevelGrid"></div>
+                </div>
+              </section>
+
+              <section class="glass rounded-3xl p-4">
+                <div class="flex items-start gap-4">
+                  <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
+                       style="background: radial-gradient(circle at 30% 30%, rgba(250,204,21,.18), rgba(255,255,255,.03));">
+                    <span class="text-lg">⚠️</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 5 — Требования</div>
+                    <div class="text-white/55 text-sm md:text-base">Если чего-то нет — отметьте. Это добавит комиссию.</div>
+                  </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2" id="psReqGrid"></div>
+              </section>
+
             </div>
           </div>
-          <div class="mt-5 grid md:grid-cols-2 gap-3" id="psReqGrid"></div>
-        </section>
+        </div>
+
       </div>
-
     </section>
   </main>
 
@@ -492,7 +631,7 @@
             Состав заказа
           </button>
           <button id="btnOrder" class="rounded-2xl px-5 md:px-6 py-3 text-sm font-extrabold text-black"
-                  style="background: linear-gradient(90deg, rgba(16,185,129,1), rgba(34,197,94,1));">
+                  style="background: linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1));">
             Оформить заявку
           </button>
         </div>
@@ -558,7 +697,7 @@
 
           <button id="btnSendOrder"
                   class="mt-4 w-full rounded-2xl px-5 py-3 text-sm font-extrabold text-black"
-                  style="background: linear-gradient(90deg, rgba(16,185,129,1), rgba(34,197,94,1));">
+                  style="background: linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1));">
             Отправить заказ
           </button>
 
@@ -623,7 +762,7 @@
           <div class="font-bold text-white/90">Уведомления</div>
           <div class="text-white/55 text-sm mb-3">
             Включите, чтобы браузер показывал уведомления и “пикал” при новых заказах.
-            (Работает, если скрипт отдаёт список заказов — это нужно сделать в Apps Script, см. пояснение ниже.)
+            (Работает, если скрипт отдаёт список заказов — это нужно сделать в Apps Script.)
           </div>
 
           <label class="flex items-center gap-3 text-sm text-white/80 select-none">
@@ -655,7 +794,7 @@
     // === CONFIG ===
     const API_URL = "https://script.google.com/macros/s/AKfycbypE3CLW3WFfGEuuNyv-Uow2gwOP8t349-siD1b3MZcadfPuvN84WF2xvl04LyoMk25/exec";
 
-    // === DATA (цены как на скринах) ===
+    // === DATA (НЕ ТРОГАЛ — всё сохранено) ===
     const PC = {
       money: [
         { id:"none", title:"Валюта не нужна", price:0, badge:"Можно без валюты" },
@@ -773,12 +912,12 @@
       ]
     };
 
-    // === STATE ===
+    // === STATE (НЕ ТРОГАЛ) ===
     const state = {
-      platform: null, // steam/epic/rockstar/ps4/ps5
-      group: null, // pc/ps
-      selections: new Map(), // single-choice: key->id
-      checks: new Set(), // multi-choice ids
+      platform: null,
+      group: null,
+      selections: new Map(),
+      checks: new Set(),
       total: 0
     };
 
@@ -823,20 +962,43 @@
       }).catch(()=> showToast("Не удалось", "Скопируй вручную: " + val));
     });
 
-    // Build option cards
+    // Style preset switches
+    function setPreset(p){
+      document.body.classList.remove("preset-elite","preset-neon","preset-minimal");
+      document.body.classList.add(p);
+      localStorage.setItem("ui_preset", p);
+      showToast("Тема", p.replace("preset-","").toUpperCase());
+    }
+    $("#presetElite").onclick = ()=>setPreset("preset-elite");
+    $("#presetNeon").onclick = ()=>setPreset("preset-neon");
+    $("#presetMinimal").onclick = ()=>setPreset("preset-minimal");
+    const savedPreset = localStorage.getItem("ui_preset");
+    if(savedPreset) setPreset(savedPreset);
+
+    // Build option cards (убрал “выберите вариант” и “multi”, сделал как на скринах)
     function optionCard({id,title,price,badge,icon}, mode, choiceKey){
       const priceText = price === 0 ? "0 ₽" : `+${price} ₽`;
-      const badgeHtml = badge ? `<span class="badge rounded-xl px-2 py-1 text-[11px] text-white/70">${badge}</span>` : "";
-      const iconHtml = icon ? `<span class="text-sm">${icon}</span>` : "";
+      const pill =
+        mode === "multi"
+          ? `<span class="text-[11px] px-2 py-[2px] rounded-full bg-white/10 text-white/70">можно несколько</span>`
+          : `<span class="text-[11px] px-2 py-[2px] rounded-full bg-white/10 text-white/70">1 из 1</span>`;
+
+      const badgeHtml = badge ? `<span class="badge rounded-full px-2 py-[2px] text-[11px] text-white/70">${badge}</span>` : "";
+
       return `
-        <button class="option rounded-2xl px-4 py-4 text-left" data-id="${id}" data-mode="${mode}" data-key="${choiceKey||""}">
+        <button class="option text-left" data-id="${id}" data-mode="${mode}" data-key="${choiceKey||""}">
           <div class="flex items-center justify-between gap-2">
-            <div class="font-bold">${iconHtml} ${title}</div>
-            ${badgeHtml}
+            <div class="font-semibold text-[15px] leading-tight">
+              ${icon ? `<span class="mr-1">${icon}</span>` : ""}${title}
+            </div>
+            <div class="flex items-center gap-2">
+              ${badgeHtml}
+              ${pill}
+            </div>
           </div>
-          <div class="mt-2 flex items-center justify-between">
-            <div class="text-white/55 text-sm">${mode === "multi" ? "Можно выбрать несколько" : "Выберите вариант"}</div>
-            <div class="price">${priceText}</div>
+
+          <div class="mt-2 flex items-center justify-end">
+            <div class="price text-[14px]">${priceText}</div>
           </div>
         </button>
       `;
@@ -844,7 +1006,6 @@
 
     // Render sections
     function render(){
-      // PC
       $("#pcMoneyGrid").innerHTML = PC.money.map(x => optionCard(x, "single", "pc_money")).join("");
       $("#pcLevelGrid").innerHTML = PC.level.map(x => optionCard(x, "single", "pc_level")).join("");
       $("#pcRepGrid").innerHTML = PC.reps.map(x => optionCard(x, "multi", null)).join("");
@@ -853,13 +1014,42 @@
       $("#pcServiceGrid").innerHTML = PC.service.map(x => optionCard(x, "multi", null)).join("");
       $("#pcSpecialGrid").innerHTML = PC.special.map(x => optionCard(x, "multi", null)).join("");
 
-      // PS
       $("#psCarsGrid").innerHTML = PS.cars.map(x => optionCard(x, "single", "ps_cars")).join("");
       $("#psCashGrid").innerHTML = PS.cash.map(x => optionCard(x, "single", "ps_cash")).join("");
       $("#psLevelGrid").innerHTML = PS.level.map(x => optionCard(x, "single", "ps_level")).join("");
       $("#psReqGrid").innerHTML = PS.reqs.map(x => optionCard(x, "multi", null)).join("");
     }
     render();
+
+    // Accordion helpers (скрытые шаги после шага 2)
+    function openAcc(accEl){
+      const body = accEl.querySelector(".accBody");
+      if(!body) return;
+      accEl.classList.add("open");
+      body.style.height = body.scrollHeight + "px";
+      body.classList.add("animate-slideDown");
+    }
+    function closeAcc(accEl){
+      const body = accEl.querySelector(".accBody");
+      if(!body) return;
+      body.style.height = body.scrollHeight + "px";
+      requestAnimationFrame(()=>{
+        accEl.classList.remove("open");
+        body.style.height = "0px";
+      });
+    }
+    function toggleAcc(accEl){
+      const isOpen = accEl.classList.contains("open");
+      isOpen ? closeAcc(accEl) : openAcc(accEl);
+    }
+
+    document.addEventListener("click", (e)=>{
+      const h = e.target.closest(".accHeader[data-acc]");
+      if(!h) return;
+      const sel = h.getAttribute("data-acc");
+      const acc = document.querySelector(sel);
+      if(acc) toggleAcc(acc);
+    });
 
     // Platform select
     $$(".option[data-platform]").forEach(btn=>{
@@ -870,26 +1060,25 @@
         state.platform = platform;
         state.group = group;
 
-        // set theme
         document.body.classList.toggle("ps", group === "ps");
 
-        // highlight platform buttons
         $$(".option[data-platform]").forEach(b=>b.classList.remove("selected"));
         btn.classList.add("selected");
 
-        // show builder and correct block
         builder.classList.remove("hidden");
         pcBlock.classList.toggle("hidden", group !== "pc");
         psBlock.classList.toggle("hidden", group !== "ps");
 
-        // default selections for single-choice on first platform pick (optional)
         if(group === "pc"){
           if(!state.selections.has("pc_money")) state.selections.set("pc_money", "none");
           if(!state.selections.has("pc_level")) state.selections.set("pc_level", "lvl_none");
+          // по умолчанию: скрытые шаги закрыты, но можно авт. открыть один раз:
+          closeAcc($("#accPcSteps"));
         } else {
           if(!state.selections.has("ps_cars")) state.selections.set("ps_cars", "pscars_none");
           if(!state.selections.has("ps_cash")) state.selections.set("ps_cash", "pscash_none");
           if(!state.selections.has("ps_level")) state.selections.set("ps_level", "pslvl_none");
+          closeAcc($("#accPsSteps"));
         }
 
         syncUI();
@@ -898,54 +1087,54 @@
       });
     });
 
-    // Option click handler (single/multi)
+    // Option click handler (single/multi) — слово multi это просто режим, пользователю не показываем
     document.addEventListener("click", (e)=>{
       const btn = e.target.closest(".option[data-id]");
       if(!btn) return;
+
+      if(btn.dataset.platform) return;
 
       const id = btn.dataset.id;
       const mode = btn.dataset.mode;
       const key = btn.dataset.key;
 
-      // ignore platform buttons already handled
-      if(btn.dataset.platform) return;
-
       if(mode === "single"){
-        if(!key){ return; }
+        if(!key) return;
         state.selections.set(key, id);
       }else{
         if(state.checks.has(id)) state.checks.delete(id);
         else state.checks.add(id);
       }
+
+      // micro “pop” feedback
+      btn.classList.add("animate-pop");
+      setTimeout(()=>btn.classList.remove("animate-pop"), 180);
+
       syncUI();
       recalc();
     });
 
     function syncUI(){
-      // clear all selected (not platform)
       $$(".option[data-id]").forEach(b=>{
         if(b.dataset.platform) return;
         b.classList.remove("selected");
       });
 
-      // apply single choices
       for(const [key, id] of state.selections.entries()){
         const el = document.querySelector(`.option[data-id="${id}"][data-key="${key}"]`);
         if(el) el.classList.add("selected");
       }
 
-      // apply multi checks
       for(const id of state.checks){
         const el = document.querySelector(`.option[data-id="${id}"]`);
         if(el) el.classList.add("selected");
       }
 
-      // update CTA button gradient depending on mode
       const btnOrder = $("#btnOrder");
       if(state.group === "ps"){
-        btnOrder.style.background = "linear-gradient(90deg, rgba(59,130,246,1), rgba(96,165,250,1))";
+        btnOrder.style.background = "linear-gradient(90deg, rgba(96,165,250,1), rgba(59,130,246,1))";
       }else{
-        btnOrder.style.background = "linear-gradient(90deg, rgba(16,185,129,1), rgba(34,197,94,1))";
+        btnOrder.style.background = "linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1))";
       }
     }
 
@@ -961,19 +1150,15 @@
       let total = 0;
       const parts = [];
 
-      // selected singles
       for(const [key, id] of state.selections.entries()){
         const item = getItemById(id);
         if(item){
           total += item.price;
-          // do not spam "0"
           if(item.price>0) parts.push(item.title);
-          // include 0 variants for clarity:
           if(item.price===0 && (id==="none" || id.includes("_none"))) parts.push(item.title);
         }
       }
 
-      // multies
       for(const id of state.checks){
         const item = getItemById(id);
         if(item){
@@ -984,21 +1169,21 @@
 
       state.total = total;
       totalSumEl.textContent = total.toString();
-      summaryLineEl.textContent = parts.length ? parts.slice(0,4).join(" • ") + (parts.length>4 ? ` • +${parts.length-4}...` : "") : "Выберите опции — сумма посчитается автоматически.";
+      summaryLineEl.textContent =
+        parts.length
+          ? parts.slice(0,4).join(" • ") + (parts.length>4 ? ` • +${parts.length-4}...` : "")
+          : "Выберите опции — сумма посчитается автоматически.";
     }
 
-    // Reset
     $("#btnReset").addEventListener("click", ()=>{
       state.selections.clear();
       state.checks.clear();
       state.total = 0;
-      // keep platform selection but reset blocks
       syncUI();
       recalc();
       showToast("Сброшено", "Опции сброшены. Платформа остаётся выбранной.");
     });
 
-    // Preview
     $("#btnPreview").addEventListener("click", ()=>{
       const list = buildOrderSummary().lines;
       if(!state.platform){
@@ -1008,7 +1193,6 @@
       showToast("Состав заказа", list.length ? list.slice(0,3).join(" • ") + (list.length>3 ? " • ..." : "") : "Пока ничего не выбрано.");
     });
 
-    // Open order modal
     $("#btnOrder").addEventListener("click", ()=>{
       if(!state.platform){
         showToast("Сначала платформа", "Выберите Steam/Epic/Rockstar или PS4/PS5.");
@@ -1028,16 +1212,12 @@
       if(e.target === modalOverlay) modalOverlay.classList.remove("show");
     });
 
-    // Admin modal
-    $("#btnAdmin").addEventListener("click", ()=>{
-      adminOverlay.classList.add("show");
-    });
+    $("#btnAdmin").addEventListener("click", ()=> adminOverlay.classList.add("show"));
     $("#btnCloseAdmin").addEventListener("click", ()=> adminOverlay.classList.remove("show"));
     adminOverlay.addEventListener("click", (e)=>{
       if(e.target === adminOverlay) adminOverlay.classList.remove("show");
     });
 
-    // Build summary
     function buildOrderSummary(){
       const lines = [];
       const pushItem = (id)=>{
@@ -1047,7 +1227,6 @@
 
       lines.push(`Платформа: ${state.platform.toUpperCase()}`);
 
-      // singles in a readable order
       const keysOrder = state.group === "pc"
         ? ["pc_money","pc_level"]
         : ["ps_cars","ps_cash","ps_level"];
@@ -1055,14 +1234,13 @@
         if(state.selections.has(k)) pushItem(state.selections.get(k));
       }
 
-      // multies
       for(const id of state.checks) pushItem(id);
 
       const text = lines.join(" | ");
       return { lines, text };
     }
 
-    // === SEND ORDER ===
+    // === SEND ORDER (НЕ ТРОГАЛ ЛОГИКУ) ===
     $("#btnSendOrder").addEventListener("click", async ()=>{
       const login = $("#fLogin").value.trim();
       const pass  = $("#fPass").value.trim();
@@ -1091,14 +1269,10 @@
         total: state.total,
         items: summary.lines,
         itemsText: summary.text,
-        credentials: {
-          login,
-          password: pass
-        },
+        credentials: { login, password: pass },
         contact,
         wishes,
         paid: true,
-        // Для админа/статусов (можешь расширить в Apps Script)
         status: "Новый"
       };
 
@@ -1106,32 +1280,22 @@
         $("#btnSendOrder").disabled = true;
         $("#btnSendOrder").textContent = "Отправляем...";
 
-        // Важно: Apps Script часто требует TEXT/FORM. Мы отправляем JSON + fallback.
-const res = await fetch(API_URL, {
-  method: "POST",
-  headers: { "Content-Type": "text/plain;charset=utf-8" },
-  body: JSON.stringify(payload)
-});
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
 
+        try{ await res.json(); }catch(e){}
 
-        let data = null;
-        try{ data = await res.json(); }catch(e){ /* may be text */ }
-
-        // success criteria: ok true OR HTTP ok
-        if(!res.ok){
-          throw new Error("HTTP " + res.status);
-        }
+        if(!res.ok) throw new Error("HTTP " + res.status);
 
         modalOverlay.classList.remove("show");
 
-        // fireworks + show order id
         launchFireworks(2400);
         showToast("Заявка отправлена 🎉", `Ваш номер: ${orderId}`);
-
-        // show big overlay card
         showOrderSuccessCard(orderId);
 
-        // clear sensitive fields
         $("#fLogin").value = "";
         $("#fPass").value = "";
         $("#fContact").value = "";
@@ -1160,7 +1324,6 @@ const res = await fetch(API_URL, {
       return `GTA-${y}${mo}${da}-${h}${mi}${s}-${rnd}`;
     }
 
-    // === Success card overlay (after fireworks) ===
     function showOrderSuccessCard(orderId){
       const existing = document.getElementById("successCard");
       if(existing) existing.remove();
@@ -1197,7 +1360,7 @@ const res = await fetch(API_URL, {
               Копировать номер
             </button>
             <button class="rounded-2xl px-5 py-3 text-sm font-extrabold text-black flex-1"
-                    style="background: linear-gradient(90deg, rgba(16,185,129,1), rgba(34,197,94,1));"
+                    style="background: linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1));"
                     id="closeSuccess">
               Отлично
             </button>
@@ -1213,16 +1376,14 @@ const res = await fetch(API_URL, {
         navigator.clipboard.writeText(orderId).then(()=>showToast("Скопировано", orderId));
       };
 
-      // theme button
       if(state.group === "ps"){
-        div.querySelector("#closeSuccess").style.background = "linear-gradient(90deg, rgba(59,130,246,1), rgba(96,165,250,1))";
+        div.querySelector("#closeSuccess").style.background = "linear-gradient(90deg, rgba(96,165,250,1), rgba(59,130,246,1))";
       }
     }
 
-    // === Fireworks ===
+    // === Fireworks (НЕ ТРОГАЛ) ===
     const fxCanvas = document.getElementById("fxCanvas");
     const ctx = fxCanvas.getContext("2d");
-    let fxOn = false;
     let particles = [];
 
     function resizeCanvas(){
@@ -1235,7 +1396,6 @@ const res = await fetch(API_URL, {
 
     function launchFireworks(durationMs=2000){
       fxCanvas.classList.add("show");
-      fxOn = true;
       const endAt = performance.now() + durationMs;
 
       function burst(x,y){
@@ -1258,7 +1418,6 @@ const res = await fetch(API_URL, {
       function loop(t){
         ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
 
-        // randomly create bursts while active
         if(t < endAt && Math.random() < 0.25){
           burst(
             80 + Math.random()*(window.innerWidth-160),
@@ -1266,11 +1425,10 @@ const res = await fetch(API_URL, {
           );
         }
 
-        // update particles
         particles = particles.filter(p => p.life>0 && p.alpha>0.02);
         for(const p of particles){
           p.life -= 1;
-          p.vy += 0.06; // gravity
+          p.vy += 0.06;
           p.x += p.vx;
           p.y += p.vy;
           p.alpha *= 0.985;
@@ -1284,7 +1442,6 @@ const res = await fetch(API_URL, {
         if(t < endAt || particles.length){
           requestAnimationFrame(loop);
         }else{
-          fxOn = false;
           fxCanvas.classList.remove("show");
           ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
         }
@@ -1293,7 +1450,7 @@ const res = await fetch(API_URL, {
       requestAnimationFrame(loop);
     }
 
-    // === Admin notifications (needs backend endpoint) ===
+    // === Admin notifications (as-is) ===
     const adminLog = $("#adminLog");
     const adminNotify = $("#adminNotify");
     const btnAdminRefresh = $("#btnAdminRefresh");
@@ -1323,7 +1480,6 @@ const res = await fetch(API_URL, {
     });
 
     function ping(){
-      // маленький "пик"
       try{
         const a = new (window.AudioContext || window.webkitAudioContext)();
         const o = a.createOscillator();
@@ -1337,27 +1493,21 @@ const res = await fetch(API_URL, {
       }catch(e){}
     }
 
-    // ВАЖНО: Это демо-логика.
-    // Чтобы реально получать новые заказы, в Apps Script нужно сделать action=get_orders
-    // и отдавать JSON со списком заказов (например последние 20).
     let lastSeenOrderId = localStorage.getItem("lastSeenOrderId") || "";
 
     async function checkNewOrders(){
       try{
-        // ожидаем, что Apps Script поддержит: ?action=get_orders
         const url = API_URL + "?action=get_orders";
         const res = await fetch(url, { method:"GET", mode:"cors" });
         if(!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
 
-        // ожидаем формат: { ok:true, orders:[{orderId, createdAt, total, platform, status}] }
         if(!data || !Array.isArray(data.orders)) throw new Error("Bad JSON");
 
         const newest = data.orders[0];
         if(!newest) return;
 
         if(lastSeenOrderId && newest.orderId !== lastSeenOrderId){
-          // new order detected
           logAdmin("Новый заказ: " + newest.orderId + " • " + newest.total + "₽");
           if(adminNotify.checked && "Notification" in window && Notification.permission === "granted"){
             new Notification("Новый заказ GTA Boost", { body: `${newest.orderId} • ${newest.total}₽`, silent: true });
@@ -1377,20 +1527,23 @@ const res = await fetch(API_URL, {
 
     btnAdminRefresh.addEventListener("click", checkNewOrders);
 
-    // optional polling every 25 sec when admin modal open + notify enabled
     setInterval(()=>{
       if(adminOverlay.classList.contains("show") && adminNotify.checked){
         checkNewOrders();
       }
     }, 25000);
 
-    // === INIT selections highlight after render ===
+    // Init
     syncUI();
     recalc();
+
+    // If platform already chosen earlier (optional restore)
+    // (оставил выключенным, чтобы не ломать твою текущую логику)
   </script>
 
   <!--
     ====== ВАЖНО ПРО УВЕДОМЛЕНИЯ О НОВЫХ ЗАКАЗАХ ======
+    (оставил твой комментарий без потерь)
 
     1) Самый простой вариант:
        - В Apps Script в doPost() после записи строки в Google Sheet отправлять уведомление в Telegram через бота.
