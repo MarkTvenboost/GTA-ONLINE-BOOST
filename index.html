@@ -2,39 +2,41 @@
 <html lang="ru" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>GTA ONLINE BOOST — Оформление заказа</title>
 
-  <!-- Fonts (элитнее) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'system-ui'],
-            display: ['Orbitron', 'system-ui']
+            sans: ['Outfit', 'sans-serif'],
+            tech: ['Rajdhani', 'sans-serif'],
           },
-          boxShadow: {
-            glow: '0 0 0 1px rgba(255,255,255,.06), 0 0 50px rgba(16,185,129,.14)',
-            glowBlue: '0 0 0 1px rgba(255,255,255,.06), 0 0 55px rgba(59,130,246,.20)'
-          },
-          keyframes: {
-            floaty: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-10px)' } },
-            shimmer: { '0%': { transform:'translateX(-120%)' }, '100%': { transform:'translateX(120%)' } },
-            pop: { '0%': { transform:'scale(.96)', opacity:.0 }, '100%': { transform:'scale(1)', opacity:1 } },
-            slideDown: { '0%': { transform:'translateY(-6px)', opacity:0 }, '100%': { transform:'translateY(0)', opacity:1 } },
+          colors: {
+            gtaGreen: '#2EE59D',
+            gtaBlue: '#3498db',
+            darkBase: '#0b0c10',
+            darkSurface: '#1f2833',
           },
           animation: {
-            floaty: 'floaty 7s ease-in-out infinite',
-            shimmer: 'shimmer 1.8s ease-in-out infinite',
-            pop: 'pop .18s ease-out both',
-            slideDown: 'slideDown .18s ease-out both'
+            'spin-slow': 'spin 8s linear infinite',
+            'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'slide-up': 'slideUp 0.5s ease-out forwards',
+          },
+          keyframes: {
+            slideUp: {
+              '0%': { transform: 'translateY(18px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
           }
         }
       }
@@ -43,1274 +45,1067 @@
 
   <style>
     :root{
-      --bg0:#050810;
-      --bg1:#070c18;
-      --stroke: rgba(255,255,255,.10);
-      --txt: rgba(255,255,255,.92);
-
-      --accent:#22c55e; /* emerald */
-      --accent2:#10b981;
-
-      --psAccent:#60a5fa; /* blue */
-      --psAccent2:#3b82f6;
-
-      /* Card look */
-      --cardA: rgba(255,255,255,.09);
-      --cardB: rgba(255,255,255,.03);
-      --chipA: rgba(255,255,255,.06);
-      --chipB: rgba(255,255,255,.03);
-
-      /* Preset backgrounds */
-      --bgRad1: rgba(34,197,94,.12);
-      --bgRad2: rgba(99,102,241,.12);
-      --bgRad3: rgba(244,63,94,.07);
+      --primary:#2EE59D;        /* PC default */
+      --shadow:rgba(46,229,157,.40);
+      --bg0:#050505;
+      --stroke: rgba(255,255,255,.08);
     }
 
-    /* Style presets: Elite(default) / Neon / Minimal */
-    body.preset-neon{
-      --bgRad1: rgba(168,85,247,.18);
-      --bgRad2: rgba(34,211,238,.14);
-      --bgRad3: rgba(251,113,133,.10);
-      --accent:#a855f7;
-      --accent2:#22d3ee;
-      --cardA: rgba(255,255,255,.10);
-      --cardB: rgba(255,255,255,.03);
+    /* PS = blue */
+    body.ps-mode{
+      --primary:#3498db;
+      --shadow:rgba(52,152,219,.40);
     }
-    body.preset-minimal{
-      --bgRad1: rgba(255,255,255,.06);
-      --bgRad2: rgba(255,255,255,.05);
-      --bgRad3: rgba(255,255,255,.04);
-      --accent:#e5e7eb;
-      --accent2:#9ca3af;
-      --cardA: rgba(255,255,255,.06);
-      --cardB: rgba(255,255,255,.02);
+
+    /* XBOX = green (как просил) */
+    body.xbox-mode{
+      --primary:#2EE59D;
+      --shadow:rgba(46,229,157,.40);
     }
 
     body{
-      color: var(--txt);
-      background:
-        radial-gradient(1100px 700px at 15% 10%, var(--bgRad1), transparent 60%),
-        radial-gradient(900px 600px at 70% 20%, var(--bgRad2), transparent 60%),
-        radial-gradient(900px 700px at 50% 90%, var(--bgRad3), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow-x: hidden;
+      background-color:#050505;
+      background-image:
+        radial-gradient(circle at 15% 50%, rgba(46, 229, 157, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(52, 152, 219, 0.08), transparent 25%);
+      color:#fff;
+      overflow-x:hidden;
     }
 
-    /* PS mode: keep the same but slightly bluer vibe */
-    body.ps{
-      background:
-        radial-gradient(1100px 700px at 15% 10%, rgba(59,130,246,.16), transparent 60%),
-        radial-gradient(900px 600px at 70% 20%, rgba(147,197,253,.10), transparent 60%),
-        radial-gradient(900px 700px at 50% 90%, rgba(16,185,129,.06), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
+    .grid-bg{
+      background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
 
-    .glass{
-      background: linear-gradient(180deg, var(--cardA), var(--cardB));
-      border: 1px solid var(--stroke);
-      box-shadow: 0 18px 50px rgba(0,0,0,.35);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .chip{
-      border: 1px solid rgba(255,255,255,.12);
-      background: linear-gradient(180deg, var(--chipA), var(--chipB));
-      transition: .18s ease;
-    }
-    .chip:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
-    .chip:active{ transform: scale(.985); }
-
-    /* OPTION — compact, elite, like your screenshots */
-    .option{
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 22px;
-      padding: 12px 14px;
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease;
+    .cyber-card{
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      transition: all .25s cubic-bezier(0.25, 0.8, 0.25, 1);
       position: relative;
       overflow: hidden;
+      border-radius: 18px;
     }
-    .option:hover{
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,.22);
-      filter: brightness(1.03);
-    }
-    .option:active{ transform: scale(.985); }
-
-    .option::before{
-      content:"";
+    .cyber-card::before{
+      content:'';
       position:absolute;
-      inset:-70% auto -70% -80%;
-      width: 60%;
-      transform: rotate(18deg);
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      top:0; left:0; width:4px; height:100%;
+      background: var(--primary);
       opacity:0;
+      transition: opacity .25s;
     }
-    .option:hover::before{ opacity:1; animation: shimmer 1.9s ease-in-out infinite; }
-
-    .option.selected{
-      border-color: color-mix(in oklab, var(--accent) 70%, rgba(255,255,255,.18));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 12px 40px rgba(34,197,94,.18);
+    .cyber-card:hover{
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.10);
     }
-    body.ps .option.selected{
-      border-color: color-mix(in oklab, var(--psAccent) 72%, rgba(255,255,255,.18));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 12px 42px rgba(96,165,250,.22);
+    .cyber-card.selected{
+      background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+      border-color: var(--primary);
+      box-shadow: 0 0 24px -8px var(--shadow);
     }
+    .cyber-card.selected::before{ opacity:1; }
 
-    .option.selected::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:22px;
-      background: radial-gradient(120px 60px at top left, rgba(34,197,94,.25), transparent 60%);
-      pointer-events:none;
-    }
-    body.ps .option.selected::after{
-      background: radial-gradient(120px 60px at top left, rgba(96,165,250,.28), transparent 60%);
-    }
+    .neon-text{ text-shadow: 0 0 10px var(--shadow); }
 
-    .badge{
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.07);
-    }
-
-    .price{ color: var(--accent); font-weight: 800; }
-    body.ps .price{ color: var(--psAccent); }
-    body.preset-minimal .price{ color: rgba(255,255,255,.85); }
-
-    .sectionTitle{ font-family: Orbitron, system-ui; letter-spacing: .7px; }
-
-    .stickybar{
-      background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.28));
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-
-    .modalOverlay{
-      position: fixed; inset:0;
-      background: rgba(0,0,0,.62);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      z-index: 60;
-    }
-    .modalOverlay.show{ display:flex; }
-    .modal{ width: min(980px, 100%); max-height: 92vh; overflow:auto; }
-
+    /* inputs */
     .field{
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.12);
-      outline: none;
-      transition: .15s ease;
+      background:#050505;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 14px 16px;
+      outline:none;
+      transition: .2s;
     }
     .field:focus{
-      border-color: rgba(255,255,255,.22);
-      box-shadow: 0 0 0 3px rgba(34,197,94,.18);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(46,229,157,.18);
     }
-    body.ps .field:focus{ box-shadow: 0 0 0 3px rgba(96,165,250,.22); }
-
-    #fxCanvas{ position: fixed; inset:0; pointer-events:none; z-index: 80; display:none; }
-    #fxCanvas.show{ display:block; }
-
-    .pulseDot{
-      width:10px; height:10px; border-radius:999px;
-      background: var(--accent);
-      box-shadow: 0 0 0 0 rgba(34,197,94,.6);
-      animation: pulse 1.4s infinite;
-    }
-    body.ps .pulseDot{ background: var(--psAccent2); box-shadow: 0 0 0 0 rgba(59,130,246,.7); }
-
-    @keyframes pulse{
-      0%{ box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
-      70%{ box-shadow: 0 0 0 14px rgba(34,197,94,0); }
-      100%{ box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    body.ps-mode .field:focus{
+      box-shadow: 0 0 0 3px rgba(52,152,219,.18);
     }
 
-    .toast{
-      position: fixed;
-      right: 16px;
-      bottom: 92px;
-      z-index: 90;
-      width: min(420px, calc(100% - 32px));
-      display:none;
-    }
-    .toast.show{ display:block; }
+    /* scrollbar */
+    ::-webkit-scrollbar{ width:6px; }
+    ::-webkit-scrollbar-track{ background:#050505; }
+    ::-webkit-scrollbar-thumb{ background:#333; border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover{ background: var(--primary); }
 
-    /* Accordion (скрытые шаги после шага 2) */
-    .accHeader{
-      cursor:pointer;
-      user-select:none;
-      transition: .18s ease;
+    /* button */
+    .btn-primary{
+      background: var(--primary);
+      color:#000;
+      box-shadow: 0 12px 30px -12px var(--shadow);
+      transition: .2s;
     }
-    .accHeader:hover{ transform: translateY(-1px); }
-    .accBody{
-      overflow:hidden;
-      height: 0;
-      transition: height .22s ease;
-    }
-    .acc.open .accBody{
-      /* height set by JS */
+    .btn-primary:hover{ filter: brightness(1.06); transform: translateY(-1px); }
+    .btn-primary:active{ transform: scale(.99); }
+
+    /* modal */
+    .overlay{ background: rgba(0,0,0,.88); backdrop-filter: blur(10px); }
+
+    .tag{
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.65);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 4px 10px;
+      border-radius: 999px;
     }
 
-    /* Mobile polish */
-    @media (max-width: 640px){
-      .option{ padding: 11px 12px; border-radius: 18px; }
-      .sectionTitle{ letter-spacing: .5px; }
+    /* cart wave */
+    @keyframes waveIn{
+      0%{ transform: translateY(10px); opacity:0; filter: blur(3px); }
+      100%{ transform: translateY(0); opacity:1; filter: blur(0); }
+    }
+    .cart-row{
+      animation: waveIn .35s ease-out both;
     }
   </style>
 </head>
 
-<body class="preset-elite">
-  <div class="pointer-events-none fixed inset-0 -z-10">
-    <div class="absolute -top-20 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-30 animate-floaty"
-         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), transparent 60%);"></div>
-    <div class="absolute top-10 right-[-140px] w-[520px] h-[520px] rounded-full blur-3xl opacity-25 animate-floaty"
-         style="animation-delay:-2.1s;background: radial-gradient(circle at 30% 30%, rgba(99,102,241,.50), transparent 60%);"></div>
-    <div class="absolute bottom-[-220px] left-[25%] w-[720px] h-[720px] rounded-full blur-3xl opacity-20 animate-floaty"
-         style="animation-delay:-3.8s;background: radial-gradient(circle at 30% 30%, rgba(244,63,94,.45), transparent 62%);"></div>
-  </div>
+<body class="min-h-screen flex flex-col">
+  <div class="fixed inset-0 z-[-1] opacity-25 grid-bg"></div>
 
-  <canvas id="fxCanvas"></canvas>
-
-  <header class="max-w-6xl mx-auto px-4 pt-7 pb-5">
-    <div class="glass rounded-3xl p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-3">
-      <div class="flex items-center gap-4">
-        <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-             style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-          <span class="text-xl">⭐</span>
+  <!-- HEADER -->
+  <header class="fixed top-0 w-full z-50 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-emerald-400 to-emerald-900 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <i class="fa-solid fa-gem text-white text-lg"></i>
         </div>
         <div>
-          <div class="font-display text-2xl md:text-3xl font-extrabold tracking-wide">GTA ONLINE BOOST</div>
-          <div class="text-white/55 text-sm md:text-base">Платформа → услуги → заявка → номер заказа.</div>
+          <h1 class="font-tech text-2xl font-bold tracking-wider leading-none">
+            GTA <span style="color:var(--primary)">BOOST</span>
+          </h1>
+          <div class="text-[10px] text-gray-500 tracking-[0.2em] font-bold">PREMIUM SERVICE</div>
         </div>
       </div>
 
-      <div class="md:ml-auto flex flex-wrap items-center gap-2">
-        <div class="chip rounded-2xl px-4 py-2 flex items-center gap-2">
-          <div class="pulseDot"></div>
-          <div class="text-sm text-white/70">Онлайн • принимаем заказы</div>
+      <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+          <span class="text-xs font-medium text-gray-300">Операторы онлайн</span>
         </div>
-
-        <!-- STYLE PRESETS -->
-        <div class="chip rounded-2xl px-2 py-2 flex items-center gap-2">
-          <button id="presetElite" class="chip rounded-xl px-3 py-2 text-xs font-semibold text-white/85 hover:text-white">Elite</button>
-          <button id="presetNeon" class="chip rounded-xl px-3 py-2 text-xs font-semibold text-white/85 hover:text-white">Neon</button>
-          <button id="presetMinimal" class="chip rounded-xl px-3 py-2 text-xs font-semibold text-white/85 hover:text-white">Minimal</button>
-        </div>
-
-        <button id="btnAdmin" class="chip rounded-2xl px-4 py-2 text-sm font-semibold text-white/85 hover:text-white">
-          Админ-панель
-        </button>
-        <button id="btnReset" class="chip rounded-2xl px-4 py-2 text-sm font-semibold text-white/85 hover:text-white">
-          Сбросить выбор
-        </button>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 pb-40">
-    <!-- STEP 1 -->
-    <section class="glass rounded-3xl p-4 md:p-5 mb-5">
-      <div class="flex items-start gap-4">
-        <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-             style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-          <span class="text-lg">🕹️</span>
-        </div>
-        <div class="flex-1">
-          <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 1 — Платформа</div>
-          <div class="text-white/55 text-sm md:text-base">ПК (Steam/Epic/Rockstar) — один прайс. PlayStation — отдельный (синие тона).</div>
-        </div>
-      </div>
+  <main class="flex-1 pt-28 pb-32 px-4 max-w-7xl mx-auto w-full">
 
-      <div class="mt-4 grid md:grid-cols-2 gap-3">
-        <div class="glass rounded-3xl p-4">
+    <!-- PLATFORM -->
+    <section class="mb-10 text-center" id="platformSection">
+      <h2 class="text-3xl md:text-5xl font-tech font-bold mb-4 animate-slide-up">
+        ВЫБЕРИ <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">ПЛАТФОРМУ</span>
+      </h2>
+      <p class="text-gray-400 max-w-2xl mx-auto mb-8">
+        Выбери платформу: ПК (Steam/Epic/Rockstar), PlayStation (PS4/PS5) или Xbox.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto animate-slide-up" style="animation-delay:.08s">
+        <button id="btn-pc" onclick="setPlatform('pc')" class="cyber-card p-5 text-left">
           <div class="flex items-center justify-between">
             <div>
-              <div class="font-display text-base md:text-lg font-bold">ПК версия</div>
-              <div class="text-white/55 text-sm">Steam / Epic Games / Rockstar</div>
+              <div class="font-tech text-2xl font-bold">ПК</div>
+              <div class="text-sm text-gray-400">Steam / Epic / Rockstar</div>
             </div>
-            <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Единый прайс</span>
+            <i class="fa-brands fa-steam text-4xl opacity-40"></i>
           </div>
-
-          <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <button class="option text-left" data-platform="steam" data-group="pc">
-              <div class="flex items-center justify-between">
-                <div class="font-semibold">Steam</div>
-                <span class="text-xs text-white/55">ПК</span>
-              </div>
-              <div class="text-white/55 text-sm mt-1">Классический запуск</div>
-            </button>
-
-            <button class="option text-left" data-platform="epic" data-group="pc">
-              <div class="flex items-center justify-between">
-                <div class="font-semibold">Epic Games</div>
-                <span class="text-xs text-white/55">ПК</span>
-              </div>
-              <div class="text-white/55 text-sm mt-1">EGS аккаунт</div>
-            </button>
-
-            <button class="option text-left" data-platform="rockstar" data-group="pc">
-              <div class="flex items-center justify-between">
-                <div class="font-semibold">Rockstar</div>
-                <span class="text-xs text-white/55">ПК</span>
-              </div>
-              <div class="text-white/55 text-sm mt-1">Social Club</div>
-            </button>
+          <div class="mt-4 flex gap-2 flex-wrap">
+            <span class="tag">Единый прайс</span>
+            <span class="tag">Безопасно</span>
           </div>
-        </div>
+        </button>
 
-        <div class="glass rounded-3xl p-4">
+        <button id="btn-ps" onclick="setPlatform('ps')" class="cyber-card p-5 text-left">
           <div class="flex items-center justify-between">
             <div>
-              <div class="font-display text-base md:text-lg font-bold">PlayStation</div>
-              <div class="text-white/55 text-sm">PS4 / PS5</div>
+              <div class="font-tech text-2xl font-bold">PlayStation</div>
+              <div class="text-sm text-gray-400">PS4 / PS5</div>
             </div>
-            <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Свой прайс</span>
+            <i class="fa-brands fa-playstation text-4xl opacity-40"></i>
           </div>
-
-          <div class="mt-3 grid grid-cols-2 gap-2">
-            <button class="option text-left" data-platform="ps4" data-group="ps">
-              <div class="flex items-center justify-between">
-                <div class="font-semibold">PS4</div>
-                <span class="text-xs text-white/55">PS</span>
-              </div>
-              <div class="text-white/55 text-sm mt-1">Обычная версия</div>
-            </button>
-
-            <button class="option text-left" data-platform="ps5" data-group="ps">
-              <div class="flex items-center justify-between">
-                <div class="font-semibold">PS5</div>
-                <span class="text-xs text-white/55">PS</span>
-              </div>
-              <div class="text-white/55 text-sm mt-1">E&E</div>
-            </button>
+          <div class="mt-4 flex gap-2 flex-wrap">
+            <span class="tag">Отдельный прайс</span>
+            <span class="tag">Deluxo</span>
           </div>
+        </button>
 
-          <div class="mt-3 text-white/55 text-sm">
-            <div class="flex gap-2 items-start">
-              <span>💡</span>
-              <div>В режиме PS сайт станет синеватым и цены будут PS.</div>
+        <button id="btn-xbox" onclick="setPlatform('xbox')" class="cyber-card p-5 text-left">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-tech text-2xl font-bold">Xbox</div>
+              <div class="text-sm text-gray-400">Series / One</div>
+            </div>
+            <i class="fa-brands fa-xbox text-4xl opacity-40"></i>
+          </div>
+          <div class="mt-4 flex gap-2 flex-wrap">
+            <span class="tag">Цены PS +10%</span>
+            <span class="tag">Выбор версии</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- PC store selector -->
+      <div id="pcStores" class="hidden max-w-5xl mx-auto mt-5">
+        <div class="cyber-card p-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="text-left">
+              <div class="font-tech text-lg font-bold">ПК — магазин</div>
+              <div class="text-sm text-gray-400">Выбери, где куплена GTA (для логина).</div>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <button class="cyber-card px-4 py-2" data-key="steam" onclick="setPcStore('steam', this)"><i class="fa-brands fa-steam mr-2"></i>Steam</button>
+              <button class="cyber-card px-4 py-2" data-key="epic" onclick="setPcStore('epic', this)"><i class="fa-brands fa-epic-games mr-2"></i>Epic</button>
+              <button class="cyber-card px-4 py-2" data-key="rockstar" onclick="setPcStore('rockstar', this)"><i class="fa-solid fa-r mr-2"></i>Rockstar</button>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- PS selector -->
+      <div id="psVersions" class="hidden max-w-5xl mx-auto mt-5">
+        <div class="cyber-card p-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="text-left">
+              <div class="font-tech text-lg font-bold">PlayStation — версия</div>
+              <div class="text-sm text-gray-400">PS4 / PS5</div>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <button class="cyber-card px-4 py-2" data-key="ps4" onclick="setConsoleVersion('ps4', this)">PS4</button>
+              <button class="cyber-card px-4 py-2" data-key="ps5" onclick="setConsoleVersion('ps5', this)">PS5</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Xbox selector -->
+      <div id="xboxVersions" class="hidden max-w-5xl mx-auto mt-5">
+        <div class="cyber-card p-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="text-left">
+              <div class="font-tech text-lg font-bold">Xbox — версия</div>
+              <div class="text-sm text-gray-400">One / Series</div>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <button class="cyber-card px-4 py-2" data-key="xbox" onclick="setConsoleVersion('xbox', this)"><i class="fa-brands fa-xbox mr-2"></i>Xbox</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
 
-    <!-- Builder -->
-    <section id="builder" class="space-y-5 hidden">
+    <!-- BUILDER -->
+    <div id="builder" class="hidden grid lg:grid-cols-12 gap-8 animate-slide-up">
 
-      <!-- PC -->
-      <div id="pcBlock" class="space-y-5 hidden">
+      <!-- LEFT -->
+      <div class="lg:col-span-8 space-y-6">
 
-        <!-- STEP 2 (visible) -->
-        <section class="glass rounded-3xl p-4 md:p-5">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                 style="background: radial-gradient(circle at 30% 30%, rgba(34,197,94,.18), rgba(255,255,255,.03));">
-              <span class="text-lg">💰</span>
-            </div>
-            <div class="flex-1">
-              <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 2 — Валюта (ПК)</div>
-              <div class="text-white/55 text-sm md:text-base">
-                Выберите пакет. Если нужна только прокачка уровня/разблокировки — нажмите <b>«Валюта не нужна»</b>.
-              </div>
-            </div>
-          </div>
-          <div class="mt-4 grid grid-cols-2 lg:grid-cols-3 gap-2" id="pcMoneyGrid"></div>
-        </section>
-
-        <!-- Hidden Steps (Accordion) -->
-        <div class="acc glass rounded-3xl p-4 md:p-5" id="accPcSteps">
-          <div class="accHeader flex items-center justify-between gap-3" data-acc="#accPcSteps">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                   style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                <span class="text-lg">🧩</span>
-              </div>
-              <div>
-                <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаги 3–6 (ПК)</div>
-                <div class="text-white/55 text-sm">Нажмите, чтобы открыть/скрыть. Всё выбирается с анимацией.</div>
-              </div>
-            </div>
-            <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Свернуть / Развернуть</span>
+        <!-- PC MODULES -->
+        <div id="pc-modules" class="hidden space-y-6">
+          <div class="cyber-card p-6">
+            <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Валюта (ПК)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="pcMoneyContainer"></div>
           </div>
 
-          <div class="accBody" data-body>
-            <div class="pt-4 space-y-5">
-
-              <!-- STEP 3 -->
-              <section class="glass rounded-3xl p-4">
-                <div class="flex items-start gap-4">
-                  <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                       style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                    <span class="text-lg">⭐</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 3 — Уровень и репутация (ПК)</div>
-                    <div class="text-white/55 text-sm md:text-base">Один уровень + дополнительные репутации.</div>
-                  </div>
-                </div>
-
-                <div class="mt-4 grid md:grid-cols-2 gap-3">
-                  <div class="glass rounded-3xl p-4">
-                    <div class="font-bold text-white/90">Уровень</div>
-                    <div class="mt-3 grid grid-cols-2 gap-2" id="pcLevelGrid"></div>
-                  </div>
-
-                  <div class="glass rounded-3xl p-4">
-                    <div class="font-bold text-white/90">Доп. репутации</div>
-                    <div class="mt-3 grid grid-cols-1 gap-2" id="pcRepGrid"></div>
-                  </div>
-                </div>
-              </section>
-
-              <!-- STEP 4 -->
-              <section class="glass rounded-3xl p-4">
-                <div class="flex items-start gap-4">
-                  <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                       style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                    <span class="text-lg">🔓</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 4 — Разблокировки (ПК)</div>
-                    <div class="text-white/55 text-sm md:text-base">Отметьте нужные пункты.</div>
-                  </div>
-                </div>
-                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2" id="pcUnlocksGrid"></div>
-              </section>
-
-              <!-- STEP 5 -->
-              <section class="grid lg:grid-cols-2 gap-4">
-                <div class="glass rounded-3xl p-4">
-                  <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                      <span class="text-lg">🚗</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 5 — Транспорт (ПК)</div>
-                      <div class="text-white/55 text-sm md:text-base">Транспорт + доп. услуги.</div>
-                    </div>
-                  </div>
-
-                  <div class="mt-4 grid grid-cols-1 gap-2" id="pcTransportGrid"></div>
-
-                  <div class="mt-4 glass rounded-3xl p-4">
-                    <div class="font-bold text-white/90">Сервис</div>
-                    <div class="mt-3 grid grid-cols-1 gap-2" id="pcServiceGrid"></div>
-                  </div>
-                </div>
-
-                <!-- STEP 6 -->
-                <div class="glass rounded-3xl p-4">
-                  <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                         style="background: radial-gradient(circle at 30% 30%, rgba(245,158,11,.20), rgba(255,255,255,.03));">
-                      <span class="text-lg">👑</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 6 — Особые услуги (ПК)</div>
-                      <div class="text-white/55 text-sm md:text-base">Редкие и расширенные опции.</div>
-                    </div>
-                  </div>
-                  <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2" id="pcSpecialGrid"></div>
-                </div>
-              </section>
-
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">02.</span> Уровень (ПК)</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="pcLevelContainer"></div>
             </div>
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">03.</span> Репутации (ПК)</h3>
+              <div class="space-y-3" id="pcRepsContainer"></div>
+            </div>
+          </div>
+
+          <div class="cyber-card p-6">
+            <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">04.</span> Разблокировки (ПК)</h3>
+            <div class="grid md:grid-cols-2 gap-3" id="pcUnlocksContainer"></div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">05.</span> Транспорт (ПК)</h3>
+              <div class="space-y-3" id="pcTransportContainer"></div>
+            </div>
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">06.</span> Сервис (ПК)</h3>
+              <div class="space-y-3" id="pcServiceContainer"></div>
+            </div>
+          </div>
+
+          <div class="cyber-card p-6">
+            <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">07.</span> Особые услуги (ПК)</h3>
+            <div class="grid md:grid-cols-2 gap-3" id="pcSpecialContainer"></div>
           </div>
         </div>
-      </div>
 
-      <!-- PS -->
-      <div id="psBlock" class="space-y-5 hidden">
-
-        <!-- STEP 2 (visible) -->
-        <section class="glass rounded-3xl p-4 md:p-5">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                 style="background: radial-gradient(circle at 30% 30%, rgba(59,130,246,.22), rgba(255,255,255,.03));">
-              <span class="text-lg">🚘</span>
-            </div>
-            <div class="flex-1">
-              <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 2 — Деньги машинами (Deluxo)</div>
-              <div class="text-white/55 text-sm md:text-base">Самый безопасный способ: забиваем гаражи авто, вы продаёте.</div>
-            </div>
-          </div>
-          <div class="mt-4 grid grid-cols-2 lg:grid-cols-3 gap-2" id="psCarsGrid"></div>
-        </section>
-
-        <!-- Hidden Steps (Accordion) -->
-        <div class="acc glass rounded-3xl p-4 md:p-5" id="accPsSteps">
-          <div class="accHeader flex items-center justify-between gap-3" data-acc="#accPsSteps">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                   style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                <span class="text-lg">🧩</span>
-              </div>
-              <div>
-                <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаги 3–5 (PS)</div>
-                <div class="text-white/55 text-sm">Нажмите, чтобы открыть/скрыть.</div>
-              </div>
-            </div>
-            <span class="badge rounded-xl px-3 py-1 text-xs text-white/70">Свернуть / Развернуть</span>
+        <!-- PS MODULES -->
+        <div id="ps-modules" class="hidden space-y-6">
+          <div class="cyber-card p-6">
+            <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Деньги машинами (Deluxo)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="psCarsContainer"></div>
           </div>
 
-          <div class="accBody" data-body>
-            <div class="pt-4 space-y-5">
-
-              <section class="grid lg:grid-cols-2 gap-4">
-                <div class="glass rounded-3xl p-4">
-                  <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                      <span class="text-lg">💵</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 3 — Наличка</div>
-                      <div class="text-white/55 text-sm md:text-base">Выберите опцию налички (если нужно).</div>
-                    </div>
-                  </div>
-                  <div class="mt-4 grid grid-cols-1 gap-2" id="psCashGrid"></div>
-                </div>
-
-                <div class="glass rounded-3xl p-4">
-                  <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                         style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-                      <span class="text-lg">🧿</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 4 — Уровень</div>
-                      <div class="text-white/55 text-sm md:text-base">Выберите уровень аккаунта.</div>
-                    </div>
-                  </div>
-                  <div class="mt-4 grid grid-cols-1 gap-2" id="psLevelGrid"></div>
-                </div>
-              </section>
-
-              <section class="glass rounded-3xl p-4">
-                <div class="flex items-start gap-4">
-                  <div class="w-10 h-10 rounded-2xl grid place-items-center border border-white/10"
-                       style="background: radial-gradient(circle at 30% 30%, rgba(250,204,21,.18), rgba(255,255,255,.03));">
-                    <span class="text-lg">⚠️</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="sectionTitle text-lg md:text-xl font-extrabold tracking-wide">Шаг 5 — Требования</div>
-                    <div class="text-white/55 text-sm md:text-base">Если чего-то нет — отметьте. Это добавит комиссию.</div>
-                  </div>
-                </div>
-                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-2" id="psReqGrid"></div>
-              </section>
-
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">02.</span> Наличка</h3>
+              <div class="space-y-3" id="psCashContainer"></div>
             </div>
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">03.</span> Уровень</h3>
+              <div class="space-y-3" id="psLevelContainer"></div>
+            </div>
+          </div>
+
+          <div class="cyber-card p-6">
+            <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">04.</span> Требования</h3>
+            <div class="grid md:grid-cols-2 gap-3" id="psReqsContainer"></div>
+          </div>
+        </div>
+
+        <!-- XBOX MODULES (PS +10%) -->
+        <div id="xbox-modules" class="hidden space-y-6">
+          <div class="cyber-card p-6">
+            <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Деньги машинами (Deluxo) — Xbox</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="xbCarsContainer"></div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">02.</span> Наличка — Xbox</h3>
+              <div class="space-y-3" id="xbCashContainer"></div>
+            </div>
+            <div class="cyber-card p-6">
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">03.</span> Уровень — Xbox</h3>
+              <div class="space-y-3" id="xbLevelContainer"></div>
+            </div>
+          </div>
+
+          <div class="cyber-card p-6">
+            <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">04.</span> Требования — Xbox</h3>
+            <div class="grid md:grid-cols-2 gap-3" id="xbReqsContainer"></div>
           </div>
         </div>
 
       </div>
-    </section>
+
+      <!-- RIGHT SUMMARY -->
+      <div class="lg:col-span-4">
+        <div class="sticky top-24">
+          <div class="cyber-card p-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 opacity-20 blur-[50px] rounded-full" style="background:var(--primary)"></div>
+
+            <h3 class="font-tech text-xl font-bold mb-5 text-gray-200 uppercase tracking-widest border-b border-white/10 pb-4">
+              Состав заказа
+            </h3>
+
+            <div id="cartItems" class="space-y-3 mb-6 min-h-[90px] text-sm text-gray-400">
+              <p class="italic opacity-50">Выбери опции — появится список…</p>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex justify-between items-end">
+                <span class="text-gray-400 font-medium">Итого</span>
+                <div class="text-right">
+                  <div class="font-tech text-4xl font-bold text-white neon-text" id="displayTotal">0</div>
+                  <span class="text-xs font-bold uppercase tracking-wider" style="color:var(--primary)">RUB</span>
+                </div>
+              </div>
+
+              <button onclick="openCheckout()" id="checkoutBtn" disabled
+                class="w-full py-4 rounded-xl font-tech font-bold text-lg uppercase tracking-widest bg-white/5 text-gray-500 cursor-not-allowed transition-all duration-300 relative overflow-hidden group">
+                <span class="relative z-10 group-hover:text-black transition-colors">Оформить</span>
+                <div class="absolute inset-0 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0" style="background:var(--primary)"></div>
+              </button>
+
+              <button onclick="resetBuilder()" class="w-full py-2 text-xs text-gray-500 hover:text-white transition-colors uppercase tracking-widest">
+                Сбросить выбор
+              </button>
+            </div>
+          </div>
+
+          <!-- Links row (Anti-Ban -> Manager links) -->
+          <div class="mt-6 flex justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+            <a href="https://t.me/GTAONLINE5BOOST" target="_blank" rel="noopener"
+               class="flex flex-col items-center gap-1 hover:opacity-100 transition-opacity">
+              <i class="fa-brands fa-telegram text-xl"></i>
+              <span class="text-[10px]">Менеджер</span>
+            </a>
+
+            <a href="https://vk.com/markboostgta" target="_blank" rel="noopener"
+               class="flex flex-col items-center gap-1 hover:opacity-100 transition-opacity">
+              <i class="fa-brands fa-vk text-xl"></i>
+              <span class="text-[10px]">VK</span>
+            </a>
+
+            <div class="flex flex-col items-center gap-1">
+              <i class="fa-solid fa-bolt text-xl"></i>
+              <span class="text-[10px]">Быстро</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1">
+              <i class="fa-solid fa-headset text-xl"></i>
+              <span class="text-[10px]">Поддержка</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </main>
 
-  <!-- Sticky bottom -->
-  <div class="stickybar fixed inset-x-0 bottom-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-4">
-      <div class="glass rounded-3xl px-4 py-4 md:px-5 md:py-5 flex flex-col md:flex-row md:items-center gap-4">
-        <div class="flex-1">
-          <div class="text-white/55 text-xs md:text-sm">Итого к оплате</div>
-          <div class="font-display text-2xl md:text-3xl font-extrabold">
-            <span id="totalSum">0</span><span class="text-white/60"> ₽</span>
-          </div>
-          <div class="text-white/50 text-xs md:text-sm mt-1" id="summaryLine">Выберите платформу и опции — сумма посчитается автоматически.</div>
-        </div>
+  <!-- MODAL -->
+  <div id="modal" class="fixed inset-0 z-[100] hidden">
+    <div class="absolute inset-0 overlay" onclick="closeCheckout()"></div>
+    <div class="absolute right-0 top-0 h-full w-full md:w-[520px] bg-[#0b0c10] border-l border-white/10 p-8 shadow-2xl transform transition-transform duration-500 translate-x-full overflow-y-auto" id="modalContent">
 
-        <div class="flex gap-2 md:gap-3 items-stretch">
-          <button id="btnPreview" class="chip rounded-2xl px-4 md:px-5 py-3 text-sm font-semibold text-white/85 hover:text-white">
-            Состав заказа
-          </button>
-          <button id="btnOrder" class="rounded-2xl px-5 md:px-6 py-3 text-sm font-extrabold text-black"
-                  style="background: linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1));">
-            Оформить заявку
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast" class="toast">
-    <div class="glass rounded-2xl p-4 border border-white/10 shadow-2xl">
-      <div class="flex items-start gap-3">
-        <div class="w-9 h-9 rounded-xl grid place-items-center border border-white/10" style="background: rgba(255,255,255,.05);">
-          <span>ℹ️</span>
-        </div>
-        <div class="flex-1">
-          <div class="font-bold" id="toastTitle">Сообщение</div>
-          <div class="text-white/60 text-sm mt-1" id="toastText"></div>
-        </div>
-        <button id="toastClose" class="text-white/55 hover:text-white">✕</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Order modal -->
-  <div id="modalOverlay" class="modalOverlay">
-    <div class="modal glass rounded-3xl p-5 md:p-6 animate-pop">
-      <div class="flex items-start gap-4">
-        <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-             style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-          <span class="text-lg">🧾</span>
-        </div>
-        <div class="flex-1">
-          <div class="sectionTitle text-xl md:text-2xl font-extrabold">Заявка</div>
-          <div class="text-white/55 text-sm md:text-base">Заполните данные. <b>Логин и пароль платформы обязательны</b> для выполнения.</div>
-        </div>
-        <button id="btnCloseModal" class="chip rounded-2xl px-4 py-2 text-sm font-semibold text-white/80 hover:text-white">
-          Закрыть
+      <div class="flex justify-between items-center mb-7">
+        <h2 class="font-tech text-3xl font-bold">Оформление</h2>
+        <button onclick="closeCheckout()" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div class="mt-5 grid lg:grid-cols-2 gap-5">
-        <div class="glass rounded-3xl p-4 md:p-5">
-          <div class="font-bold text-white/90">Данные для прокачки</div>
-          <div class="text-white/55 text-sm mb-4">Вводите аккуратно — от этого зависит скорость выполнения.</div>
+      <div class="space-y-6">
+        <div class="cyber-card p-4">
+          <div class="text-xs text-gray-500 uppercase tracking-widest mb-2">Сумма</div>
+          <div class="text-3xl font-bold font-tech" style="color:var(--primary)"><span id="modalTotal">0</span> ₽</div>
+          <div class="text-xs text-gray-500 mt-2" id="modalPlatformLine">—</div>
+        </div>
 
-          <label class="block text-sm text-white/70 mb-2">Логин платформы (обязательно)</label>
-          <input id="fLogin" class="field w-full rounded-2xl px-4 py-3 mb-4" placeholder="Email/ник/Social Club/PSN ID" />
+        <form onsubmit="event.preventDefault(); sendOrder();" class="space-y-4">
+          <div class="space-y-1">
+            <label class="text-xs text-gray-400 ml-2">Логин платформы (обязательно)</label>
+            <input id="inpLogin" type="text" required placeholder="Email / ник / PSN ID / Xbox tag / Social Club" class="field w-full">
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs text-gray-400 ml-2">Пароль (обязательно)</label>
+            <input id="inpPass" type="password" required placeholder="••••••••" class="field w-full">
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs text-gray-400 ml-2">Контакт (Telegram/WA)</label>
+            <input id="inpContact" type="text" required placeholder="@username" class="field w-full">
+          </div>
 
-          <label class="block text-sm text-white/70 mb-2">Пароль платформы (обязательно)</label>
-          <input id="fPass" type="password" class="field w-full rounded-2xl px-4 py-3 mb-4" placeholder="Пароль" />
+          <div class="pt-4 border-t border-white/10 space-y-4">
+            <p class="text-sm text-gray-300 font-medium">Оплата</p>
+            <div class="grid gap-3">
 
-          <label class="block text-sm text-white/70 mb-2">Связь с клиентом</label>
-          <input id="fContact" class="field w-full rounded-2xl px-4 py-3 mb-4" placeholder="Telegram @ник / WhatsApp / VK / Discord" />
+              <button type="button" onclick="copyToClip(this, '+79141728517')" class="cyber-card p-4 flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded bg-yellow-500/20 flex items-center justify-center text-yellow-400">
+                    <i class="fa-solid fa-building-columns"></i>
+                  </div>
+                  <div class="text-left">
+                    <div class="text-xs text-gray-400">Т-Банк / СБП</div>
+                    <div class="font-mono text-sm group-hover:text-[var(--primary)] transition-colors">+7 (914) 172-85-17</div>
+                  </div>
+                </div>
+                <i class="fa-regular fa-copy text-gray-600"></i>
+              </button>
 
-          <label class="block text-sm text-white/70 mb-2">Пожелания к прокачке</label>
-          <textarea id="fWishes" class="field w-full rounded-2xl px-4 py-3 mb-4 min-h-[120px]"
-                    placeholder="Например: сделать сегодня, не трогать настройки, приоритет по валюте/уровню и т.п."></textarea>
+              <button type="button" onclick="copyToClip(this, '2202203290794421')" class="cyber-card p-4 flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded bg-blue-500/20 flex items-center justify-center text-blue-400">
+                    <i class="fa-regular fa-credit-card"></i>
+                  </div>
+                  <div class="text-left">
+                    <div class="text-xs text-gray-400">Карта</div>
+                    <div class="font-mono text-sm group-hover:text-[var(--primary)] transition-colors">2202 2032 9079 4421</div>
+                  </div>
+                </div>
+                <i class="fa-regular fa-copy text-gray-600"></i>
+              </button>
 
-          <label class="flex items-center gap-3 text-sm text-white/80 select-none">
-            <input id="fPaid" type="checkbox" class="w-5 h-5 accent-emerald-400">
-            <span>Я оплатил(а)</span>
+              <button type="button" onclick="copyToClip(this, '2200700118168359')" class="cyber-card p-4 flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <i class="fa-solid fa-credit-card"></i>
+                  </div>
+                  <div class="text-left">
+                    <div class="text-xs text-gray-400">Т-Банк (карта)</div>
+                    <div class="font-mono text-sm group-hover:text-[var(--primary)] transition-colors">2200 7001 1816 8359</div>
+                  </div>
+                </div>
+                <i class="fa-regular fa-copy text-gray-600"></i>
+              </button>
+
+            </div>
+          </div>
+
+          <label class="flex items-center gap-3 cursor-pointer py-2">
+            <input id="paidCheck" type="checkbox" required class="w-5 h-5 rounded border-white/20 bg-transparent text-[var(--primary)] focus:ring-0">
+            <span class="text-xs text-gray-400">Подтверждаю, что оплатил(а).</span>
           </label>
 
-          <button id="btnSendOrder"
-                  class="mt-4 w-full rounded-2xl px-5 py-3 text-sm font-extrabold text-black"
-                  style="background: linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1));">
+          <button id="submitBtn" type="submit" class="w-full py-4 rounded-xl font-tech font-bold text-lg uppercase tracking-widest btn-primary">
             Отправить заказ
           </button>
+        </form>
 
-          <div class="text-white/45 text-xs mt-3">
-            Отправляя заявку, вы подтверждаете корректность данных и согласны на обработку для выполнения заказа.
-          </div>
-        </div>
-
-        <div class="glass rounded-3xl p-4 md:p-5">
-          <div class="font-bold text-white/90">Оплата</div>
-          <div class="text-white/55 text-sm mb-4">Реквизиты для оплаты (скопируйте и оплатите, затем отметьте галочку).</div>
-
-          <div class="grid gap-3">
-            <div class="glass rounded-2xl p-4 border border-white/10">
-              <div class="text-xs text-white/50">СПБ (по номеру)</div>
-              <div class="font-extrabold text-white/90 mt-1">+7-914-172-85-17</div>
-              <button class="chip rounded-xl px-3 py-2 text-xs mt-3" data-copy="+7-914-172-85-17">Копировать</button>
+        <!-- SUCCESS -->
+        <div id="successBox" class="hidden mt-2">
+          <div class="cyber-card p-5 border border-white/10">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div class="text-xs text-gray-500 uppercase tracking-widest">Готово</div>
+                <div class="font-tech text-2xl font-bold mt-1">Заказ отправлен</div>
+                <div class="text-sm text-gray-400 mt-2">Сохрани номер заявки — он понадобится для проверки статуса.</div>
+              </div>
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5" style="color:var(--primary)">
+                <i class="fa-solid fa-circle-check text-xl"></i>
+              </div>
             </div>
 
-            <div class="glass rounded-2xl p-4 border border-white/10">
-              <div class="text-xs text-white/50">Сбер</div>
-              <div class="font-extrabold text-white/90 mt-1">2202203290794421</div>
-              <button class="chip rounded-xl px-3 py-2 text-xs mt-3" data-copy="2202203290794421">Копировать</button>
+            <div class="mt-4 cyber-card p-4 bg-white/5 border border-white/10">
+              <div class="text-xs text-gray-500 uppercase tracking-widest mb-2">Номер заявки</div>
+              <div class="flex items-center justify-between gap-3">
+                <div id="successOrderId" class="font-mono text-sm md:text-base break-all" style="color:var(--primary)"></div>
+                <button type="button" onclick="copyOrderId()"
+                        class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors">
+                  <i class="fa-regular fa-copy mr-2"></i><span class="text-xs uppercase tracking-widest">Копировать</span>
+                </button>
+              </div>
             </div>
 
-            <div class="glass rounded-2xl p-4 border border-white/10">
-              <div class="text-xs text-white/50">Т-Банк</div>
-              <div class="font-extrabold text-white/90 mt-1">2200700118168359</div>
-              <button class="chip rounded-xl px-3 py-2 text-xs mt-3" data-copy="2200700118168359">Копировать</button>
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <a href="https://t.me/GTAONLINE5BOOST" target="_blank" rel="noopener"
+                 class="cyber-card p-3 text-center hover:bg-white/10 transition-colors">
+                <i class="fa-brands fa-telegram mr-2"></i>Написать в TG
+              </a>
+              <a href="https://vk.com/markboostgta" target="_blank" rel="noopener"
+                 class="cyber-card p-3 text-center hover:bg-white/10 transition-colors">
+                <i class="fa-brands fa-vk mr-2"></i>Написать в VK
+              </a>
             </div>
           </div>
+        </div>
 
-          <div class="mt-4 glass rounded-2xl p-4 border border-white/10">
-            <div class="text-xs text-white/50">Сумма к оплате</div>
-            <div class="font-display text-3xl font-extrabold mt-1"><span id="modalTotal">0</span> ₽</div>
-            <div class="text-white/50 text-xs mt-1" id="modalSummary">—</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Admin modal -->
-  <div id="adminOverlay" class="modalOverlay">
-    <div class="modal glass rounded-3xl p-5 md:p-6 animate-pop">
-      <div class="flex items-start gap-4">
-        <div class="w-11 h-11 rounded-2xl grid place-items-center border border-white/10"
-             style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-          <span class="text-lg">🛡️</span>
-        </div>
-        <div class="flex-1">
-          <div class="sectionTitle text-xl md:text-2xl font-extrabold">Админ-панель (упрощённая)</div>
-          <div class="text-white/55 text-sm md:text-base">Сюда можно добавить “секрет-код” и смотреть заказы (поллинг). Здесь уже есть уведомления “пинг”.</div>
-        </div>
-        <button id="btnCloseAdmin" class="chip rounded-2xl px-4 py-2 text-sm font-semibold text-white/80 hover:text-white">
-          Закрыть
-        </button>
       </div>
 
-      <div class="mt-5 grid lg:grid-cols-2 gap-5">
-        <div class="glass rounded-3xl p-4 md:p-5">
-          <div class="font-bold text-white/90">Уведомления</div>
-          <div class="text-white/55 text-sm mb-3">
-            Включите, чтобы браузер показывал уведомления и “пикал” при новых заказах.
-            (Работает, если скрипт отдаёт список заказов — это нужно сделать в Apps Script.)
-          </div>
-
-          <label class="flex items-center gap-3 text-sm text-white/80 select-none">
-            <input id="adminNotify" type="checkbox" class="w-5 h-5">
-            <span>Включить уведомления</span>
-          </label>
-
-          <div class="mt-3">
-            <button id="btnAdminRefresh" class="chip rounded-2xl px-4 py-3 text-sm font-semibold text-white/85 hover:text-white">
-              Проверить заказы сейчас
-            </button>
-          </div>
-
-          <div class="mt-4 text-white/45 text-xs">
-            ⚠️ В этой демо-версии сайт умеет отправлять заказы. Получение списка заказов/статусов зависит от реализации Apps Script.
-          </div>
-        </div>
-
-        <div class="glass rounded-3xl p-4 md:p-5">
-          <div class="font-bold text-white/90">Последние события</div>
-          <div class="text-white/55 text-sm mb-3">Логи уведомлений (локально в браузере).</div>
-          <div id="adminLog" class="space-y-2 text-sm"></div>
-        </div>
-      </div>
     </div>
   </div>
 
   <script>
-    // === CONFIG ===
+    // ✅ ТВОЙ URL (ОБЯЗАТЕЛЬНО)
     const API_URL = "https://script.google.com/macros/s/AKfycbxerSSlb7x7ASk_9TPGNCSYLx5H0n6JEv2u0qzMTKPenXdz89V2OgPMEPxnGxuIgFpi/exec";
 
-    // === DATA (НЕ ТРОГАЛ — всё сохранено) ===
-    const PC = {
-      money: [
-        { id:"none", title:"Валюта не нужна", price:0, badge:"Можно без валюты" },
+    // === DATA: ВСЕ ЦЕНЫ ИЗ ТВОЕГО ПРАЙСА ===
+    const DATA = {
+      pc: {
+        money: [
+          { id:"none", title:"Валюта не нужна", price:0, badge:"Можно без валюты", icon:"fa-ban" },
 
-        { id:"m15",  title:"15 млн",  price:115, badge:"Старт" },
-        { id:"m20",  title:"20 млн",  price:140, badge:"Хит" },
-        { id:"m30",  title:"30 млн",  price:230 },
-        { id:"m40",  title:"40 млн",  price:325 },
-        { id:"m50",  title:"50 млн",  price:420, badge:"Выгодно" },
-        { id:"m60",  title:"60 млн",  price:210 },
+          { id:"m15",  title:"15 млн",  price:115, badge:"Старт", icon:"fa-coins" },
+          { id:"m20",  title:"20 млн",  price:140, badge:"Хит", icon:"fa-money-bill-wave" },
+          { id:"m30",  title:"30 млн",  price:230, icon:"fa-sack-dollar" },
+          { id:"m40",  title:"40 млн",  price:325, icon:"fa-sack-dollar" },
+          { id:"m50",  title:"50 млн",  price:420, badge:"Выгодно", icon:"fa-vault" },
+          { id:"m60",  title:"60 млн",  price:210, icon:"fa-vault" },
 
-        { id:"m70",  title:"70 млн",  price:605 },
-        { id:"m80",  title:"80 млн",  price:700 },
-        { id:"m90",  title:"90 млн",  price:790 },
-        { id:"m100", title:"100 млн", price:885, badge:"Топ" },
-        { id:"m125", title:"125 млн", price:1025 },
-        { id:"m150", title:"150 млн", price:1120 },
+          { id:"m70",  title:"70 млн",  price:605, icon:"fa-vault" },
+          { id:"m80",  title:"80 млн",  price:700, icon:"fa-vault" },
+          { id:"m90",  title:"90 млн",  price:790, icon:"fa-vault" },
+          { id:"m100", title:"100 млн", price:885, badge:"Топ", icon:"fa-vault" },
+          { id:"m125", title:"125 млн", price:1025, icon:"fa-vault" },
+          { id:"m150", title:"150 млн", price:1120, icon:"fa-vault" },
 
-        { id:"m200", title:"200 млн", price:1210 },
-        { id:"m350", title:"350 млн", price:1400 },
-        { id:"m500", title:"500 млн", price:1535, badge:"Макс" },
-        { id:"m750", title:"750 млн", price:1720 },
-        { id:"b1",   title:"1 млрд",  price:1815 },
-        { id:"b15",  title:"1.5 млрд",price:2050 },
+          { id:"m200", title:"200 млн", price:1210, icon:"fa-crown" },
+          { id:"m350", title:"350 млн", price:1400, icon:"fa-crown" },
+          { id:"m500", title:"500 млн", price:1535, badge:"Макс", icon:"fa-crown" },
+          { id:"m750", title:"750 млн", price:1720, icon:"fa-infinity" },
+          { id:"b1",   title:"1 млрд",  price:1815, icon:"fa-infinity" },
+          { id:"b15",  title:"1.5 млрд",price:2050, icon:"fa-infinity" },
 
-        { id:"b2",   title:"2 млрд",  price:2280 },
-        { id:"b4",   title:"4 млрд",  price:2750 }
-      ],
-      level: [
-        { id:"lvl_none", title:"Не менять", price:0 },
-        { id:"lvl50", title:"50 LVL", price:25 },
-        { id:"lvl100", title:"100 LVL", price:50 },
-        { id:"lvl120", title:"120 LVL", price:75 },
-        { id:"lvl777", title:"777 LVL", price:100 },
-        { id:"lvl8000", title:"8000 LVL", price:150 }
-      ],
-      reps: [
-        { id:"rep_auto", title:"Автоклуб 1000 LVL", price:100 },
-        { id:"rep_arena", title:"Арена 1000 LVL", price:100 },
-        { id:"rep_gang", title:"Банда 1000 LVL", price:100 }
-      ],
-      unlocks: [
-        { id:"unl_all", title:"Открыть всё (Выгода 30%)", price:250, badge:"Выгодно" },
-        { id:"unl_skills", title:"Навыки персонажа", price:50 },
-        { id:"unl_run", title:"Быстрый бег и перезарядка", price:50 },
-        { id:"unl_tuning", title:"Тюнинг (LSC)", price:50 },
-        { id:"unl_weapons", title:"Оружие", price:50 },
-        { id:"unl_tattoos", title:"Татуировки", price:50 },
-        { id:"unl_clothes", title:"Одежда", price:50 },
-        { id:"unl_hair", title:"Причёски", price:50 }
-      ],
-      transport: [
-        { id:"tr_kosatka", title:"Kosatka (Подлодка)", price:100 },
-        { id:"tr_shotaro", title:"Shotaro (Мотоцикл)", price:100 },
-        { id:"tr_monkey", title:"Go Go Monkey Blista", price:100 },
-        { id:"tr_remote", title:"Удаленное авто (название в чат)", price:100 }
-      ],
-      service: [
-        { id:"svc_priority", title:"Приоритетный заказ", price:200, icon:"⏱️" },
-        { id:"svc_consult", title:"Консультация", price:100, icon:"🧠" },
-        { id:"svc_tip", title:"Чаевые накрутчику", price:100, icon:"😎" }
-      ],
-      special: [
-        { id:"sp_all", title:"Открыть всё (Выгода 50%)", price:1450, badge:"Выгода 50%" },
-        { id:"sp_bunker_rewards", title:"Награды тира бункера", price:150 },
-        { id:"sp_skip_training", title:"Пропуск обучения", price:150 },
-        { id:"sp_clear_mental", title:"Очистить психику", price:150 },
-        { id:"sp_remove_dunce", title:"Снять колпак «Dunce»", price:150 },
+          { id:"b2",   title:"2 млрд",  price:2280, icon:"fa-infinity" },
+          { id:"b4",   title:"4 млрд",  price:2750, icon:"fa-infinity" }
+        ],
+        level: [
+          { id:"lvl_none", title:"Не менять", price:0 },
+          { id:"lvl50", title:"50 LVL", price:25 },
+          { id:"lvl100", title:"100 LVL", price:50 },
+          { id:"lvl120", title:"120 LVL", price:75 },
+          { id:"lvl777", title:"777 LVL", price:100 },
+          { id:"lvl8000", title:"8000 LVL", price:150 }
+        ],
+        reps: [
+          { id:"rep_auto", title:"Автоклуб 1000 LVL", price:100 },
+          { id:"rep_arena", title:"Арена 1000 LVL", price:100 },
+          { id:"rep_gang", title:"Банда 1000 LVL", price:100 }
+        ],
+        unlocks: [
+          { id:"unl_all", title:"Открыть всё (Выгода 30%)", price:250, badge:"Выгодно" },
+          { id:"unl_skills", title:"Навыки персонажа", price:50 },
+          { id:"unl_run", title:"Быстрый бег и перезарядка", price:50 },
+          { id:"unl_tuning", title:"Тюнинг (LSC)", price:50 },
+          { id:"unl_weapons", title:"Оружие", price:50 },
+          { id:"unl_tattoos", title:"Татуировки", price:50 },
+          { id:"unl_clothes", title:"Одежда", price:50 },
+          { id:"unl_hair", title:"Причёски", price:50 }
+        ],
+        transport: [
+          { id:"tr_kosatka", title:"Kosatka (Подлодка)", price:100 },
+          { id:"tr_shotaro", title:"Shotaro (Мотоцикл)", price:100 },
+          { id:"tr_monkey", title:"Go Go Monkey Blista", price:100 },
+          { id:"tr_remote", title:"Удаленное авто (название в чат)", price:100 }
+        ],
+        service: [
+          { id:"svc_priority", title:"Приоритетный заказ", price:200, badge:"⏱️" },
+          { id:"svc_consult", title:"Консультация", price:100, badge:"🧠" },
+          { id:"svc_tip", title:"Чаевые накрутчику", price:100, badge:"😎" }
+        ],
+        special: [
+          { id:"sp_all", title:"Открыть всё (Выгода 50%)", price:1450, badge:"Выгода 50%" },
+          { id:"sp_bunker_rewards", title:"Награды тира бункера", price:150 },
+          { id:"sp_skip_training", title:"Пропуск обучения", price:150 },
+          { id:"sp_clear_mental", title:"Очистить психику", price:150 },
+          { id:"sp_remove_dunce", title:"Снять колпак «Dunce»", price:150 },
 
-        { id:"sp_achievements", title:"Все достижения", price:150 },
-        { id:"sp_gender", title:"Изменить пол персонажа", price:150 },
-        { id:"sp_cutscene", title:"Пропуск катсцен", price:150 },
-        { id:"sp_club_pop", title:"Популярность клуба", price:150 },
+          { id:"sp_achievements", title:"Все достижения", price:150 },
+          { id:"sp_gender", title:"Изменить пол персонажа", price:150 },
+          { id:"sp_cutscene", title:"Пропуск катсцен", price:150 },
+          { id:"sp_club_pop", title:"Популярность клуба", price:150 },
 
-        { id:"sp_bunker_research", title:"Разработки бункера", price:150 },
-        { id:"sp_story", title:"Пройти карьеру", price:150 },
-        { id:"sp_reports", title:"Очистить репорты", price:150 },
-        { id:"sp_suspicion", title:"Сбросить подозрительность", price:150 },
-      ]
+          { id:"sp_bunker_research", title:"Разработки бункера", price:150 },
+          { id:"sp_story", title:"Пройти карьеру", price:150 },
+          { id:"sp_reports", title:"Очистить репорты", price:150 },
+          { id:"sp_suspicion", title:"Сбросить подозрительность", price:150 },
+        ]
+      },
+
+      ps: {
+        cars: [
+          { id:"pscars_none", title:"Возьму наличкой / Не нужно", price:0 },
+          { id:"pscars_15", title:"15 млн (Машинами)", price:765 },
+          { id:"pscars_20", title:"20 млн (Машинами)", price:935 },
+          { id:"pscars_25", title:"25 млн (Машинами)", price:1020 },
+          { id:"pscars_30", title:"30 млн (Машинами)", price:1105 },
+          { id:"pscars_40", title:"40 млн (Машинами)", price:1190 },
+          { id:"pscars_50", title:"50 млн (Машинами)", price:1360 },
+          { id:"pscars_75", title:"75 млн (Машинами)", price:1700 },
+          { id:"pscars_100", title:"100 млн (Машинами)", price:2040 },
+          { id:"pscars_150", title:"150 млн (Машинами)", price:2380 },
+          { id:"pscars_200", title:"200 млн (Машинами)", price:3060 },
+          { id:"pscars_300", title:"300 млн (Машинами)", price:4080 },
+          { id:"pscars_400", title:"400 млн (Машинами)", price:4590 },
+          { id:"pscars_500", title:"500 млн (Машинами)", price:5100 },
+          { id:"pscars_750", title:"750 млн (Машинами)", price:6800 },
+        ],
+        cash: [
+          { id:"pscash_none", title:"Не нужна наличка", price:0 },
+          { id:"pscash_30", title:"30 млн (Наличкой)", price:1190 },
+          { id:"pscash_40", title:"40 млн (Наличкой)", price:1360 },
+        ],
+        level: [
+          { id:"pslvl_none", title:"Уровень не нужен", price:0 },
+          { id:"pslvl_100", title:"LVL 100", price:2500 },
+          { id:"pslvl_120", title:"LVL 120", price:3000 },
+          { id:"pslvl_135", title:"LVL 135", price:3500 },
+          { id:"pslvl_150", title:"LVL 150", price:4500 },
+        ],
+        reqs: [
+          { id:"req_no200k", title:"У меня нет 200.000$ на балансе", price:500 },
+          { id:"req_nopsplus", title:"У меня нет подписки PS+", price:500 },
+        ]
+      }
     };
 
-    const PS = {
-      cars: [
-        { id:"pscars_none", title:"Возьму наличкой / Не нужно", price:0 },
-        { id:"pscars_15", title:"15 млн (Машинами)", price:765 },
-        { id:"pscars_20", title:"20 млн (Машинами)", price:935 },
-        { id:"pscars_25", title:"25 млн (Машинами)", price:1020 },
-        { id:"pscars_30", title:"30 млн (Машинами)", price:1105 },
-        { id:"pscars_40", title:"40 млн (Машинами)", price:1190 },
-        { id:"pscars_50", title:"50 млн (Машинами)", price:1360 },
-        { id:"pscars_75", title:"75 млн (Машинами)", price:1700 },
-        { id:"pscars_100", title:"100 млн (Машинами)", price:2040 },
-        { id:"pscars_150", title:"150 млн (Машинами)", price:2380 },
-        { id:"pscars_200", title:"200 млн (Машинами)", price:3060 },
-        { id:"pscars_300", title:"300 млн (Машинами)", price:4080 },
-        { id:"pscars_400", title:"400 млн (Машинами)", price:4590 },
-        { id:"pscars_500", title:"500 млн (Машинами)", price:5100 },
-        { id:"pscars_750", title:"750 млн (Машинами)", price:6800 },
-      ],
-      cash: [
-        { id:"pscash_none", title:"Не нужна наличка", price:0 },
-        { id:"pscash_30", title:"30 млн (Наличкой)", price:1190 },
-        { id:"pscash_40", title:"40 млн (Наличкой)", price:1360 },
-      ],
-      level: [
-        { id:"pslvl_none", title:"Уровень не нужен", price:0 },
-        { id:"pslvl_100", title:"LVL 100", price:2500 },
-        { id:"pslvl_120", title:"LVL 120", price:3000 },
-        { id:"pslvl_135", title:"LVL 135", price:3500 },
-        { id:"pslvl_150", title:"LVL 150", price:4500 },
-      ],
-      reqs: [
-        { id:"req_no200k", title:"У меня нет 200.000$ на балансе", price:500 },
-        { id:"req_nopsplus", title:"У меня нет подписки PS+", price:500 },
-      ]
+    // Xbox = PS +10%
+    const XB_MULT = 1.10;
+    function xbPrice(p){ return Math.round(p * XB_MULT); }
+    const XBOX = {
+      cars: DATA.ps.cars.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price), title: x.title.replace("(Машинами)", "(Машинами)")})),
+      cash: DATA.ps.cash.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price), title: x.title.replace("(Наличкой)", "(Наличкой)")})),
+      level: DATA.ps.level.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price)})),
+      reqs: DATA.ps.reqs.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price)})),
     };
 
-    // === STATE (НЕ ТРОГАЛ) ===
-    const state = {
-      platform: null,
-      group: null,
-      selections: new Map(),
-      checks: new Set(),
-      total: 0
+    // === STATE ===
+    let state = {
+      platformGroup: null,       // 'pc' | 'ps' | 'xbox'
+      platformLabel: null,       // 'PC Steam' etc
+      consoleVersion: null,      // ps4/ps5/xbox
+      pcStore: null,             // steam/epic/rockstar
+      selections: new Set(),     // selected ids (radio/checkbox mixed)
+      radioByGroup: {},          // groupName -> selected id
+      prices: {},                // id -> price
+      titles: {},                // id -> title
     };
 
-    // === DOM ===
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => Array.from(document.querySelectorAll(s));
-
-    const builder = $("#builder");
-    const pcBlock = $("#pcBlock");
-    const psBlock = $("#psBlock");
-
-    const totalSumEl = $("#totalSum");
-    const summaryLineEl = $("#summaryLine");
-
-    const modalOverlay = $("#modalOverlay");
-    const adminOverlay = $("#adminOverlay");
-
-    const modalTotal = $("#modalTotal");
-    const modalSummary = $("#modalSummary");
-
-    // Toast
-    const toast = $("#toast");
-    const toastTitle = $("#toastTitle");
-    const toastText = $("#toastText");
-    $("#toastClose").onclick = () => toast.classList.remove("show");
-
-    function showToast(title, text){
-      toastTitle.textContent = title;
-      toastText.textContent = text;
-      toast.classList.add("show");
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(()=>toast.classList.remove("show"), 4200);
+    // === BUILD MAPS ===
+    function indexData(){
+      const add = (arr)=> arr.forEach(i => { state.prices[i.id]=i.price; state.titles[i.id]=i.title; });
+      add(DATA.pc.money); add(DATA.pc.level); add(DATA.pc.reps); add(DATA.pc.unlocks); add(DATA.pc.transport); add(DATA.pc.service); add(DATA.pc.special);
+      add(DATA.ps.cars); add(DATA.ps.cash); add(DATA.ps.level); add(DATA.ps.reqs);
+      add(XBOX.cars); add(XBOX.cash); add(XBOX.level); add(XBOX.reqs);
     }
+    indexData();
 
-    // Copy buttons
-    document.addEventListener("click", (e)=>{
-      const btn = e.target.closest("[data-copy]");
-      if(!btn) return;
-      const val = btn.getAttribute("data-copy");
-      navigator.clipboard.writeText(val).then(()=>{
-        showToast("Скопировано", val);
-      }).catch(()=> showToast("Не удалось", "Скопируй вручную: " + val));
-    });
-
-    // Style preset switches
-    function setPreset(p){
-      document.body.classList.remove("preset-elite","preset-neon","preset-minimal");
-      document.body.classList.add(p);
-      localStorage.setItem("ui_preset", p);
-      showToast("Тема", p.replace("preset-","").toUpperCase());
-    }
-    $("#presetElite").onclick = ()=>setPreset("preset-elite");
-    $("#presetNeon").onclick = ()=>setPreset("preset-neon");
-    $("#presetMinimal").onclick = ()=>setPreset("preset-minimal");
-    const savedPreset = localStorage.getItem("ui_preset");
-    if(savedPreset) setPreset(savedPreset);
-
-    // Build option cards (убрал “выберите вариант” и “multi”, сделал как на скринах)
-    function optionCard({id,title,price,badge,icon}, mode, choiceKey){
-      const priceText = price === 0 ? "0 ₽" : `+${price} ₽`;
-      const pill =
-        mode === "multi"
-          ? `<span class="text-[11px] px-2 py-[2px] rounded-full bg-white/10 text-white/70">можно несколько</span>`
-          : `<span class="text-[11px] px-2 py-[2px] rounded-full bg-white/10 text-white/70">1 из 1</span>`;
-
-      const badgeHtml = badge ? `<span class="badge rounded-full px-2 py-[2px] text-[11px] text-white/70">${badge}</span>` : "";
-
+    // === UI HELPERS ===
+    function createRadioCard(item, groupName){
+      const badge = item.badge ? `<span class="tag">${item.badge}</span>` : "";
+      const icon = item.icon ? `<i class="fa-solid ${item.icon}"></i>` : `<i class="fa-solid fa-check"></i>`;
       return `
-        <button class="option text-left" data-id="${id}" data-mode="${mode}" data-key="${choiceKey||""}">
-          <div class="flex items-center justify-between gap-2">
-            <div class="font-semibold text-[15px] leading-tight">
-              ${icon ? `<span class="mr-1">${icon}</span>` : ""}${title}
+        <label class="cursor-pointer block">
+          <input type="radio" name="${groupName}" class="hidden" value="${item.id}" onchange="toggleItem('${item.id}', true, '${groupName}')">
+          <div class="cyber-card p-4 flex items-center gap-4 h-full">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center" style="color:var(--primary)">
+              ${icon}
             </div>
-            <div class="flex items-center gap-2">
-              ${badgeHtml}
-              ${pill}
+            <div class="flex-1">
+              <div class="font-bold text-sm text-white flex items-center gap-2">
+                ${item.title} ${badge}
+              </div>
             </div>
+            <div class="font-tech text-xl font-bold" style="color:var(--primary)">${item.price}₽</div>
           </div>
-
-          <div class="mt-2 flex items-center justify-end">
-            <div class="price text-[14px]">${priceText}</div>
-          </div>
-        </button>
+        </label>
       `;
     }
 
-    // Render sections
-    function render(){
-      $("#pcMoneyGrid").innerHTML = PC.money.map(x => optionCard(x, "single", "pc_money")).join("");
-      $("#pcLevelGrid").innerHTML = PC.level.map(x => optionCard(x, "single", "pc_level")).join("");
-      $("#pcRepGrid").innerHTML = PC.reps.map(x => optionCard(x, "multi", null)).join("");
-      $("#pcUnlocksGrid").innerHTML = PC.unlocks.map(x => optionCard(x, "multi", null)).join("");
-      $("#pcTransportGrid").innerHTML = PC.transport.map(x => optionCard(x, "multi", null)).join("");
-      $("#pcServiceGrid").innerHTML = PC.service.map(x => optionCard(x, "multi", null)).join("");
-      $("#pcSpecialGrid").innerHTML = PC.special.map(x => optionCard(x, "multi", null)).join("");
-
-      $("#psCarsGrid").innerHTML = PS.cars.map(x => optionCard(x, "single", "ps_cars")).join("");
-      $("#psCashGrid").innerHTML = PS.cash.map(x => optionCard(x, "single", "ps_cash")).join("");
-      $("#psLevelGrid").innerHTML = PS.level.map(x => optionCard(x, "single", "ps_level")).join("");
-      $("#psReqGrid").innerHTML = PS.reqs.map(x => optionCard(x, "multi", null)).join("");
-    }
-    render();
-
-    // Accordion helpers (скрытые шаги после шага 2)
-    function openAcc(accEl){
-      const body = accEl.querySelector(".accBody");
-      if(!body) return;
-      accEl.classList.add("open");
-      body.style.height = body.scrollHeight + "px";
-      body.classList.add("animate-slideDown");
-    }
-    function closeAcc(accEl){
-      const body = accEl.querySelector(".accBody");
-      if(!body) return;
-      body.style.height = body.scrollHeight + "px";
-      requestAnimationFrame(()=>{
-        accEl.classList.remove("open");
-        body.style.height = "0px";
-      });
-    }
-    function toggleAcc(accEl){
-      const isOpen = accEl.classList.contains("open");
-      isOpen ? closeAcc(accEl) : openAcc(accEl);
+    function createCheckCard(item){
+      const badge = item.badge ? `<span class="tag">${item.badge}</span>` : "";
+      return `
+        <label class="cursor-pointer block">
+          <input type="checkbox" class="hidden" onchange="toggleItem('${item.id}', false)">
+          <div class="cyber-card p-4 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-md border border-white/15 bg-white/5 grid place-items-center">
+                <i class="fa-solid fa-check text-xs opacity-40"></i>
+              </div>
+              <div class="font-medium text-sm text-white flex items-center gap-2">
+                ${item.title} ${badge}
+              </div>
+            </div>
+            <div class="font-tech font-bold" style="color:var(--primary)">+${item.price}₽</div>
+          </div>
+        </label>
+      `;
     }
 
-    document.addEventListener("click", (e)=>{
-      const h = e.target.closest(".accHeader[data-acc]");
-      if(!h) return;
-      const sel = h.getAttribute("data-acc");
-      const acc = document.querySelector(sel);
-      if(acc) toggleAcc(acc);
-    });
+    function renderAll(){
+      // PC
+      document.getElementById("pcMoneyContainer").innerHTML = DATA.pc.money.map(i => createRadioCard(i,"pc_money")).join("");
+      document.getElementById("pcLevelContainer").innerHTML = DATA.pc.level.map(i => createRadioCard(i,"pc_level")).join("");
+      document.getElementById("pcRepsContainer").innerHTML = DATA.pc.reps.map(i => createCheckCard(i)).join("");
+      document.getElementById("pcUnlocksContainer").innerHTML = DATA.pc.unlocks.map(i => createCheckCard(i)).join("");
+      document.getElementById("pcTransportContainer").innerHTML = DATA.pc.transport.map(i => createCheckCard(i)).join("");
+      document.getElementById("pcServiceContainer").innerHTML = DATA.pc.service.map(i => createCheckCard(i)).join("");
+      document.getElementById("pcSpecialContainer").innerHTML = DATA.pc.special.map(i => createCheckCard(i)).join("");
 
-    // Platform select
-    $$(".option[data-platform]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const platform = btn.dataset.platform;
-        const group = btn.dataset.group;
+      // PS
+      document.getElementById("psCarsContainer").innerHTML = DATA.ps.cars.map(i => createRadioCard(i,"ps_cars")).join("");
+      document.getElementById("psCashContainer").innerHTML = DATA.ps.cash.map(i => createRadioCard(i,"ps_cash")).join("");
+      document.getElementById("psLevelContainer").innerHTML = DATA.ps.level.map(i => createRadioCard(i,"ps_level")).join("");
+      document.getElementById("psReqsContainer").innerHTML = DATA.ps.reqs.map(i => createCheckCard(i)).join("");
 
-        state.platform = platform;
-        state.group = group;
-
-        document.body.classList.toggle("ps", group === "ps");
-
-        $$(".option[data-platform]").forEach(b=>b.classList.remove("selected"));
-        btn.classList.add("selected");
-
-        builder.classList.remove("hidden");
-        pcBlock.classList.toggle("hidden", group !== "pc");
-        psBlock.classList.toggle("hidden", group !== "ps");
-
-        if(group === "pc"){
-          if(!state.selections.has("pc_money")) state.selections.set("pc_money", "none");
-          if(!state.selections.has("pc_level")) state.selections.set("pc_level", "lvl_none");
-          // по умолчанию: скрытые шаги закрыты, но можно авт. открыть один раз:
-          closeAcc($("#accPcSteps"));
-        } else {
-          if(!state.selections.has("ps_cars")) state.selections.set("ps_cars", "pscars_none");
-          if(!state.selections.has("ps_cash")) state.selections.set("ps_cash", "pscash_none");
-          if(!state.selections.has("ps_level")) state.selections.set("ps_level", "pslvl_none");
-          closeAcc($("#accPsSteps"));
-        }
-
-        syncUI();
-        recalc();
-        showToast("Платформа выбрана", group === "ps" ? "Режим PlayStation (синие тона)" : "Режим ПК (зелёные тона)");
-      });
-    });
-
-    // Option click handler (single/multi) — слово multi это просто режим, пользователю не показываем
-    document.addEventListener("click", (e)=>{
-      const btn = e.target.closest(".option[data-id]");
-      if(!btn) return;
-
-      if(btn.dataset.platform) return;
-
-      const id = btn.dataset.id;
-      const mode = btn.dataset.mode;
-      const key = btn.dataset.key;
-
-      if(mode === "single"){
-        if(!key) return;
-        state.selections.set(key, id);
-      }else{
-        if(state.checks.has(id)) state.checks.delete(id);
-        else state.checks.add(id);
-      }
-
-      // micro “pop” feedback
-      btn.classList.add("animate-pop");
-      setTimeout(()=>btn.classList.remove("animate-pop"), 180);
-
-      syncUI();
-      recalc();
-    });
-
-    function syncUI(){
-      $$(".option[data-id]").forEach(b=>{
-        if(b.dataset.platform) return;
-        b.classList.remove("selected");
-      });
-
-      for(const [key, id] of state.selections.entries()){
-        const el = document.querySelector(`.option[data-id="${id}"][data-key="${key}"]`);
-        if(el) el.classList.add("selected");
-      }
-
-      for(const id of state.checks){
-        const el = document.querySelector(`.option[data-id="${id}"]`);
-        if(el) el.classList.add("selected");
-      }
-
-      const btnOrder = $("#btnOrder");
-      if(state.group === "ps"){
-        btnOrder.style.background = "linear-gradient(90deg, rgba(96,165,250,1), rgba(59,130,246,1))";
-      }else{
-        btnOrder.style.background = "linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1))";
-      }
+      // XBOX
+      document.getElementById("xbCarsContainer").innerHTML = XBOX.cars.map(i => createRadioCard(i,"xb_cars")).join("");
+      document.getElementById("xbCashContainer").innerHTML = XBOX.cash.map(i => createRadioCard(i,"xb_cash")).join("");
+      document.getElementById("xbLevelContainer").innerHTML = XBOX.level.map(i => createRadioCard(i,"xb_level")).join("");
+      document.getElementById("xbReqsContainer").innerHTML = XBOX.reqs.map(i => createCheckCard(i)).join("");
     }
+    renderAll();
 
-    function getItemById(id){
-      const all = [
-        ...PC.money, ...PC.level, ...PC.reps, ...PC.unlocks, ...PC.transport, ...PC.service, ...PC.special,
-        ...PS.cars, ...PS.cash, ...PS.level, ...PS.reqs
-      ];
-      return all.find(x=>x.id===id);
-    }
-
-    function recalc(){
-      let total = 0;
-      const parts = [];
-
-      for(const [key, id] of state.selections.entries()){
-        const item = getItemById(id);
-        if(item){
-          total += item.price;
-          if(item.price>0) parts.push(item.title);
-          if(item.price===0 && (id==="none" || id.includes("_none"))) parts.push(item.title);
-        }
-      }
-
-      for(const id of state.checks){
-        const item = getItemById(id);
-        if(item){
-          total += item.price;
-          parts.push(item.title);
-        }
-      }
-
-      state.total = total;
-      totalSumEl.textContent = total.toString();
-      summaryLineEl.textContent =
-        parts.length
-          ? parts.slice(0,4).join(" • ") + (parts.length>4 ? ` • +${parts.length-4}...` : "")
-          : "Выберите опции — сумма посчитается автоматически.";
-    }
-
-    $("#btnReset").addEventListener("click", ()=>{
+    // === PLATFORM SWITCH ===
+    function setPlatform(group){
+      state.platformGroup = group;
       state.selections.clear();
-      state.checks.clear();
-      state.total = 0;
-      syncUI();
-      recalc();
-      showToast("Сброшено", "Опции сброшены. Платформа остаётся выбранной.");
-    });
+      state.radioByGroup = {};
+      state.pcStore = null;
+      state.consoleVersion = null;
+      hideSuccess();
 
-    $("#btnPreview").addEventListener("click", ()=>{
-      const list = buildOrderSummary().lines;
-      if(!state.platform){
-        showToast("Сначала платформа", "Выберите Steam/Epic/Rockstar или PS4/PS5.");
-        return;
+      // theme
+      document.body.classList.remove("ps-mode","xbox-mode");
+      if(group === "ps") document.body.classList.add("ps-mode");
+      if(group === "xbox") document.body.classList.add("xbox-mode");
+
+      // card highlight
+      ["btn-pc","btn-ps","btn-xbox"].forEach(id => document.getElementById(id).classList.remove("selected"));
+      document.getElementById(group === "pc" ? "btn-pc" : group === "ps" ? "btn-ps" : "btn-xbox").classList.add("selected");
+
+      // show builder + correct modules
+      document.getElementById("builder").classList.remove("hidden");
+      document.getElementById("pc-modules").classList.toggle("hidden", group !== "pc");
+      document.getElementById("ps-modules").classList.toggle("hidden", group !== "ps");
+      document.getElementById("xbox-modules").classList.toggle("hidden", group !== "xbox");
+
+      // show selectors
+      document.getElementById("pcStores").classList.toggle("hidden", group !== "pc");
+      document.getElementById("psVersions").classList.toggle("hidden", group !== "ps");
+      document.getElementById("xboxVersions").classList.toggle("hidden", group !== "xbox");
+
+      // clear selector highlights
+      document.querySelectorAll("#pcStores button.cyber-card, #psVersions button.cyber-card, #xboxVersions button.cyber-card")
+        .forEach(b=>b.classList.remove("selected"));
+
+      // defaults (radio)
+      if(group === "pc"){
+        setRadioDefault("pc_money","none");
+        setRadioDefault("pc_level","lvl_none");
+        state.platformLabel = "PC";
       }
-      showToast("Состав заказа", list.length ? list.slice(0,3).join(" • ") + (list.length>3 ? " • ..." : "") : "Пока ничего не выбрано.");
-    });
-
-    $("#btnOrder").addEventListener("click", ()=>{
-      if(!state.platform){
-        showToast("Сначала платформа", "Выберите Steam/Epic/Rockstar или PS4/PS5.");
-        return;
+      if(group === "ps"){
+        setRadioDefault("ps_cars","pscars_none");
+        setRadioDefault("ps_cash","pscash_none");
+        setRadioDefault("ps_level","pslvl_none");
+        state.platformLabel = "PlayStation";
       }
-      if(state.total <= 0){
-        showToast("Добавьте услуги", "Сумма = 0 ₽. Выберите хотя бы одну платную опцию.");
-        return;
-      }
-      modalTotal.textContent = state.total.toString();
-      modalSummary.textContent = buildOrderSummary().text;
-      modalOverlay.classList.add("show");
-    });
-
-    $("#btnCloseModal").addEventListener("click", ()=> modalOverlay.classList.remove("show"));
-    modalOverlay.addEventListener("click", (e)=>{
-      if(e.target === modalOverlay) modalOverlay.classList.remove("show");
-    });
-
-    $("#btnAdmin").addEventListener("click", ()=> adminOverlay.classList.add("show"));
-    $("#btnCloseAdmin").addEventListener("click", ()=> adminOverlay.classList.remove("show"));
-    adminOverlay.addEventListener("click", (e)=>{
-      if(e.target === adminOverlay) adminOverlay.classList.remove("show");
-    });
-
-    function buildOrderSummary(){
-      const lines = [];
-      const pushItem = (id)=>{
-        const it = getItemById(id);
-        if(it) lines.push(`${it.title}${it.price?` (+${it.price}₽)`:" (0₽)"}`);
-      };
-
-      lines.push(`Платформа: ${state.platform.toUpperCase()}`);
-
-      const keysOrder = state.group === "pc"
-        ? ["pc_money","pc_level"]
-        : ["ps_cars","ps_cash","ps_level"];
-      for(const k of keysOrder){
-        if(state.selections.has(k)) pushItem(state.selections.get(k));
+      if(group === "xbox"){
+        setRadioDefault("xb_cars","xb_pscars_none");
+        setRadioDefault("xb_cash","xb_pscash_none");
+        setRadioDefault("xb_level","xb_pslvl_none");
+        state.platformLabel = "Xbox";
       }
 
-      for(const id of state.checks) pushItem(id);
+      // reset form inputs checked
+      document.querySelectorAll('#builder input[type="radio"], #builder input[type="checkbox"]').forEach(el => el.checked = false);
 
-      const text = lines.join(" | ");
-      return { lines, text };
+      // sync UI selected for defaults
+      syncSelectedCards();
+      updateCart();
+
+      // scroll
+      setTimeout(()=> document.getElementById("builder").scrollIntoView({behavior:"smooth", block:"start"}), 50);
     }
 
-    // === SEND ORDER (НЕ ТРОГАЛ ЛОГИКУ) ===
-    $("#btnSendOrder").addEventListener("click", async ()=>{
-      const login = $("#fLogin").value.trim();
-      const pass  = $("#fPass").value.trim();
-      const contact = $("#fContact").value.trim();
-      const wishes  = $("#fWishes").value.trim();
-      const paid    = $("#fPaid").checked;
+    // highlight selected store/version buttons clearly
+    function highlightSelectorButtons(rootSelector, key){
+      const root = document.querySelector(rootSelector);
+      if(!root) return;
+      root.querySelectorAll("button.cyber-card").forEach(btn => {
+        btn.classList.toggle("selected", btn.dataset.key === key);
+      });
+    }
 
-      if(!login || !pass){
-        showToast("Не хватает данных", "Логин и пароль платформы обязательны.");
-        return;
+    function setPcStore(store, btnEl){
+      state.pcStore = store;
+      const labels = { steam:"PC Steam", epic:"PC Epic", rockstar:"PC Rockstar" };
+      state.platformLabel = labels[store] || "PC";
+      highlightSelectorButtons("#pcStores", store);
+      updateModalPlatformLine();
+    }
+
+    function setConsoleVersion(v, btnEl){
+      state.consoleVersion = v;
+
+      if(state.platformGroup === "ps"){
+        state.platformLabel = (v === "ps4") ? "PS4" : "PS5";
+        highlightSelectorButtons("#psVersions", v);
+      }else if(state.platformGroup === "xbox"){
+        state.platformLabel = "Xbox";
+        highlightSelectorButtons("#xboxVersions", "xbox");
       }
-      if(!paid){
-        showToast("Оплата не подтверждена", "Поставьте галочку «Я оплатил(а)».");
-        return;
+
+      updateModalPlatformLine();
+    }
+
+    function setRadioDefault(groupName, id){
+      state.radioByGroup[groupName] = id;
+      state.selections.add(id);
+      const input = document.querySelector(`input[type="radio"][name="${groupName}"][value="${id}"]`);
+      if(input) input.checked = true;
+    }
+
+    // === SELECTION LOGIC ===
+    function toggleItem(id, isRadio, groupName){
+      if(isRadio){
+        const prev = state.radioByGroup[groupName];
+        if(prev) state.selections.delete(prev);
+        state.radioByGroup[groupName] = id;
+        state.selections.add(id);
+      }else{
+        if(state.selections.has(id)) state.selections.delete(id);
+        else state.selections.add(id);
+      }
+      syncSelectedCards();
+      updateCart();
+    }
+
+    function syncSelectedCards(){
+      document.querySelectorAll("#builder .cyber-card").forEach(card => {
+        if(card.closest("label") || card.closest("#pcStores") || card.closest("#psVersions") || card.closest("#xboxVersions")){
+          card.classList.remove("selected");
+        }
+      });
+
+      for(const g in state.radioByGroup){
+        const id = state.radioByGroup[g];
+        const input = document.querySelector(`input[type="radio"][name="${g}"][value="${id}"]`);
+        if(input){
+          const card = input.closest("label")?.querySelector(".cyber-card");
+          if(card) card.classList.add("selected");
+        }
       }
 
-      const orderId = makeOrderId();
-      const summary = buildOrderSummary();
+      state.selections.forEach(id=>{
+        const chk = document.querySelector(`input[type="checkbox"][onchange*="'${id}'"]`);
+        if(chk){
+          const card = chk.closest("label")?.querySelector(".cyber-card");
+          if(card) card.classList.add("selected");
+        }
+      });
 
-      const payload = {
-        action: "create_order",
-        orderId,
-        createdAt: new Date().toISOString(),
-        platform: state.platform,
-        group: state.group,
-        total: state.total,
-        items: summary.lines,
-        itemsText: summary.text,
-        credentials: { login, password: pass },
-        contact,
-        wishes,
-        paid: true,
-        status: "Новый"
-      };
+      updateModalPlatformLine();
+    }
 
-      try{
-        $("#btnSendOrder").disabled = true;
-        $("#btnSendOrder").textContent = "Отправляем...";
+    // === CART ===
+    function updateCart(){
+      const cartEl = document.getElementById('cartItems');
+      const totalEl = document.getElementById('displayTotal');
+      const checkoutBtn = document.getElementById('checkoutBtn');
 
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
+      let total = 0;
+      let html = '';
+
+      const chosen = Array.from(state.selections);
+
+      if (!chosen.length) {
+        html = '<p class="italic opacity-50 py-4 text-center">Ничего не выбрано</p>';
+      } else {
+        chosen.forEach((id, idx) => {
+          const price = state.prices[id] ?? 0;
+          const title = state.titles[id] ?? id;
+          total += price;
+          html += `
+            <div class="cart-row flex justify-between items-center" style="animation-delay:${idx * 40}ms">
+              <span class="text-white font-medium">${escapeHtml(title)}</span>
+              <span style="color:var(--primary)">${price}₽</span>
+            </div>
+          `;
         });
-
-        try{ await res.json(); }catch(e){}
-
-        if(!res.ok) throw new Error("HTTP " + res.status);
-
-        modalOverlay.classList.remove("show");
-
-        launchFireworks(2400);
-        showToast("Заявка отправлена 🎉", `Ваш номер: ${orderId}`);
-        showOrderSuccessCard(orderId);
-
-        $("#fLogin").value = "";
-        $("#fPass").value = "";
-        $("#fContact").value = "";
-        $("#fWishes").value = "";
-        $("#fPaid").checked = false;
-
-      }catch(err){
-        console.error(err);
-        showToast("Ошибка отправки", "Проверьте Apps Script (CORS/Deploy) или попробуйте ещё раз.");
-      }finally{
-        $("#btnSendOrder").disabled = false;
-        $("#btnSendOrder").textContent = "Отправить заказ";
       }
-    });
 
+      cartEl.innerHTML = html;
+
+      animateValue(totalEl, parseInt(totalEl.innerText || "0", 10), total, 400);
+
+      if (total > 0) {
+        checkoutBtn.removeAttribute('disabled');
+        checkoutBtn.classList.remove('bg-white/5','text-gray-500','cursor-not-allowed');
+        checkoutBtn.classList.add('btn-primary');
+      } else {
+        checkoutBtn.setAttribute('disabled','true');
+        checkoutBtn.classList.add('bg-white/5','text-gray-500','cursor-not-allowed');
+        checkoutBtn.classList.remove('btn-primary');
+      }
+
+      document.getElementById('modalTotal').innerText = String(total);
+      updateModalPlatformLine();
+    }
+
+    function resetBuilder(){
+      state.selections.clear();
+      state.radioByGroup = {};
+      document.querySelectorAll('#builder input[type="radio"], #builder input[type="checkbox"]').forEach(el => el.checked = false);
+
+      if(state.platformGroup === "pc"){
+        setRadioDefault("pc_money","none");
+        setRadioDefault("pc_level","lvl_none");
+      }
+      if(state.platformGroup === "ps"){
+        setRadioDefault("ps_cars","pscars_none");
+        setRadioDefault("ps_cash","pscash_none");
+        setRadioDefault("ps_level","pslvl_none");
+      }
+      if(state.platformGroup === "xbox"){
+        setRadioDefault("xb_cars","xb_pscars_none");
+        setRadioDefault("xb_cash","xb_pscash_none");
+        setRadioDefault("xb_level","xb_pslvl_none");
+      }
+
+      syncSelectedCards();
+      updateCart();
+    }
+
+    function updateModalPlatformLine(){
+      const el = document.getElementById("modalPlatformLine");
+      if(!el) return;
+      const group = state.platformGroup ? state.platformGroup.toUpperCase() : "—";
+      const label = state.platformLabel || "—";
+      let extra = "";
+      if(state.platformGroup === "pc"){
+        extra = state.pcStore ? ` • ${label}` : " • выбери Steam/Epic/Rockstar";
+      }
+      if(state.platformGroup === "ps"){
+        extra = state.consoleVersion ? ` • ${label}` : " • выбери PS4/PS5";
+      }
+      if(state.platformGroup === "xbox"){
+        extra = " • цены PS +10%";
+      }
+      el.textContent = `Платформа: ${group}${extra}`;
+    }
+
+    // === MODAL ===
+    function openCheckout(){
+      document.getElementById('modal').classList.remove('hidden');
+      setTimeout(()=> document.getElementById('modalContent').classList.remove('translate-x-full'), 10);
+      updateModalPlatformLine();
+    }
+    function closeCheckout(){
+      document.getElementById('modalContent').classList.add('translate-x-full');
+      setTimeout(()=> {
+        document.getElementById('modal').classList.add('hidden');
+        hideSuccess();
+      }, 260);
+    }
+
+    function copyToClip(btn, text){
+      navigator.clipboard.writeText(text);
+      const icon = btn.querySelector('.fa-copy');
+      if(!icon) return;
+      icon.classList.remove('fa-copy','fa-regular');
+      icon.classList.add('fa-check','fa-solid','text-green-500');
+      setTimeout(()=>{
+        icon.classList.add('fa-copy','fa-regular');
+        icon.classList.remove('fa-check','fa-solid','text-green-500');
+      }, 1600);
+    }
+
+    // === BEAUTIFUL SUCCESS ===
+    let lastOrderId = "";
+
+    function showSuccess(orderId){
+      lastOrderId = orderId;
+      const box = document.getElementById("successBox");
+      const idEl = document.getElementById("successOrderId");
+      if(idEl) idEl.textContent = orderId;
+      if(box) box.classList.remove("hidden");
+
+      // optional: dim form
+      const form = document.querySelector("#modalContent form");
+      if(form) form.classList.add("opacity-40","pointer-events-none");
+    }
+
+    function hideSuccess(){
+      const box = document.getElementById("successBox");
+      if(box) box.classList.add("hidden");
+      lastOrderId = "";
+
+      const form = document.querySelector("#modalContent form");
+      if(form) form.classList.remove("opacity-40","pointer-events-none");
+    }
+
+    function copyOrderId(){
+      if(!lastOrderId) return;
+      navigator.clipboard.writeText(lastOrderId);
+
+      const btn = document.querySelector('#successBox button[onclick="copyOrderId()"]');
+      if(!btn) return;
+      const prev = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i><span class="text-xs uppercase tracking-widest">Скопировано</span>`;
+      setTimeout(()=> btn.innerHTML = prev, 1300);
+    }
+
+    // === SEND ORDER (text/plain => без preflight) ===
     function makeOrderId(){
       const d = new Date();
       const pad = (n)=> String(n).padStart(2,"0");
@@ -1324,241 +1119,130 @@
       return `GTA-${y}${mo}${da}-${h}${mi}${s}-${rnd}`;
     }
 
-    function showOrderSuccessCard(orderId){
-      const existing = document.getElementById("successCard");
-      if(existing) existing.remove();
+    async function sendOrder(){
+      const btn = document.getElementById("submitBtn");
+      const original = btn.textContent;
 
-      const div = document.createElement("div");
-      div.id = "successCard";
-      div.style.position = "fixed";
-      div.style.inset = "0";
-      div.style.zIndex = "85";
-      div.style.display = "grid";
-      div.style.placeItems = "center";
-      div.style.background = "rgba(0,0,0,.55)";
-      div.innerHTML = `
-        <div class="glass rounded-3xl p-6 md:p-8 w-[min(720px,calc(100%-32px))]">
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-2xl grid place-items-center border border-white/10"
-                 style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.03));">
-              <span class="text-xl">🎆</span>
-            </div>
-            <div class="flex-1">
-              <div class="font-display text-3xl md:text-4xl font-extrabold">Готово!</div>
-              <div class="text-white/65 mt-1">Заявка принята. Сохраните номер — по нему можно уточнять статус.</div>
-            </div>
-          </div>
+      if(!state.platformGroup){
+        alert("Сначала выбери платформу.");
+        return;
+      }
+      if(state.platformGroup === "pc" && !state.pcStore){
+        alert("Выбери: Steam / Epic / Rockstar.");
+        return;
+      }
+      if(state.platformGroup === "ps" && !state.consoleVersion){
+        alert("Выбери: PS4 / PS5.");
+        return;
+      }
+      if(state.platformGroup === "xbox" && !state.consoleVersion){
+        alert("Выбери: Xbox (One/Series).");
+        return;
+      }
 
-          <div class="mt-5 glass rounded-3xl p-5 border border-white/10">
-            <div class="text-xs text-white/50">Номер заявки</div>
-            <div class="font-display text-3xl md:text-4xl font-extrabold mt-1">${orderId}</div>
-            <div class="text-white/55 text-sm mt-2">Мы свяжемся с вами по указанным контактам.</div>
-          </div>
+      const login = document.getElementById("inpLogin").value.trim();
+      const pass  = document.getElementById("inpPass").value.trim();
+      const contact = document.getElementById("inpContact").value.trim();
+      const paid = document.getElementById("paidCheck").checked;
 
-          <div class="mt-5 flex flex-col sm:flex-row gap-3">
-            <button class="chip rounded-2xl px-5 py-3 text-sm font-semibold text-white/85 hover:text-white" id="copyOrderId">
-              Копировать номер
-            </button>
-            <button class="rounded-2xl px-5 py-3 text-sm font-extrabold text-black flex-1"
-                    style="background: linear-gradient(90deg, rgba(34,197,94,1), rgba(16,185,129,1));"
-                    id="closeSuccess">
-              Отлично
-            </button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(div);
+      if(!login || !pass || !contact){
+        alert("Заполни логин, пароль и контакт.");
+        return;
+      }
+      if(!paid){
+        alert("Подтверди оплату галочкой.");
+        return;
+      }
 
-      div.querySelector("#closeSuccess").onclick = ()=> div.remove();
-      div.addEventListener("click", (e)=>{ if(e.target === div) div.remove(); });
+      const orderId = makeOrderId();
 
-      div.querySelector("#copyOrderId").onclick = ()=>{
-        navigator.clipboard.writeText(orderId).then(()=>showToast("Скопировано", orderId));
+      const items = Array.from(state.selections).map(id => {
+        const title = state.titles[id] || id;
+        const price = state.prices[id] || 0;
+        return `${title}${price ? ` (+${price}₽)` : " (0₽)"}`;
+      });
+
+      const total = Array.from(state.selections).reduce((sum, id) => sum + (state.prices[id] || 0), 0);
+      if(total <= 0){
+        alert("Сумма 0 ₽ — выбери услуги.");
+        return;
+      }
+
+      let platformText = "";
+      if(state.platformGroup === "pc") platformText = `PC-${state.pcStore.toUpperCase()}`;
+      if(state.platformGroup === "ps") platformText = state.consoleVersion.toUpperCase();
+      if(state.platformGroup === "xbox") platformText = "XBOX";
+
+      const payload = {
+        action: "create_order",
+        orderId,
+        createdAt: new Date().toISOString(),
+        platform: platformText,
+        total,
+        credentials: { login, password: pass },
+        contact,
+        wishes: "",
+        paid: true,
+        status: "Новый",
+        items,
+        itemsText: items.join(" | ")
       };
 
-      if(state.group === "ps"){
-        div.querySelector("#closeSuccess").style.background = "linear-gradient(90deg, rgba(96,165,250,1), rgba(59,130,246,1))";
-      }
-    }
-
-    // === Fireworks (НЕ ТРОГАЛ) ===
-    const fxCanvas = document.getElementById("fxCanvas");
-    const ctx = fxCanvas.getContext("2d");
-    let particles = [];
-
-    function resizeCanvas(){
-      fxCanvas.width = window.innerWidth * devicePixelRatio;
-      fxCanvas.height = window.innerHeight * devicePixelRatio;
-      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    function launchFireworks(durationMs=2000){
-      fxCanvas.classList.add("show");
-      const endAt = performance.now() + durationMs;
-
-      function burst(x,y){
-        const count = 70 + Math.floor(Math.random()*40);
-        for(let i=0;i<count;i++){
-          const a = Math.random()*Math.PI*2;
-          const sp = 1.8 + Math.random()*4.8;
-          particles.push({
-            x,y,
-            vx: Math.cos(a)*sp,
-            vy: Math.sin(a)*sp,
-            life: 60 + Math.random()*30,
-            size: 1.2 + Math.random()*2.2,
-            hue: (state.group==="ps"? 200: 145) + (Math.random()*70-35),
-            alpha: 1
-          });
-        }
-      }
-
-      function loop(t){
-        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-
-        if(t < endAt && Math.random() < 0.25){
-          burst(
-            80 + Math.random()*(window.innerWidth-160),
-            120 + Math.random()*(window.innerHeight*0.45)
-          );
-        }
-
-        particles = particles.filter(p => p.life>0 && p.alpha>0.02);
-        for(const p of particles){
-          p.life -= 1;
-          p.vy += 0.06;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.alpha *= 0.985;
-
-          ctx.beginPath();
-          ctx.fillStyle = `hsla(${p.hue}, 90%, 60%, ${p.alpha})`;
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-          ctx.fill();
-        }
-
-        if(t < endAt || particles.length){
-          requestAnimationFrame(loop);
-        }else{
-          fxCanvas.classList.remove("show");
-          ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-        }
-      }
-
-      requestAnimationFrame(loop);
-    }
-
-    // === Admin notifications (as-is) ===
-    const adminLog = $("#adminLog");
-    const adminNotify = $("#adminNotify");
-    const btnAdminRefresh = $("#btnAdminRefresh");
-
-    function logAdmin(msg){
-      const p = document.createElement("div");
-      p.className = "glass rounded-2xl p-3 border border-white/10 text-white/75";
-      p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-      adminLog.prepend(p);
-    }
-
-    adminNotify.addEventListener("change", async ()=>{
-      if(adminNotify.checked){
-        if("Notification" in window){
-          const perm = await Notification.requestPermission();
-          if(perm !== "granted"){
-            adminNotify.checked = false;
-            showToast("Разрешение не дано", "Включите уведомления в браузере.");
-            return;
-          }
-        }
-        logAdmin("Уведомления включены.");
-        showToast("Админ", "Уведомления включены.");
-      }else{
-        logAdmin("Уведомления выключены.");
-      }
-    });
-
-    function ping(){
       try{
-        const a = new (window.AudioContext || window.webkitAudioContext)();
-        const o = a.createOscillator();
-        const g = a.createGain();
-        o.type = "sine";
-        o.frequency.value = state.group==="ps" ? 740 : 880;
-        g.gain.value = 0.03;
-        o.connect(g); g.connect(a.destination);
-        o.start();
-        setTimeout(()=>{ o.stop(); a.close(); }, 110);
-      }catch(e){}
-    }
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Отправка...';
 
-    let lastSeenOrderId = localStorage.getItem("lastSeenOrderId") || "";
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
 
-    async function checkNewOrders(){
-      try{
-        const url = API_URL + "?action=get_orders";
-        const res = await fetch(url, { method:"GET", mode:"cors" });
-        if(!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
+        const text = await res.text();
+        if(!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
 
-        if(!data || !Array.isArray(data.orders)) throw new Error("Bad JSON");
+        // красивое уведомление + копирование номера
+        showSuccess(orderId);
 
-        const newest = data.orders[0];
-        if(!newest) return;
-
-        if(lastSeenOrderId && newest.orderId !== lastSeenOrderId){
-          logAdmin("Новый заказ: " + newest.orderId + " • " + newest.total + "₽");
-          if(adminNotify.checked && "Notification" in window && Notification.permission === "granted"){
-            new Notification("Новый заказ GTA Boost", { body: `${newest.orderId} • ${newest.total}₽`, silent: true });
-          }
-          ping();
-        }else if(!lastSeenOrderId){
-          logAdmin("Синхронизация: последний заказ " + newest.orderId);
-        }
-
-        lastSeenOrderId = newest.orderId;
-        localStorage.setItem("lastSeenOrderId", lastSeenOrderId);
+        // сброс выбора и формы (номер остаётся для копирования)
+        resetBuilder();
+        document.getElementById("inpLogin").value = "";
+        document.getElementById("inpPass").value = "";
+        document.getElementById("inpContact").value = "";
+        document.getElementById("paidCheck").checked = false;
 
       }catch(err){
-        logAdmin("Ошибка проверки заказов (нужно добавить action=get_orders в Apps Script).");
+        console.error(err);
+        alert("Ошибка отправки. Проверь Deploy Web App (доступ Anyone) и попробуй ещё раз.");
+      }finally{
+        btn.disabled = false;
+        btn.textContent = original;
       }
     }
 
-    btnAdminRefresh.addEventListener("click", checkNewOrders);
+    // === UTIL ===
+    function animateValue(obj, start, end, duration){
+      let startTimestamp = null;
+      const step = (ts)=>{
+        if(!startTimestamp) startTimestamp = ts;
+        const progress = Math.min((ts - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start);
+        if(progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
 
-    setInterval(()=>{
-      if(adminOverlay.classList.contains("show") && adminNotify.checked){
-        checkNewOrders();
-      }
-    }, 25000);
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
 
-    // Init
-    syncUI();
-    recalc();
-
-    // If platform already chosen earlier (optional restore)
-    // (оставил выключенным, чтобы не ломать твою текущую логику)
+    // init cart
+    updateCart();
   </script>
-
-  <!--
-    ====== ВАЖНО ПРО УВЕДОМЛЕНИЯ О НОВЫХ ЗАКАЗАХ ======
-    (оставил твой комментарий без потерь)
-
-    1) Самый простой вариант:
-       - В Apps Script в doPost() после записи строки в Google Sheet отправлять уведомление в Telegram через бота.
-         Тогда у тебя будет уведомление мгновенно (без открытого сайта).
-       - Это реально самый удобный и надёжный способ.
-
-    2) Вариант в браузере (как я сделал тут):
-       - Нужен endpoint doGet()?action=get_orders, который отдаёт JSON последних заказов.
-       - Тогда админ-панель сможет "поллить" и пищать/показывать уведомления.
-
-    Если хочешь — я напишу готовый Apps Script код:
-      - create_order (POST) -> пишет строку в таблицу
-      - get_orders (GET) -> отдаёт последние заказы
-      - update_status (POST) -> менять статус заказа
-      - + отправка уведомления в Telegram при новом заказе
-  -->
 </body>
 </html>
