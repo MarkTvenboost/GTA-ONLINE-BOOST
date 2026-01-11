@@ -57,7 +57,7 @@
       --shadow:rgba(52,152,219,.40);
     }
 
-    /* XBOX = green (как просил) */
+    /* XBOX = green */
     body.xbox-mode{
       --primary:#2EE59D;
       --shadow:rgba(46,229,157,.40);
@@ -244,7 +244,7 @@
             <i class="fa-brands fa-xbox text-4xl opacity-40"></i>
           </div>
           <div class="mt-4 flex gap-2 flex-wrap">
-            <span class="tag">Цены PS +10%</span>
+            <span class="tag">Отдельный прайс</span>
             <span class="tag">Выбор версии</span>
           </div>
         </button>
@@ -370,26 +370,26 @@
           </div>
         </div>
 
-        <!-- XBOX MODULES (PS +10%) -->
+        <!-- XBOX MODULES -->
         <div id="xbox-modules" class="hidden space-y-6">
           <div class="cyber-card p-6">
-            <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Деньги машинами (Deluxo) — Xbox</h3>
+            <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Деньги машинами (Deluxo)</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="xbCarsContainer"></div>
           </div>
 
           <div class="grid md:grid-cols-2 gap-6">
             <div class="cyber-card p-6">
-              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">02.</span> Наличка — Xbox</h3>
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">02.</span> Наличка</h3>
               <div class="space-y-3" id="xbCashContainer"></div>
             </div>
             <div class="cyber-card p-6">
-              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">03.</span> Уровень — Xbox</h3>
+              <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">03.</span> Уровень</h3>
               <div class="space-y-3" id="xbLevelContainer"></div>
             </div>
           </div>
 
           <div class="cyber-card p-6">
-            <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">04.</span> Требования — Xbox</h3>
+            <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">04.</span> Требования</h3>
             <div class="grid md:grid-cols-2 gap-3" id="xbReqsContainer"></div>
           </div>
         </div>
@@ -431,7 +431,7 @@
             </div>
           </div>
 
-          <!-- Links row (Anti-Ban -> Manager links) -->
+          <!-- Links row -->
           <div class="mt-6 flex justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
             <a href="https://t.me/GTAONLINE5BOOST" target="_blank" rel="noopener"
                class="flex flex-col items-center gap-1 hover:opacity-100 transition-opacity">
@@ -717,14 +717,28 @@
       }
     };
 
-    // Xbox = PS +10%
-    const XB_MULT = 1.10;
-    function xbPrice(p){ return Math.round(p * XB_MULT); }
+    // ✅ XBOX: фиксированный прайс (красивые цены) — без +10%
+    // Деньги машинами (Deluxo) — как на скрине
     const XBOX = {
-      cars: DATA.ps.cars.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price), title: x.title.replace("(Машинами)", "(Машинами)")})),
-      cash: DATA.ps.cash.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price), title: x.title.replace("(Наличкой)", "(Наличкой)")})),
-      level: DATA.ps.level.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price)})),
-      reqs: DATA.ps.reqs.map(x => ({...x, id:"xb_"+x.id, price: xbPrice(x.price)})),
+      cars: [
+        { id:"xb_cars_none", title:"Возьму наличкой / Не нужно", price:0 },
+
+        { id:"xb_10m",  title:"10 млн (Машинами)",  price:699 },
+        { id:"xb_25m",  title:"25 млн (Машинами)",  price:799 },
+        { id:"xb_50m",  title:"50 млн (Машинами)",  price:1199 },
+        { id:"xb_75m",  title:"75 млн (Машинами)",  price:1499 },
+        { id:"xb_100m", title:"100 млн (Машинами)", price:1599 },
+        { id:"xb_150m", title:"150 млн (Машинами)", price:1799 },
+        { id:"xb_200m", title:"200 млн (Машинами)", price:2599 },
+        { id:"xb_300m", title:"300 млн (Машинами)", price:3799 },
+        { id:"xb_500m", title:"500 млн (Машинами)", price:3499 },
+        { id:"xb_700m", title:"700 млн (Машинами)", price:3999 },
+        { id:"xb_1b",   title:"1 млрд (Машинами)",  price:4499 },
+      ],
+      // Остальные разделы оставляем как у PS (без множителя)
+      cash: DATA.ps.cash.map(x => ({...x, id:"xb_"+x.id})),
+      level: DATA.ps.level.map(x => ({...x, id:"xb_"+x.id})),
+      reqs: DATA.ps.reqs.map(x => ({...x, id:"xb_"+x.id})),
     };
 
     // === STATE ===
@@ -764,7 +778,7 @@
                 ${item.title} ${badge}
               </div>
             </div>
-            <div class="font-tech text-xl font-bold" style="color:var(--primary)">${item.price}₽</div>
+            <div class="font-tech text-xl font-bold" style="color:var(--primary)">${formatRUB(item.price)}</div>
           </div>
         </label>
       `;
@@ -784,7 +798,7 @@
                 ${item.title} ${badge}
               </div>
             </div>
-            <div class="font-tech font-bold" style="color:var(--primary)">+${item.price}₽</div>
+            <div class="font-tech font-bold" style="color:var(--primary)">+${formatRUB(item.price)}</div>
           </div>
         </label>
       `;
@@ -860,7 +874,7 @@
         state.platformLabel = "PlayStation";
       }
       if(group === "xbox"){
-        setRadioDefault("xb_cars","xb_pscars_none");
+        setRadioDefault("xb_cars","xb_cars_none");
         setRadioDefault("xb_cash","xb_pscash_none");
         setRadioDefault("xb_level","xb_pslvl_none");
         state.platformLabel = "Xbox";
@@ -978,7 +992,7 @@
           html += `
             <div class="cart-row flex justify-between items-center" style="animation-delay:${idx * 40}ms">
               <span class="text-white font-medium">${escapeHtml(title)}</span>
-              <span style="color:var(--primary)">${price}₽</span>
+              <span style="color:var(--primary)">${formatRUB(price)}</span>
             </div>
           `;
         });
@@ -986,7 +1000,7 @@
 
       cartEl.innerHTML = html;
 
-      animateValue(totalEl, parseInt(totalEl.innerText || "0", 10), total, 400);
+      animateValue(totalEl, parseInt((totalEl.innerText || "0").replace(/\s+/g,''), 10), total, 400, true);
 
       if (total > 0) {
         checkoutBtn.removeAttribute('disabled');
@@ -998,7 +1012,7 @@
         checkoutBtn.classList.remove('btn-primary');
       }
 
-      document.getElementById('modalTotal').innerText = String(total);
+      document.getElementById('modalTotal').innerText = formatInt(total);
       updateModalPlatformLine();
     }
 
@@ -1017,7 +1031,7 @@
         setRadioDefault("ps_level","pslvl_none");
       }
       if(state.platformGroup === "xbox"){
-        setRadioDefault("xb_cars","xb_pscars_none");
+        setRadioDefault("xb_cars","xb_cars_none");
         setRadioDefault("xb_cash","xb_pscash_none");
         setRadioDefault("xb_level","xb_pslvl_none");
       }
@@ -1039,7 +1053,7 @@
         extra = state.consoleVersion ? ` • ${label}` : " • выбери PS4/PS5";
       }
       if(state.platformGroup === "xbox"){
-        extra = " • цены PS +10%";
+        extra = "";
       }
       el.textContent = `Платформа: ${group}${extra}`;
     }
@@ -1080,7 +1094,6 @@
       if(idEl) idEl.textContent = orderId;
       if(box) box.classList.remove("hidden");
 
-      // optional: dim form
       const form = document.querySelector("#modalContent form");
       if(form) form.classList.add("opacity-40","pointer-events-none");
     }
@@ -1159,7 +1172,7 @@
       const items = Array.from(state.selections).map(id => {
         const title = state.titles[id] || id;
         const price = state.prices[id] || 0;
-        return `${title}${price ? ` (+${price}₽)` : " (0₽)"}`;
+        return `${title}${price ? ` (+${formatInt(price)}₽)` : " (0₽)"}`;
       });
 
       const total = Array.from(state.selections).reduce((sum, id) => sum + (state.prices[id] || 0), 0);
@@ -1221,12 +1234,13 @@
     }
 
     // === UTIL ===
-    function animateValue(obj, start, end, duration){
+    function animateValue(obj, start, end, duration, format){
       let startTimestamp = null;
       const step = (ts)=>{
         if(!startTimestamp) startTimestamp = ts;
         const progress = Math.min((ts - startTimestamp) / duration, 1);
-        obj.innerHTML = Math.floor(progress * (end - start) + start);
+        const val = Math.floor(progress * (end - start) + start);
+        obj.innerHTML = format ? formatInt(val) : String(val);
         if(progress < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
@@ -1239,6 +1253,14 @@
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
+    }
+
+    // ✅ формат “красивых” цен: 1 599 ₽
+    function formatInt(n){
+      return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+    function formatRUB(n){
+      return `${formatInt(n)}₽`;
     }
 
     // init cart
