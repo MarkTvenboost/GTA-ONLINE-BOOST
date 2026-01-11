@@ -162,8 +162,31 @@
       0%{ transform: translateY(10px); opacity:0; filter: blur(3px); }
       100%{ transform: translateY(0); opacity:1; filter: blur(0); }
     }
-    .cart-row{
-      animation: waveIn .35s ease-out both;
+    .cart-row{ animation: waveIn .35s ease-out both; }
+
+    /* disabled блоки */
+    .disabled-block{
+      position: relative;
+      opacity: .45;
+      filter: grayscale(1);
+      pointer-events: none;
+    }
+    .disabled-block::after{
+      content: "Временно недоступно";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-family: Rajdhani, sans-serif;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      backdrop-filter: blur(6px);
     }
   </style>
 </head>
@@ -244,7 +267,7 @@
             <i class="fa-brands fa-xbox text-4xl opacity-40"></i>
           </div>
           <div class="mt-4 flex gap-2 flex-wrap">
-            <span class="tag">Отдельный прайс</span>
+            <span class="tag">Deluxo</span>
             <span class="tag">Выбор версии</span>
           </div>
         </button>
@@ -378,11 +401,14 @@
           </div>
 
           <div class="grid md:grid-cols-2 gap-6">
-            <div class="cyber-card p-6">
+            <!-- ❌ Наличка (disabled) -->
+            <div class="cyber-card p-6 disabled-block">
               <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">02.</span> Наличка</h3>
               <div class="space-y-3" id="xbCashContainer"></div>
             </div>
-            <div class="cyber-card p-6">
+
+            <!-- ❌ Уровень (disabled) -->
+            <div class="cyber-card p-6 disabled-block">
               <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">03.</span> Уровень</h3>
               <div class="space-y-3" id="xbLevelContainer"></div>
             </div>
@@ -431,7 +457,7 @@
             </div>
           </div>
 
-          <!-- Links row -->
+          <!-- Links row: менеджер -->
           <div class="mt-6 flex justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
             <a href="https://t.me/GTAONLINE5BOOST" target="_blank" rel="noopener"
                class="flex flex-col items-center gap-1 hover:opacity-100 transition-opacity">
@@ -589,7 +615,6 @@
         </div>
 
       </div>
-
     </div>
   </div>
 
@@ -597,7 +622,7 @@
     // ✅ ТВОЙ URL (ОБЯЗАТЕЛЬНО)
     const API_URL = "https://script.google.com/macros/s/AKfycbxerSSlb7x7ASk_9TPGNCSYLx5H0n6JEv2u0qzMTKPenXdz89V2OgPMEPxnGxuIgFpi/exec";
 
-    // === DATA: ВСЕ ЦЕНЫ ИЗ ТВОЕГО ПРАЙСА ===
+    // === DATA ===
     const DATA = {
       pc: {
         money: [
@@ -717,28 +742,35 @@
       }
     };
 
-    // ✅ XBOX: фиксированный прайс (красивые цены) — без +10%
-    // Деньги машинами (Deluxo) — как на скрине
+    // ✅ Xbox: отдельный прайс "красивые цены" (из таблицы)
     const XBOX = {
       cars: [
         { id:"xb_cars_none", title:"Возьму наличкой / Не нужно", price:0 },
 
-        { id:"xb_10m",  title:"10 млн (Машинами)",  price:699 },
-        { id:"xb_25m",  title:"25 млн (Машинами)",  price:799 },
-        { id:"xb_50m",  title:"50 млн (Машинами)",  price:1199 },
-        { id:"xb_75m",  title:"75 млн (Машинами)",  price:1499 },
-        { id:"xb_100m", title:"100 млн (Машинами)", price:1599 },
-        { id:"xb_150m", title:"150 млн (Машинами)", price:1799 },
-        { id:"xb_200m", title:"200 млн (Машинами)", price:2599 },
-        { id:"xb_300m", title:"300 млн (Машинами)", price:3799 },
-        { id:"xb_500m", title:"500 млн (Машинами)", price:3499 },
-        { id:"xb_700m", title:"700 млн (Машинами)", price:3999 },
-        { id:"xb_1b",   title:"1 млрд (Машинами)",  price:4499 },
+        { id:"xb_cars_10", title:"10 млн (Машинами)", price:699 },
+        { id:"xb_cars_25", title:"25 млн (Машинами)", price:799 },
+        { id:"xb_cars_50", title:"50 млн (Машинами)", price:1199 },
+        { id:"xb_cars_75", title:"75 млн (Машинами)", price:1499 },
+        { id:"xb_cars_100", title:"100 млн (Машинами)", price:1599 },
+        { id:"xb_cars_150", title:"150 млн (Машинами)", price:1799 },
+        { id:"xb_cars_200", title:"200 млн (Машинами)", price:2599 },
+        { id:"xb_cars_300", title:"300 млн (Машинами)", price:3799 },
+        { id:"xb_cars_500", title:"500 млн (Машинами)", price:3499 },
+        { id:"xb_cars_700", title:"700 млн (Машинами)", price:3999 },
+        { id:"xb_cars_1000", title:"1 млрд (Машинами)", price:4499 },
       ],
-      // Остальные разделы оставляем как у PS (без множителя)
-      cash: DATA.ps.cash.map(x => ({...x, id:"xb_"+x.id})),
-      level: DATA.ps.level.map(x => ({...x, id:"xb_"+x.id})),
-      reqs: DATA.ps.reqs.map(x => ({...x, id:"xb_"+x.id})),
+      // временно недоступны (UI затемняется); оставляем для рендера
+      cash: [
+        { id:"xb_cash_none", title:"Наличка (временно недоступно)", price:0 }
+      ],
+      level: [
+        { id:"xb_lvl_none", title:"Уровень (временно недоступно)", price:0 }
+      ],
+      // требования оставим как на PS (без наценок)
+      reqs: [
+        { id:"xb_req_no200k", title:"У меня нет 200.000$ на балансе", price:500 },
+        { id:"xb_req_nopsplus", title:"У меня нет подписки PS+", price:500 },
+      ]
     };
 
     // === STATE ===
@@ -747,7 +779,7 @@
       platformLabel: null,       // 'PC Steam' etc
       consoleVersion: null,      // ps4/ps5/xbox
       pcStore: null,             // steam/epic/rockstar
-      selections: new Set(),     // selected ids (radio/checkbox mixed)
+      selections: new Set(),     // selected ids
       radioByGroup: {},          // groupName -> selected id
       prices: {},                // id -> price
       titles: {},                // id -> title
@@ -778,7 +810,7 @@
                 ${item.title} ${badge}
               </div>
             </div>
-            <div class="font-tech text-xl font-bold" style="color:var(--primary)">${formatRUB(item.price)}</div>
+            <div class="font-tech text-xl font-bold" style="color:var(--primary)">${item.price}₽</div>
           </div>
         </label>
       `;
@@ -798,7 +830,7 @@
                 ${item.title} ${badge}
               </div>
             </div>
-            <div class="font-tech font-bold" style="color:var(--primary)">+${formatRUB(item.price)}</div>
+            <div class="font-tech font-bold" style="color:var(--primary)">+${item.price}₽</div>
           </div>
         </label>
       `;
@@ -874,9 +906,8 @@
         state.platformLabel = "PlayStation";
       }
       if(group === "xbox"){
+        // ✅ только деньги (машинами). Наличка/уровень — недоступны
         setRadioDefault("xb_cars","xb_cars_none");
-        setRadioDefault("xb_cash","xb_pscash_none");
-        setRadioDefault("xb_level","xb_pslvl_none");
         state.platformLabel = "Xbox";
       }
 
@@ -887,11 +918,9 @@
       syncSelectedCards();
       updateCart();
 
-      // scroll
       setTimeout(()=> document.getElementById("builder").scrollIntoView({behavior:"smooth", block:"start"}), 50);
     }
 
-    // highlight selected store/version buttons clearly
     function highlightSelectorButtons(rootSelector, key){
       const root = document.querySelector(rootSelector);
       if(!root) return;
@@ -900,7 +929,7 @@
       });
     }
 
-    function setPcStore(store, btnEl){
+    function setPcStore(store){
       state.pcStore = store;
       const labels = { steam:"PC Steam", epic:"PC Epic", rockstar:"PC Rockstar" };
       state.platformLabel = labels[store] || "PC";
@@ -908,7 +937,7 @@
       updateModalPlatformLine();
     }
 
-    function setConsoleVersion(v, btnEl){
+    function setConsoleVersion(v){
       state.consoleVersion = v;
 
       if(state.platformGroup === "ps"){
@@ -992,7 +1021,7 @@
           html += `
             <div class="cart-row flex justify-between items-center" style="animation-delay:${idx * 40}ms">
               <span class="text-white font-medium">${escapeHtml(title)}</span>
-              <span style="color:var(--primary)">${formatRUB(price)}</span>
+              <span style="color:var(--primary)">${price}₽</span>
             </div>
           `;
         });
@@ -1000,7 +1029,7 @@
 
       cartEl.innerHTML = html;
 
-      animateValue(totalEl, parseInt((totalEl.innerText || "0").replace(/\s+/g,''), 10), total, 400, true);
+      animateValue(totalEl, parseInt(totalEl.innerText || "0", 10), total, 400);
 
       if (total > 0) {
         checkoutBtn.removeAttribute('disabled');
@@ -1012,7 +1041,7 @@
         checkoutBtn.classList.remove('btn-primary');
       }
 
-      document.getElementById('modalTotal').innerText = formatInt(total);
+      document.getElementById('modalTotal').innerText = String(total);
       updateModalPlatformLine();
     }
 
@@ -1031,9 +1060,8 @@
         setRadioDefault("ps_level","pslvl_none");
       }
       if(state.platformGroup === "xbox"){
+        // ✅ только деньги
         setRadioDefault("xb_cars","xb_cars_none");
-        setRadioDefault("xb_cash","xb_pscash_none");
-        setRadioDefault("xb_level","xb_pslvl_none");
       }
 
       syncSelectedCards();
@@ -1043,9 +1071,11 @@
     function updateModalPlatformLine(){
       const el = document.getElementById("modalPlatformLine");
       if(!el) return;
+
       const group = state.platformGroup ? state.platformGroup.toUpperCase() : "—";
       const label = state.platformLabel || "—";
       let extra = "";
+
       if(state.platformGroup === "pc"){
         extra = state.pcStore ? ` • ${label}` : " • выбери Steam/Epic/Rockstar";
       }
@@ -1053,8 +1083,9 @@
         extra = state.consoleVersion ? ` • ${label}` : " • выбери PS4/PS5";
       }
       if(state.platformGroup === "xbox"){
-        extra = "";
+        extra = state.consoleVersion ? ` • ${label}` : " • выбери Xbox";
       }
+
       el.textContent = `Платформа: ${group}${extra}`;
     }
 
@@ -1149,7 +1180,7 @@
         return;
       }
       if(state.platformGroup === "xbox" && !state.consoleVersion){
-        alert("Выбери: Xbox (One/Series).");
+        alert("Выбери Xbox.");
         return;
       }
 
@@ -1172,7 +1203,7 @@
       const items = Array.from(state.selections).map(id => {
         const title = state.titles[id] || id;
         const price = state.prices[id] || 0;
-        return `${title}${price ? ` (+${formatInt(price)}₽)` : " (0₽)"}`;
+        return `${title}${price ? ` (+${price}₽)` : " (0₽)"}`;
       });
 
       const total = Array.from(state.selections).reduce((sum, id) => sum + (state.prices[id] || 0), 0);
@@ -1181,6 +1212,7 @@
         return;
       }
 
+      // platform строка — как будет видно в таблице
       let platformText = "";
       if(state.platformGroup === "pc") platformText = `PC-${state.pcStore.toUpperCase()}`;
       if(state.platformGroup === "ps") platformText = state.consoleVersion.toUpperCase();
@@ -1214,7 +1246,6 @@
         const text = await res.text();
         if(!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
 
-        // красивое уведомление + копирование номера
         showSuccess(orderId);
 
         // сброс выбора и формы (номер остаётся для копирования)
@@ -1234,13 +1265,12 @@
     }
 
     // === UTIL ===
-    function animateValue(obj, start, end, duration, format){
+    function animateValue(obj, start, end, duration){
       let startTimestamp = null;
       const step = (ts)=>{
         if(!startTimestamp) startTimestamp = ts;
         const progress = Math.min((ts - startTimestamp) / duration, 1);
-        const val = Math.floor(progress * (end - start) + start);
-        obj.innerHTML = format ? formatInt(val) : String(val);
+        obj.innerHTML = Math.floor(progress * (end - start) + start);
         if(progress < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
@@ -1253,14 +1283,6 @@
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
-    }
-
-    // ✅ формат “красивых” цен: 1 599 ₽
-    function formatInt(n){
-      return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    }
-    function formatRUB(n){
-      return `${formatInt(n)}₽`;
     }
 
     // init cart
