@@ -188,6 +188,13 @@
       border-radius: 18px;
       backdrop-filter: blur(6px);
     }
+
+    /* cooldown pulse */
+    @keyframes cdPulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .cooldown-pulse { animation: cdPulse 1.2s ease-in-out infinite; }
   </style>
 </head>
 
@@ -432,6 +439,22 @@
               Состав заказа
             </h3>
 
+            <!-- ✅ COOLDOWN INFO -->
+            <div id="cooldownBox" class="hidden mb-4 cyber-card p-4 border border-white/10">
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-white/5 grid place-items-center" style="color:var(--primary)">
+                    <i class="fa-solid fa-shield-halved"></i>
+                  </div>
+                  <div class="text-left">
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Антиспам защита</div>
+                    <div class="text-sm text-gray-200">Следующий заказ можно сделать через</div>
+                  </div>
+                </div>
+                <div id="cooldownTimer" class="font-tech text-2xl font-bold neon-text" style="color:var(--primary)">05:00</div>
+              </div>
+            </div>
+
             <div id="cartItems" class="space-y-3 mb-6 min-h-[90px] text-sm text-gray-400">
               <p class="italic opacity-50">Выбери опции — появится список…</p>
             </div>
@@ -622,6 +645,88 @@
     // ✅ ТВОЙ URL (ОБЯЗАТЕЛЬНО)
     const API_URL = "https://script.google.com/macros/s/AKfycbxerSSlb7x7ASk_9TPGNCSYLx5H0n6JEv2u0qzMTKPenXdz89V2OgPMEPxnGxuIgFpi/exec";
 
+    // === COOLDOWN 5 MIN (антиспам на клиенте) ===
+    const ORDER_COOLDOWN_MS = 5 * 60 * 1000; // 5 минут
+
+    function formatMMSS(ms){
+      const total = Math.ceil(ms / 1000);
+      const m = String(Math.floor(total / 60)).padStart(2, "0");
+      const s = String(total % 60).padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function setCooldownStart(){
+      localStorage.setItem("orderCooldownUntil", String(Date.now() + ORDER_COOLDOWN_MS));
+    }
+
+    function getCooldownLeft(){
+      const until = Number(localStorage.getItem("orderCooldownUntil") || "0");
+      return Math.max(0, until - Date.now());
+    }
+
+    function setBtnLocked(btn, html){
+      if(!btn) return;
+      btn.disabled = true;
+      btn.classList.remove("btn-primary");
+      btn.classList.add("bg-white/5","text-gray-500","cursor-not-allowed");
+      btn.style.pointerEvents = "none";
+      btn.innerHTML = html;
+    }
+
+    function setBtnUnlocked(btn, html){
+      if(!btn) return;
+      btn.disabled = false;
+      btn.style.pointerEvents = "";
+      btn.innerHTML = html;
+    }
+
+    function applyCooldownUI(){
+      const submitBtn = document.getElementById("submitBtn");
+      const checkoutBtn = document.getElementById("checkoutBtn");
+      const box = document.getElementById("cooldownBox");
+      const timerEl = document.getElementById("cooldownTimer");
+
+      const left = getCooldownLeft();
+      if(left > 0){
+        const t = formatMMSS(left);
+
+        if(box && timerEl){
+          box.classList.remove("hidden");
+          timerEl.textContent = t;
+          box.classList.add("cooldown-pulse");
+        }
+
+        // блокируем обе кнопки
+        setBtnLocked(checkoutBtn, `Подождите ${t}`);
+        setBtnLocked(submitBtn, `<i class="fa-solid fa-clock mr-2"></i> Подождите ${t}`);
+        return true;
+      } else {
+        if(box){
+          box.classList.add("hidden");
+          box.classList.remove("cooldown-pulse");
+        }
+        // submitBtn вернём текст
+        setBtnUnlocked(submitBtn, "Отправить заказ");
+        // checkoutBtn вернёт updateCart()
+        return false;
+      }
+    }
+
+    let cooldownTimer = null;
+    function startCooldownTimer(){
+      if(cooldownTimer) clearInterval(cooldownTimer);
+      applyCooldownUI();
+      cooldownTimer = setInterval(() => {
+        const active = applyCooldownUI();
+        if(!active){
+          clearInterval(cooldownTimer);
+          cooldownTimer = null;
+          // вернём состояние checkoutBtn исходя из корзины
+          if(typeof updateCart === "function") updateCart();
+        }
+      }, 300);
+    }
+
     // === DATA ===
     const DATA = {
       pc: {
@@ -742,7 +847,7 @@
       }
     };
 
-    // ✅ Xbox: отдельный прайс "красивые цены" (из таблицы)
+    // ✅ Xbox: отдельный прайс "красивые цены"
     const XBOX = {
       cars: [
         { id:"xb_cars_none", title:"Возьму наличкой / Не нужно", price:0 },
@@ -759,14 +864,12 @@
         { id:"xb_cars_700", title:"700 млн (Машинами)", price:3999 },
         { id:"xb_cars_1000", title:"1 млрд (Машинами)", price:4499 },
       ],
-      // временно недоступны (UI затемняется); оставляем для рендера
       cash: [
         { id:"xb_cash_none", title:"Наличка (временно недоступно)", price:0 }
       ],
       level: [
         { id:"xb_lvl_none", title:"Уровень (временно недоступно)", price:0 }
       ],
-      // требования оставим как на PS (без наценок)
       reqs: [
         { id:"xb_req_no200k", title:"У меня нет 200.000$ на балансе", price:500 },
         { id:"xb_req_nopsplus", title:"У меня нет подписки PS+", price:500 },
@@ -775,14 +878,14 @@
 
     // === STATE ===
     let state = {
-      platformGroup: null,       // 'pc' | 'ps' | 'xbox'
-      platformLabel: null,       // 'PC Steam' etc
-      consoleVersion: null,      // ps4/ps5/xbox
-      pcStore: null,             // steam/epic/rockstar
-      selections: new Set(),     // selected ids
-      radioByGroup: {},          // groupName -> selected id
-      prices: {},                // id -> price
-      titles: {},                // id -> title
+      platformGroup: null,
+      platformLabel: null,
+      consoleVersion: null,
+      pcStore: null,
+      selections: new Set(),
+      radioByGroup: {},
+      prices: {},
+      titles: {},
     };
 
     // === BUILD MAPS ===
@@ -1028,21 +1131,34 @@
       }
 
       cartEl.innerHTML = html;
-
       animateValue(totalEl, parseInt(totalEl.innerText || "0", 10), total, 400);
+      document.getElementById('modalTotal').innerText = String(total);
+      updateModalPlatformLine();
+
+      // ✅ если кулдаун активен — запрещаем оформление независимо от суммы
+      const left = getCooldownLeft();
+      if(left > 0){
+        const t = formatMMSS(left);
+        setBtnLocked(checkoutBtn, `Подождите ${t}`);
+        return;
+      }
 
       if (total > 0) {
         checkoutBtn.removeAttribute('disabled');
         checkoutBtn.classList.remove('bg-white/5','text-gray-500','cursor-not-allowed');
         checkoutBtn.classList.add('btn-primary');
+        checkoutBtn.style.pointerEvents = "";
+        // вернуть оригинальную разметку кнопки
+        checkoutBtn.innerHTML = `
+          <span class="relative z-10 group-hover:text-black transition-colors">Оформить</span>
+          <div class="absolute inset-0 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0" style="background:var(--primary)"></div>
+        `;
       } else {
         checkoutBtn.setAttribute('disabled','true');
         checkoutBtn.classList.add('bg-white/5','text-gray-500','cursor-not-allowed');
         checkoutBtn.classList.remove('btn-primary');
+        checkoutBtn.style.pointerEvents = "none";
       }
-
-      document.getElementById('modalTotal').innerText = String(total);
-      updateModalPlatformLine();
     }
 
     function resetBuilder(){
@@ -1060,7 +1176,6 @@
         setRadioDefault("ps_level","pslvl_none");
       }
       if(state.platformGroup === "xbox"){
-        // ✅ только деньги
         setRadioDefault("xb_cars","xb_cars_none");
       }
 
@@ -1091,6 +1206,14 @@
 
     // === MODAL ===
     function openCheckout(){
+      // ✅ если кулдаун активен — не открываем
+      const left = getCooldownLeft();
+      if(left > 0){
+        startCooldownTimer();
+        alert(`Подождите ${formatMMSS(left)} перед следующим заказом.`);
+        return;
+      }
+
       document.getElementById('modal').classList.remove('hidden');
       setTimeout(()=> document.getElementById('modalContent').classList.remove('translate-x-full'), 10);
       updateModalPlatformLine();
@@ -1164,6 +1287,14 @@
     }
 
     async function sendOrder(){
+      // ✅ клиентский антиспам
+      const left = getCooldownLeft();
+      if(left > 0){
+        startCooldownTimer();
+        alert(`Подождите ${formatMMSS(left)} перед следующим заказом.`);
+        return;
+      }
+
       const btn = document.getElementById("submitBtn");
       const original = btn.textContent;
 
@@ -1246,7 +1377,13 @@
         const text = await res.text();
         if(!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
 
+        // ✅ успех
         showSuccess(orderId);
+
+        // ✅ включаем кулдаун 5 минут
+        setCooldownStart();
+        startCooldownTimer();
+        if(typeof updateCart === "function") updateCart();
 
         // сброс выбора и формы (номер остаётся для копирования)
         resetBuilder();
@@ -1259,8 +1396,11 @@
         console.error(err);
         alert("Ошибка отправки. Проверь Deploy Web App (доступ Anyone) и попробуй ещё раз.");
       }finally{
-        btn.disabled = false;
-        btn.textContent = original;
+        // если кулдаун активен — кнопку вернёт таймер; иначе возвращаем текст
+        if(getCooldownLeft() <= 0){
+          btn.disabled = false;
+          btn.textContent = original;
+        }
       }
     }
 
@@ -1285,8 +1425,9 @@
         .replaceAll("'","&#039;");
     }
 
-    // init cart
+    // init
     updateCart();
+    startCooldownTimer(); // ✅ применяем кулдаун при загрузке (если уже был)
   </script>
 </body>
 </html>
