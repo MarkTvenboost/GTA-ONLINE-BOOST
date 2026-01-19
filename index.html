@@ -2,7 +2,6 @@
 <html lang="ru" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="enot" content="58c736ce" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>GTA ONLINE BOOST — Оформление заказа</title>
 
@@ -196,13 +195,34 @@
       50% { transform: scale(1.02); }
     }
     .cooldown-pulse { animation: cdPulse 1.2s ease-in-out infinite; }
+
+    /* --- MOBILE FLOAT BTN --- */
+    @media (max-width: 1024px) {
+      .mobile-sticky-btn {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        z-index: 40;
+        background: rgba(11, 12, 16, 0.95);
+        padding: 12px 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8);
+        transform: translateY(150%);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .mobile-sticky-btn.visible {
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
   <div class="fixed inset-0 z-[-1] opacity-25 grid-bg"></div>
 
-  <!-- HEADER -->
   <header class="fixed top-0 w-full z-50 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -228,7 +248,6 @@
 
   <main class="flex-1 pt-28 pb-32 px-4 max-w-7xl mx-auto w-full">
 
-    <!-- PLATFORM -->
     <section class="mb-10 text-center" id="platformSection">
       <h2 class="text-3xl md:text-5xl font-tech font-bold mb-4 animate-slide-up">
         ВЫБЕРИ <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">ПЛАТФОРМУ</span>
@@ -281,7 +300,6 @@
         </button>
       </div>
 
-      <!-- PC store selector -->
       <div id="pcStores" class="hidden max-w-5xl mx-auto mt-5">
         <div class="cyber-card p-4">
           <div class="flex items-center justify-between flex-wrap gap-2">
@@ -298,7 +316,6 @@
         </div>
       </div>
 
-      <!-- PS selector -->
       <div id="psVersions" class="hidden max-w-5xl mx-auto mt-5">
         <div class="cyber-card p-4">
           <div class="flex items-center justify-between flex-wrap gap-2">
@@ -314,7 +331,6 @@
         </div>
       </div>
 
-      <!-- Xbox selector -->
       <div id="xboxVersions" class="hidden max-w-5xl mx-auto mt-5">
         <div class="cyber-card p-4">
           <div class="flex items-center justify-between flex-wrap gap-2">
@@ -331,13 +347,10 @@
 
     </section>
 
-    <!-- BUILDER -->
     <div id="builder" class="hidden grid lg:grid-cols-12 gap-8 animate-slide-up">
 
-      <!-- LEFT -->
       <div class="lg:col-span-8 space-y-6">
 
-        <!-- PC MODULES -->
         <div id="pc-modules" class="hidden space-y-6">
           <div class="cyber-card p-6">
             <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Валюта (ПК)</h3>
@@ -377,7 +390,6 @@
           </div>
         </div>
 
-        <!-- PS MODULES -->
         <div id="ps-modules" class="hidden space-y-6">
           <div class="cyber-card p-6">
             <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Деньги машинами (Deluxo)</h3>
@@ -401,7 +413,6 @@
           </div>
         </div>
 
-        <!-- XBOX MODULES -->
         <div id="xbox-modules" class="hidden space-y-6">
           <div class="cyber-card p-6">
             <h3 class="font-tech text-2xl font-bold mb-4"><span style="color:var(--primary)">01.</span> Деньги машинами (Deluxo)</h3>
@@ -409,13 +420,11 @@
           </div>
 
           <div class="grid md:grid-cols-2 gap-6">
-            <!-- ❌ Наличка (disabled) -->
             <div class="cyber-card p-6 disabled-block">
               <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">02.</span> Наличка</h3>
               <div class="space-y-3" id="xbCashContainer"></div>
             </div>
 
-            <!-- ❌ Уровень (disabled) -->
             <div class="cyber-card p-6 disabled-block">
               <h3 class="font-tech text-xl font-bold mb-4"><span style="color:var(--primary)">03.</span> Уровень</h3>
               <div class="space-y-3" id="xbLevelContainer"></div>
@@ -430,7 +439,6 @@
 
       </div>
 
-      <!-- RIGHT SUMMARY -->
       <div class="lg:col-span-4">
         <div class="sticky top-24">
           <div class="cyber-card p-6 shadow-2xl relative overflow-hidden">
@@ -440,7 +448,19 @@
               Состав заказа
             </h3>
 
-            <!-- ✅ COOLDOWN INFO -->
+            <div class="mb-5 cyber-card p-3 bg-white/5 border-none relative overflow-hidden">
+                <div class="flex justify-between text-[10px] uppercase tracking-wider text-gray-400 mb-1">
+                  <span>Бонус за объем</span>
+                  <span id="bonusText">До бонуса...</span>
+                </div>
+                <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                  <div id="bonusBar" class="h-full bg-[var(--primary)] transition-all duration-500 w-0"></div>
+                </div>
+                <div id="bonusLabel" class="text-xs font-bold mt-2 text-white opacity-50 transition-opacity">
+                  🎁 +10 млн в подарок!
+                </div>
+            </div>
+
             <div id="cooldownBox" class="hidden mb-4 cyber-card p-4 border border-white/10">
               <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -481,7 +501,6 @@
             </div>
           </div>
 
-          <!-- Links row: менеджер -->
           <div class="mt-6 flex justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
             <a href="https://t.me/GTAONLINE5BOOST" target="_blank" rel="noopener"
                class="flex flex-col items-center gap-1 hover:opacity-100 transition-opacity">
@@ -509,9 +528,66 @@
         </div>
       </div>
     </div>
+    
+    <section class="max-w-3xl mx-auto mt-20 mb-10" id="faqSection">
+        <h3 class="text-2xl font-tech font-bold text-center mb-8">Частые вопросы</h3>
+        <div class="space-y-4">
+          <details class="cyber-card group cursor-pointer">
+            <summary class="p-4 font-bold flex justify-between items-center list-none select-none">
+              <span>Меня забанят?</span>
+              <i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180 text-[var(--primary)]"></i>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-3">
+              Мы используем приватные методы накрутки. Шанс бана минимален (менее 0.1%). В случае проблем мы предоставляем гарантию возврата средств или повторной прокачки.
+            </div>
+          </details>
+          
+          <details class="cyber-card group cursor-pointer">
+            <summary class="p-4 font-bold flex justify-between items-center list-none select-none">
+              <span>Сколько ждать выполнения?</span>
+              <i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180 text-[var(--primary)]"></i>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-3">
+              Обычно выполнение заказа занимает от 15 до 60 минут в рабочее время операторов. На ПК заказы выполняются быстрее всего.
+            </div>
+          </details>
+
+          <details class="cyber-card group cursor-pointer">
+            <summary class="p-4 font-bold flex justify-between items-center list-none select-none">
+              <span>Нужно ли отключать Steam Guard?</span>
+              <i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180 text-[var(--primary)]"></i>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-3">
+              Не обязательно, но желательно для ускорения процесса. Если Guard включен, оператор свяжется с вами для получения кода входа.
+            </div>
+          </details>
+        </div>
+      </section>
+
   </main>
 
-  <!-- MODAL -->
+  <div id="mobileFloat" class="mobile-sticky-btn flex items-center justify-between lg:hidden">
+      <div class="text-left">
+        <div class="text-[10px] text-gray-400 uppercase">Итого</div>
+        <div class="font-tech font-bold text-xl text-white"><span id="mobileTotal">0</span> ₽</div>
+      </div>
+      <button onclick="openCheckout()" class="btn-primary px-6 py-3 rounded-xl font-bold font-tech uppercase text-sm text-black">
+        К оплате
+      </button>
+  </div>
+
+  <div id="live-feed" class="fixed bottom-4 left-4 z-40 translate-y-[150%] transition-transform duration-500 max-w-[300px]">
+    <div class="cyber-card p-3 flex items-center gap-3 bg-[#050505]/90 backdrop-blur border border-white/10 pr-6">
+      <div class="w-8 h-8 rounded bg-white/10 flex items-center justify-center text-[var(--primary)]">
+        <i class="fa-solid fa-cart-shopping text-xs"></i>
+      </div>
+      <div>
+        <div class="text-[10px] text-gray-400 uppercase tracking-wider">Только что купили</div>
+        <div class="text-xs font-bold text-white leading-tight" id="feed-text">100 млн на PC</div>
+      </div>
+    </div>
+  </div>
+
   <div id="modal" class="fixed inset-0 z-[100] hidden">
     <div class="absolute inset-0 overlay" onclick="closeCheckout()"></div>
     <div class="absolute right-0 top-0 h-full w-full md:w-[520px] bg-[#0b0c10] border-l border-white/10 p-8 shadow-2xl transform transition-transform duration-500 translate-x-full overflow-y-auto" id="modalContent">
@@ -525,12 +601,27 @@
 
       <div class="space-y-6">
         <div class="cyber-card p-4">
-          <div class="text-xs text-gray-500 uppercase tracking-widest mb-2">Сумма</div>
+          <div class="text-xs text-gray-500 uppercase tracking-widest mb-2">К оплате</div>
           <div class="text-3xl font-bold font-tech" style="color:var(--primary)"><span id="modalTotal">0</span> ₽</div>
           <div class="text-xs text-gray-500 mt-2" id="modalPlatformLine">—</div>
         </div>
+        
+        <div class="space-y-2">
+            <label class="text-xs text-gray-400 ml-2 uppercase tracking-widest">Есть промокод?</label>
+            <div class="flex gap-2">
+                <input id="promoInput" type="text" placeholder="CODE" class="field w-full uppercase tracking-widest text-center font-bold font-tech">
+                <button type="button" onclick="applyPromo()" class="px-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/30 transition text-[var(--primary)]">
+                <i class="fa-solid fa-bolt"></i>
+                </button>
+            </div>
+            <div id="promoMsg" class="text-xs text-center min-h-[16px]"></div>
+        </div>
 
         <form onsubmit="event.preventDefault(); sendOrder();" class="space-y-4">
+          
+          <input type="hidden" name="price" id="pay_price" value="">
+          <input type="hidden" name="order_id" id="pay_order_id" value="">
+
           <div class="space-y-1">
             <label class="text-xs text-gray-400 ml-2">Логин платформы (обязательно)</label>
             <input id="inpLogin" type="text" required placeholder="Email / ник / PSN ID / Xbox tag / Social Club" class="field w-full">
@@ -543,56 +634,79 @@
             <label class="text-xs text-gray-400 ml-2">Контакт (Telegram/WA)</label>
             <input id="inpContact" type="text" required placeholder="@username" class="field w-full">
           </div>
+          
+          <label class="flex items-start gap-3 cursor-pointer py-2 px-1">
+             <input type="checkbox" class="mt-1 w-4 h-4 rounded border-white/20 bg-transparent text-[var(--primary)] focus:ring-0">
+             <span class="text-xs text-gray-400 leading-tight">Я отключил 2FA / Steam Guard или готов оперативно предоставить код оператору.</span>
+          </label>
 
-          <div class="pt-4 border-t border-white/10 space-y-4">
-            <p class="text-sm text-gray-300 font-medium">Оплата</p>
-            <div class="grid gap-3">
+          <div class="mt-6 mb-4 space-y-3">
+            <p class="text-sm text-gray-300 font-medium pl-1">Реквизиты для оплаты (СБП)</p>
+            
+            <div class="cyber-card p-4 border border-[var(--primary)]/30 relative overflow-hidden group">
+              <div class="absolute top-0 right-0 w-24 h-24 bg-[var(--primary)] blur-[60px] opacity-10"></div>
 
-              <button type="button" onclick="copyToClip(this, '+79141728517')" class="cyber-card p-4 flex items-center justify-between group">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded bg-yellow-500/20 flex items-center justify-center text-yellow-400">
-                    <i class="fa-solid fa-building-columns"></i>
+              <div class="flex gap-5 items-center">
+                
+                <div class="flex-1 space-y-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-lg shadow-white/5">
+                       <span class="text-[10px] font-black text-slate-900 leading-none text-center transform scale-110">СБП</span>
+                    </div>
+                    <div>
+                      <div class="text-[10px] text-gray-500 uppercase tracking-widest leading-none mb-1.5">Банк получателя</div>
+                      <div class="text-base font-bold text-white leading-none">Т-Банк</div>
+                    </div>
                   </div>
-                  <div class="text-left">
-                    <div class="text-xs text-gray-400">Т-Банк / СБП</div>
-                    <div class="font-mono text-sm group-hover:text-[var(--primary)] transition-colors">+7 (914) 172-85-17</div>
+
+                  <div class="relative">
+                    <button type="button" onclick="copySBP()" class="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[var(--primary)] hover:shadow-[0_0_15px_-3px_rgba(46,229,157,0.3)] transition-all duration-300 text-gray-200 text-sm font-bold font-tech tracking-wide flex items-center justify-center gap-3 group relative active:scale-[0.98]">
+                      <i class="fa-regular fa-copy text-gray-400 group-hover:text-white transition-colors"></i>
+                      <span>СКОПИРОВАТЬ НОМЕР</span>
+                      
+                      <span id="copyTooltip" class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] bg-[var(--primary)] text-black font-bold px-3 py-1.5 rounded opacity-0 transition-all pointer-events-none whitespace-nowrap transform translate-y-2">
+                        Скопировано!
+                      </span>
+                    </button>
                   </div>
                 </div>
-                <i class="fa-regular fa-copy text-gray-600"></i>
-              </button>
 
-              <button type="button" onclick="copyToClip(this, '2202203290794421')" class="cyber-card p-4 flex items-center justify-between group">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded bg-blue-500/20 flex items-center justify-center text-blue-400">
-                    <i class="fa-regular fa-credit-card"></i>
+                <div class="shrink-0 relative group/qr">
+                  <div class="w-28 h-28 bg-white rounded-xl p-2 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-xl shadow-black/50" onclick="openQrModal()">
+                     <img src="sbp.png" alt="QR СБП" class="w-full h-full object-contain">
+                     
+                     <div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover/qr:opacity-100 transition-opacity rounded-xl">
+                       <i class="fa-solid fa-magnifying-glass-plus text-black text-xl drop-shadow-md"></i>
+                     </div>
                   </div>
-                  <div class="text-left">
-                    <div class="text-xs text-gray-400">Карта</div>
-                    <div class="font-mono text-sm group-hover:text-[var(--primary)] transition-colors">2202 2032 9079 4421</div>
+                  <div class="text-[9px] text-gray-500 text-center mt-2 uppercase tracking-widest font-bold">Сканируй</div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex justify-between items-end px-1">
+                <label class="text-xs text-gray-400 uppercase tracking-widest">Чек перевода</label>
+                <span class="text-[10px] text-[var(--primary)] opacity-70">Обязательно</span>
+              </div>
+
+              <div class="relative group">
+                <input type="file" id="inpScreenshot" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="previewFile()">
+                
+                <div class="cyber-card p-3 border-dashed border border-white/20 flex items-center justify-center gap-3 transition-colors group-hover:border-[var(--primary)] group-hover:bg-white/5" id="uploadBox">
+                  <i class="fa-solid fa-cloud-arrow-up text-xl text-gray-500 group-hover:text-[var(--primary)] transition-colors"></i>
+                  <div class="text-sm text-gray-400 group-hover:text-white transition-colors" id="uploadText">
+                    Нажми, чтобы загрузить скриншот
                   </div>
                 </div>
-                <i class="fa-regular fa-copy text-gray-600"></i>
-              </button>
-
-              <button type="button" onclick="copyToClip(this, '2200700118168359')" class="cyber-card p-4 flex items-center justify-between group">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                    <i class="fa-solid fa-credit-card"></i>
-                  </div>
-                  <div class="text-left">
-                    <div class="text-xs text-gray-400">Т-Банк (карта)</div>
-                    <div class="font-mono text-sm group-hover:text-[var(--primary)] transition-colors">2200 7001 1816 8359</div>
-                  </div>
-                </div>
-                <i class="fa-regular fa-copy text-gray-600"></i>
-              </button>
-
+              </div>
             </div>
           </div>
 
           <label class="flex items-center gap-3 cursor-pointer py-2">
             <input id="paidCheck" type="checkbox" required class="w-5 h-5 rounded border-white/20 bg-transparent text-[var(--primary)] focus:ring-0">
-            <span class="text-xs text-gray-400">Подтверждаю, что оплатил(а).</span>
+            <span class="text-xs text-gray-400">Подтверждаю правильность данных.</span>
           </label>
 
           <button id="submitBtn" type="submit" class="w-full py-4 rounded-xl font-tech font-bold text-lg uppercase tracking-widest btn-primary">
@@ -600,54 +714,70 @@
           </button>
         </form>
 
-        <!-- SUCCESS -->
         <div id="successBox" class="hidden mt-2">
-          <div class="cyber-card p-5 border border-white/10">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <div class="text-xs text-gray-500 uppercase tracking-widest">Готово</div>
-                <div class="font-tech text-2xl font-bold mt-1">Заказ отправлен</div>
-                <div class="text-sm text-gray-400 mt-2">Сохрани номер заявки — он понадобится для проверки статуса.</div>
-              </div>
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5" style="color:var(--primary)">
-                <i class="fa-solid fa-circle-check text-xl"></i>
-              </div>
-            </div>
-
-            <div class="mt-4 cyber-card p-4 bg-white/5 border border-white/10">
-              <div class="text-xs text-gray-500 uppercase tracking-widest mb-2">Номер заявки</div>
-              <div class="flex items-center justify-between gap-3">
-                <div id="successOrderId" class="font-mono text-sm md:text-base break-all" style="color:var(--primary)"></div>
-                <button type="button" onclick="copyOrderId()"
-                        class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors">
-                  <i class="fa-regular fa-copy mr-2"></i><span class="text-xs uppercase tracking-widest">Копировать</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="mt-4 grid grid-cols-2 gap-3">
-              <a href="https://t.me/GTAONLINE5BOOST" target="_blank" rel="noopener"
-                 class="cyber-card p-3 text-center hover:bg-white/10 transition-colors">
-                <i class="fa-brands fa-telegram mr-2"></i>Написать в TG
-              </a>
-              <a href="https://vk.com/markboostgta" target="_blank" rel="noopener"
-                 class="cyber-card p-3 text-center hover:bg-white/10 transition-colors">
-                <i class="fa-brands fa-vk mr-2"></i>Написать в VK
-              </a>
-            </div>
-          </div>
+           <div class="cyber-card p-5 border border-white/10 text-center">
+             <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3" style="color:var(--primary)"></i>
+             <div>Создание заказа...</div>
+           </div>
         </div>
 
       </div>
     </div>
   </div>
 
+  <div id="qrModal" class="fixed inset-0 z-[150] hidden flex items-center justify-center bg-black/90 backdrop-blur-sm" onclick="this.classList.add('hidden')">
+    <div class="bg-white p-4 rounded-3xl max-w-[80%] animate-slide-up">
+      <img src="sbp.png" class="w-64 h-64 object-contain">
+      <div class="text-black text-center font-bold mt-2 font-tech">Т-Банк СБП</div>
+    </div>
+  </div>
+
   <script>
-    // ✅ ТВОЙ URL (ОБЯЗАТЕЛЬНО)
+    // ✅ ТВОЙ URL
     const API_URL = "https://script.google.com/macros/s/AKfycbwJ11uZUqTPzrBR4d10p7pnOumiGk-Gauo4-ivyx8WNSuBrO7vKBk_xYfcgFPlshBi_TQ/exec";
 
-    // === COOLDOWN 5 MIN (антиспам на клиенте) ===
-    const ORDER_COOLDOWN_MS = 3 * 60 * 1000; // 3 минуты
+    function openQrModal(){
+      document.getElementById('qrModal').classList.remove('hidden');
+    }
+
+    // Функция копирования СБП (СКРЫТЫЙ НОМЕР)
+    function copySBP() {
+      // Твой номер для копирования
+      const hiddenNumber = "+7 914 172-85-17"; 
+      
+      navigator.clipboard.writeText(hiddenNumber).then(() => {
+        const tooltip = document.getElementById("copyTooltip");
+        
+        // Показываем всплывашку
+        tooltip.classList.remove("opacity-0", "translate-y-2");
+        tooltip.classList.add("-translate-y-1"); // Чуть всплывает вверх
+        
+        // Скрываем через 2 секунды
+        setTimeout(() => {
+          tooltip.classList.add("opacity-0", "translate-y-2");
+          tooltip.classList.remove("-translate-y-1");
+        }, 2000);
+      }).catch(err => {
+        // Резервный вариант, если авто-копирование не сработало
+        alert("Номер для перевода: " + hiddenNumber);
+      });
+    }
+
+    // Функция предпросмотра файла
+    function previewFile(){
+      const input = document.getElementById('inpScreenshot');
+      const text = document.getElementById('uploadText');
+      const box = document.getElementById('uploadBox');
+      
+      if(input.files && input.files[0]){
+        text.textContent = "Выбран: " + input.files[0].name;
+        text.style.color = "white";
+        box.style.borderColor = "var(--primary)";
+      }
+    }
+
+    // === COOLDOWN 5 MIN ===
+    const ORDER_COOLDOWN_MS = 3 * 60 * 1000;
 
     function formatMMSS(ms){
       const total = Math.ceil(ms / 1000);
@@ -690,14 +820,11 @@
       const left = getCooldownLeft();
       if(left > 0){
         const t = formatMMSS(left);
-
         if(box && timerEl){
           box.classList.remove("hidden");
           timerEl.textContent = t;
           box.classList.add("cooldown-pulse");
         }
-
-        // блокируем обе кнопки
         setBtnLocked(checkoutBtn, `Подождите ${t}`);
         setBtnLocked(submitBtn, `<i class="fa-solid fa-clock mr-2"></i> Подождите ${t}`);
         return true;
@@ -706,9 +833,7 @@
           box.classList.add("hidden");
           box.classList.remove("cooldown-pulse");
         }
-        // submitBtn вернём текст
         setBtnUnlocked(submitBtn, "Отправить заказ");
-        // checkoutBtn вернёт updateCart()
         return false;
       }
     }
@@ -722,10 +847,36 @@
         if(!active){
           clearInterval(cooldownTimer);
           cooldownTimer = null;
-          // вернём состояние checkoutBtn исходя из корзины
           if(typeof updateCart === "function") updateCart();
         }
       }, 300);
+    }
+
+    // === PROMO LOGIC ===
+    let activeDiscount = 0; 
+    const PROMOS = {
+      "START": 0.10, // 10%
+      "BOOST": 0.05,
+      "ADMIN": 0.99
+    };
+
+    function applyPromo(){
+      const input = document.getElementById('promoInput');
+      const msg = document.getElementById('promoMsg');
+      const code = input.value.trim().toUpperCase();
+      
+      if(PROMOS[code]){
+        activeDiscount = PROMOS[code];
+        msg.textContent = `✅ Скидка ${(activeDiscount*100).toFixed(0)}% применена!`;
+        msg.style.color = "var(--primary)";
+        input.style.borderColor = "var(--primary)";
+      } else {
+        activeDiscount = 0;
+        msg.textContent = "❌ Неверный код";
+        msg.style.color = "#ff4444";
+        input.style.borderColor = "rgba(255,50,50,0.5)";
+      }
+      updateCart(); 
     }
 
     // === DATA ===
@@ -733,28 +884,24 @@
       pc: {
         money: [
           { id:"none", title:"Валюта не нужна", price:0, badge:"Можно без валюты", icon:"fa-ban" },
-
           { id:"m15",  title:"15 млн",  price:115, badge:"Старт", icon:"fa-coins" },
           { id:"m20",  title:"20 млн",  price:140, badge:"Хит", icon:"fa-money-bill-wave" },
           { id:"m30",  title:"30 млн",  price:230, icon:"fa-sack-dollar" },
           { id:"m40",  title:"40 млн",  price:325, icon:"fa-sack-dollar" },
           { id:"m50",  title:"50 млн",  price:420, badge:"Выгодно", icon:"fa-vault" },
           { id:"m60",  title:"60 млн",  price:520, icon:"fa-vault" },
-
           { id:"m70",  title:"70 млн",  price:605, icon:"fa-vault" },
           { id:"m80",  title:"80 млн",  price:700, icon:"fa-vault" },
           { id:"m90",  title:"90 млн",  price:790, icon:"fa-vault" },
           { id:"m100", title:"100 млн", price:885, badge:"Топ", icon:"fa-vault" },
           { id:"m125", title:"125 млн", price:1025, icon:"fa-vault" },
           { id:"m150", title:"150 млн", price:1120, icon:"fa-vault" },
-
           { id:"m200", title:"200 млн", price:1210, icon:"fa-crown" },
           { id:"m350", title:"350 млн", price:1400, icon:"fa-crown" },
           { id:"m500", title:"500 млн", price:1535, badge:"Макс", icon:"fa-crown" },
           { id:"m750", title:"750 млн", price:1720, icon:"fa-infinity" },
           { id:"b1",   title:"1 млрд",  price:1815, icon:"fa-infinity" },
           { id:"b15",  title:"1.5 млрд",price:2050, icon:"fa-infinity" },
-
           { id:"b2",   title:"2 млрд",  price:2280, icon:"fa-infinity" },
           { id:"b4",   title:"4 млрд",  price:2550, icon:"fa-infinity" }
         ],
@@ -798,12 +945,10 @@
           { id:"sp_skip_training", title:"Пропуск обучения", price:150 },
           { id:"sp_clear_mental", title:"Очистить психику", price:150 },
           { id:"sp_remove_dunce", title:"Снять колпак «Dunce»", price:150 },
-
           { id:"sp_achievements", title:"Все достижения", price:150 },
           { id:"sp_gender", title:"Изменить пол персонажа", price:150 },
           { id:"sp_cutscene", title:"Пропуск катсцен", price:150 },
           { id:"sp_club_pop", title:"Популярность клуба", price:150 },
-
           { id:"sp_bunker_research", title:"Разработки бункера", price:150 },
           { id:"sp_story", title:"Пройти карьеру", price:150 },
           { id:"sp_reports", title:"Очистить репорты", price:150 },
@@ -848,11 +993,9 @@
       }
     };
 
-    // ✅ Xbox: отдельный прайс "красивые цены"
     const XBOX = {
       cars: [
         { id:"xb_cars_none", title:"Возьму наличкой / Не нужно", price:0 },
-
         { id:"xb_cars_10", title:"10 млн (Машинами)", price:699 },
         { id:"xb_cars_25", title:"25 млн (Машинами)", price:799 },
         { id:"xb_cars_50", title:"50 млн (Машинами)", price:1199 },
@@ -877,7 +1020,6 @@
       ]
     };
 
-    // === STATE ===
     let state = {
       platformGroup: null,
       platformLabel: null,
@@ -889,7 +1031,6 @@
       titles: {},
     };
 
-    // === BUILD MAPS ===
     function indexData(){
       const add = (arr)=> arr.forEach(i => { state.prices[i.id]=i.price; state.titles[i.id]=i.title; });
       add(DATA.pc.money); add(DATA.pc.level); add(DATA.pc.reps); add(DATA.pc.unlocks); add(DATA.pc.transport); add(DATA.pc.service); add(DATA.pc.special);
@@ -898,7 +1039,6 @@
     }
     indexData();
 
-    // === UI HELPERS ===
     function createRadioCard(item, groupName){
       const badge = item.badge ? `<span class="tag">${item.badge}</span>` : "";
       const icon = item.icon ? `<i class="fa-solid ${item.icon}"></i>` : `<i class="fa-solid fa-check"></i>`;
@@ -941,7 +1081,6 @@
     }
 
     function renderAll(){
-      // PC
       document.getElementById("pcMoneyContainer").innerHTML = DATA.pc.money.map(i => createRadioCard(i,"pc_money")).join("");
       document.getElementById("pcLevelContainer").innerHTML = DATA.pc.level.map(i => createRadioCard(i,"pc_level")).join("");
       document.getElementById("pcRepsContainer").innerHTML = DATA.pc.reps.map(i => createCheckCard(i)).join("");
@@ -950,13 +1089,11 @@
       document.getElementById("pcServiceContainer").innerHTML = DATA.pc.service.map(i => createCheckCard(i)).join("");
       document.getElementById("pcSpecialContainer").innerHTML = DATA.pc.special.map(i => createCheckCard(i)).join("");
 
-      // PS
       document.getElementById("psCarsContainer").innerHTML = DATA.ps.cars.map(i => createRadioCard(i,"ps_cars")).join("");
       document.getElementById("psCashContainer").innerHTML = DATA.ps.cash.map(i => createRadioCard(i,"ps_cash")).join("");
       document.getElementById("psLevelContainer").innerHTML = DATA.ps.level.map(i => createRadioCard(i,"ps_level")).join("");
       document.getElementById("psReqsContainer").innerHTML = DATA.ps.reqs.map(i => createCheckCard(i)).join("");
 
-      // XBOX
       document.getElementById("xbCarsContainer").innerHTML = XBOX.cars.map(i => createRadioCard(i,"xb_cars")).join("");
       document.getElementById("xbCashContainer").innerHTML = XBOX.cash.map(i => createRadioCard(i,"xb_cash")).join("");
       document.getElementById("xbLevelContainer").innerHTML = XBOX.level.map(i => createRadioCard(i,"xb_level")).join("");
@@ -964,7 +1101,6 @@
     }
     renderAll();
 
-    // === PLATFORM SWITCH ===
     function setPlatform(group){
       state.platformGroup = group;
       state.selections.clear();
@@ -973,31 +1109,25 @@
       state.consoleVersion = null;
       hideSuccess();
 
-      // theme
       document.body.classList.remove("ps-mode","xbox-mode");
       if(group === "ps") document.body.classList.add("ps-mode");
       if(group === "xbox") document.body.classList.add("xbox-mode");
 
-      // card highlight
       ["btn-pc","btn-ps","btn-xbox"].forEach(id => document.getElementById(id).classList.remove("selected"));
       document.getElementById(group === "pc" ? "btn-pc" : group === "ps" ? "btn-ps" : "btn-xbox").classList.add("selected");
 
-      // show builder + correct modules
       document.getElementById("builder").classList.remove("hidden");
       document.getElementById("pc-modules").classList.toggle("hidden", group !== "pc");
       document.getElementById("ps-modules").classList.toggle("hidden", group !== "ps");
       document.getElementById("xbox-modules").classList.toggle("hidden", group !== "xbox");
 
-      // show selectors
       document.getElementById("pcStores").classList.toggle("hidden", group !== "pc");
       document.getElementById("psVersions").classList.toggle("hidden", group !== "ps");
       document.getElementById("xboxVersions").classList.toggle("hidden", group !== "xbox");
 
-      // clear selector highlights
       document.querySelectorAll("#pcStores button.cyber-card, #psVersions button.cyber-card, #xboxVersions button.cyber-card")
         .forEach(b=>b.classList.remove("selected"));
 
-      // defaults (radio)
       if(group === "pc"){
         setRadioDefault("pc_money","none");
         setRadioDefault("pc_level","lvl_none");
@@ -1010,15 +1140,12 @@
         state.platformLabel = "PlayStation";
       }
       if(group === "xbox"){
-        // ✅ только деньги (машинами). Наличка/уровень — недоступны
         setRadioDefault("xb_cars","xb_cars_none");
         state.platformLabel = "Xbox";
       }
 
-      // reset form inputs checked
       document.querySelectorAll('#builder input[type="radio"], #builder input[type="checkbox"]').forEach(el => el.checked = false);
 
-      // sync UI selected for defaults
       syncSelectedCards();
       updateCart();
 
@@ -1043,7 +1170,6 @@
 
     function setConsoleVersion(v){
       state.consoleVersion = v;
-
       if(state.platformGroup === "ps"){
         state.platformLabel = (v === "ps4") ? "PS4" : "PS5";
         highlightSelectorButtons("#psVersions", v);
@@ -1051,7 +1177,6 @@
         state.platformLabel = "Xbox";
         highlightSelectorButtons("#xboxVersions", "xbox");
       }
-
       updateModalPlatformLine();
     }
 
@@ -1062,7 +1187,6 @@
       if(input) input.checked = true;
     }
 
-    // === SELECTION LOGIC ===
     function toggleItem(id, isRadio, groupName){
       if(isRadio){
         const prev = state.radioByGroup[groupName];
@@ -1104,7 +1228,6 @@
       updateModalPlatformLine();
     }
 
-    // === CART ===
     function updateCart(){
       const cartEl = document.getElementById('cartItems');
       const totalEl = document.getElementById('displayTotal');
@@ -1133,10 +1256,38 @@
 
       cartEl.innerHTML = html;
       animateValue(totalEl, parseInt(totalEl.innerText || "0", 10), total, 400);
-      document.getElementById('modalTotal').innerText = String(total);
-      updateModalPlatformLine();
 
-      // ✅ если кулдаун активен — запрещаем оформление независимо от суммы
+      // BONUS BAR
+      const bonusGoal = 1500;
+      const percent = Math.min((total / bonusGoal) * 100, 100);
+      document.getElementById('bonusBar').style.width = percent + '%';
+      
+      const bonusLabel = document.getElementById('bonusLabel');
+      const bonusText = document.getElementById('bonusText');
+      
+      if(total >= bonusGoal){
+        bonusLabel.style.opacity = '1';
+        bonusLabel.innerHTML = '<span style="color:var(--primary)" class="neon-text">🎁 БОНУС АКТИВИРОВАН: +20 МЛН!</span>';
+        bonusText.innerText = 'Максимальный бонус!';
+      } else {
+        bonusLabel.style.opacity = '0.5';
+        bonusLabel.innerHTML = '🎁 Набери на 1500₽ — получишь +20 млн';
+        bonusText.innerText = `Еще ${bonusGoal - total}₽ до бонуса`;
+      }
+
+      // Update Modal & Mobile
+      const discounted = Math.floor(total * (1 - activeDiscount));
+      document.getElementById('modalTotal').innerText = String(discounted);
+      document.getElementById('mobileTotal').innerText = String(total);
+
+      // Mobile button visibility
+      const mobileFloat = document.getElementById('mobileFloat');
+      if(total > 0 && window.innerWidth < 1024){
+        mobileFloat.classList.add('visible');
+      } else {
+        mobileFloat.classList.remove('visible');
+      }
+
       const left = getCooldownLeft();
       if(left > 0){
         const t = formatMMSS(left);
@@ -1149,7 +1300,6 @@
         checkoutBtn.classList.remove('bg-white/5','text-gray-500','cursor-not-allowed');
         checkoutBtn.classList.add('btn-primary');
         checkoutBtn.style.pointerEvents = "";
-        // вернуть оригинальную разметку кнопки
         checkoutBtn.innerHTML = `
           <span class="relative z-10 group-hover:text-black transition-colors">Оформить</span>
           <div class="absolute inset-0 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0" style="background:var(--primary)"></div>
@@ -1180,6 +1330,11 @@
         setRadioDefault("xb_cars","xb_cars_none");
       }
 
+      activeDiscount = 0; // reset promo
+      document.getElementById("promoInput").value = "";
+      document.getElementById("promoMsg").textContent = "";
+      document.getElementById("promoInput").style.borderColor = "";
+
       syncSelectedCards();
       updateCart();
     }
@@ -1205,20 +1360,19 @@
       el.textContent = `Платформа: ${group}${extra}`;
     }
 
-    // === MODAL ===
     function openCheckout(){
-      // ✅ если кулдаун активен — не открываем
       const left = getCooldownLeft();
       if(left > 0){
         startCooldownTimer();
         alert(`Подождите ${formatMMSS(left)} перед следующим заказом.`);
         return;
       }
-
       document.getElementById('modal').classList.remove('hidden');
       setTimeout(()=> document.getElementById('modalContent').classList.remove('translate-x-full'), 10);
       updateModalPlatformLine();
+      updateCart();
     }
+
     function closeCheckout(){
       document.getElementById('modalContent').classList.add('translate-x-full');
       setTimeout(()=> {
@@ -1227,53 +1381,19 @@
       }, 260);
     }
 
-    function copyToClip(btn, text){
-      navigator.clipboard.writeText(text);
-      const icon = btn.querySelector('.fa-copy');
-      if(!icon) return;
-      icon.classList.remove('fa-copy','fa-regular');
-      icon.classList.add('fa-check','fa-solid','text-green-500');
-      setTimeout(()=>{
-        icon.classList.add('fa-copy','fa-regular');
-        icon.classList.remove('fa-check','fa-solid','text-green-500');
-      }, 1600);
-    }
-
-    // === BEAUTIFUL SUCCESS ===
     let lastOrderId = "";
-
     function showSuccess(orderId){
       lastOrderId = orderId;
       const box = document.getElementById("successBox");
-      const idEl = document.getElementById("successOrderId");
-      if(idEl) idEl.textContent = orderId;
       if(box) box.classList.remove("hidden");
-
-      const form = document.querySelector("#modalContent form");
-      if(form) form.classList.add("opacity-40","pointer-events-none");
     }
 
     function hideSuccess(){
       const box = document.getElementById("successBox");
       if(box) box.classList.add("hidden");
       lastOrderId = "";
-
-      const form = document.querySelector("#modalContent form");
-      if(form) form.classList.remove("opacity-40","pointer-events-none");
     }
 
-    function copyOrderId(){
-      if(!lastOrderId) return;
-      navigator.clipboard.writeText(lastOrderId);
-
-      const btn = document.querySelector('#successBox button[onclick="copyOrderId()"]');
-      if(!btn) return;
-      const prev = btn.innerHTML;
-      btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i><span class="text-xs uppercase tracking-widest">Скопировано</span>`;
-      setTimeout(()=> btn.innerHTML = prev, 1300);
-    }
-
-    // === SEND ORDER (text/plain => без preflight) ===
     function makeOrderId(){
       const d = new Date();
       const pad = (n)=> String(n).padStart(2,"0");
@@ -1287,8 +1407,8 @@
       return `GTA-${y}${mo}${da}-${h}${mi}${s}-${rnd}`;
     }
 
+    // ЛОГИКА ОТПРАВКИ (С ФОТО + СБП)
     async function sendOrder(){
-      // ✅ клиентский антиспам
       const left = getCooldownLeft();
       if(left > 0){
         startCooldownTimer();
@@ -1297,77 +1417,86 @@
       }
 
       const btn = document.getElementById("submitBtn");
-      const original = btn.textContent;
+      const original = btn.innerHTML; // сохраняем текст кнопки
 
-      if(!state.platformGroup){
-        alert("Сначала выбери платформу.");
-        return;
-      }
-      if(state.platformGroup === "pc" && !state.pcStore){
-        alert("Выбери: Steam / Epic / Rockstar.");
-        return;
-      }
-      if(state.platformGroup === "ps" && !state.consoleVersion){
-        alert("Выбери: PS4 / PS5.");
-        return;
-      }
-      if(state.platformGroup === "xbox" && !state.consoleVersion){
-        alert("Выбери Xbox.");
-        return;
-      }
+      if(!state.platformGroup){ alert("Сначала выбери платформу."); return; }
+      if(state.platformGroup === "pc" && !state.pcStore){ alert("Выбери: Steam / Epic / Rockstar."); return; }
+      if(state.platformGroup === "ps" && !state.consoleVersion){ alert("Выбери: PS4 / PS5."); return; }
+      if(state.platformGroup === "xbox" && !state.consoleVersion){ alert("Выбери Xbox."); return; }
 
       const login = document.getElementById("inpLogin").value.trim();
       const pass  = document.getElementById("inpPass").value.trim();
       const contact = document.getElementById("inpContact").value.trim();
       const paid = document.getElementById("paidCheck").checked;
+      
+      const fileInput = document.getElementById("inpScreenshot");
+      const hasFile = fileInput.files && fileInput.files.length > 0;
 
-      if(!login || !pass || !contact){
-        alert("Заполни логин, пароль и контакт.");
-        return;
-      }
-      if(!paid){
-        alert("Подтверди оплату галочкой.");
-        return;
-      }
+      if(!login || !pass || !contact){ alert("Заполни логин, пароль и контакт."); return; }
+      if(!paid){ alert("Подтверди согласие с правилами."); return; }
 
       const orderId = makeOrderId();
+      let rawTotal = Array.from(state.selections).reduce((sum, id) => sum + (state.prices[id] || 0), 0);
+      let total = Math.floor(rawTotal * (1 - activeDiscount));
 
-      const items = Array.from(state.selections).map(id => {
-        const title = state.titles[id] || id;
-        const price = state.prices[id] || 0;
-        return `${title}${price ? ` (+${price}₽)` : " (0₽)"}`;
-      });
+      if(total <= 0){ alert("Сумма 0 ₽ — выбери услуги."); return; }
 
-      const total = Array.from(state.selections).reduce((sum, id) => sum + (state.prices[id] || 0), 0);
-      if(total <= 0){
-        alert("Сумма 0 ₽ — выбери услуги.");
-        return;
-      }
-
-      // platform строка — как будет видно в таблице
       let platformText = "";
       if(state.platformGroup === "pc") platformText = `PC-${state.pcStore.toUpperCase()}`;
       if(state.platformGroup === "ps") platformText = state.consoleVersion.toUpperCase();
       if(state.platformGroup === "xbox") platformText = "XBOX";
 
-      const payload = {
-        action: "create_order",
-        orderId,
-        createdAt: new Date().toISOString(),
-        platform: platformText,
-        total,
-        credentials: { login, password: pass },
-        contact,
-        wishes: "",
-        paid: true,
-        status: "Новый",
-        items,
-        itemsText: items.join(" | ")
-      };
+      const items = Array.from(state.selections).map(id => {
+        const title = state.titles[id] || id;
+        return title;
+      });
+      if(activeDiscount > 0) items.push(`PROMO -${(activeDiscount*100).toFixed(0)}%`);
 
       try{
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Отправка...';
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Обработка...';
+
+        // 1. ЗАГРУЗКА СКРИНШОТА
+        let screenshotUrl = "";
+        
+        if(hasFile){
+          btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Загрузка чека...';
+          const formData = new FormData();
+          formData.append("screenshot", fileInput.files[0]);
+
+          const uploadRes = await fetch('upload.php', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const uploadJson = await uploadRes.json();
+          if(uploadJson.success){
+            screenshotUrl = uploadJson.url;
+          } else {
+            console.warn("Ошибка загрузки фото:", uploadJson.message);
+            screenshotUrl = " [Ошибка загрузки фото]";
+          }
+        }
+
+        // 2. ОТПРАВКА В GOOGLE
+        const finalContact = screenshotUrl ? `${contact} | Скрин: ${screenshotUrl}` : contact;
+
+        const payload = {
+          action: "create_order",
+          orderId,
+          createdAt: new Date().toISOString(),
+          platform: platformText,
+          total,
+          credentials: { login, password: pass },
+          contact: finalContact,
+          wishes: "",
+          paid: false, 
+          status: "Ожидает оплаты",
+          items,
+          itemsText: items.join(" | ")
+        };
+        
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Оформление...';
 
         const res = await fetch(API_URL, {
           method: "POST",
@@ -1378,34 +1507,21 @@
         const text = await res.text();
         if(!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
 
-        // ✅ успех
         showSuccess(orderId);
-
-        // ✅ включаем кулдаун 5 минут
         setCooldownStart();
-        startCooldownTimer();
-        if(typeof updateCart === "function") updateCart();
 
-        // сброс выбора и формы (номер остаётся для копирования)
+        alert("Заказ успешно создан! Мы проверим оплату и свяжемся с вами.");
+        closeCheckout();
         resetBuilder();
-        document.getElementById("inpLogin").value = "";
-        document.getElementById("inpPass").value = "";
-        document.getElementById("inpContact").value = "";
-        document.getElementById("paidCheck").checked = false;
 
       }catch(err){
         console.error(err);
-        alert("Ошибка отправки. Проверь Deploy Web App (доступ Anyone) и попробуй ещё раз.");
-      }finally{
-        // если кулдаун активен — кнопку вернёт таймер; иначе возвращаем текст
-        if(getCooldownLeft() <= 0){
-          btn.disabled = false;
-          btn.textContent = original;
-        }
+        alert("Ошибка отправки. Проверь соединение.");
+        btn.disabled = false;
+        btn.innerHTML = original;
       }
     }
 
-    // === UTIL ===
     function animateValue(obj, start, end, duration){
       let startTimestamp = null;
       const step = (ts)=>{
@@ -1426,9 +1542,29 @@
         .replaceAll("'","&#039;");
     }
 
-    // init
+    // LIVE FEED
+    const feedNames = ["Alex", "Dimon", "Killer777", "GamerPro", "Ivan", "Stas", "DarkLord", "Viper"];
+    const feedItems = ["100 млн (PC)", "50 млн (PS5)", "Прокачка уровня", "Набор Unlock", "300 млн (Xbox)", "Пакет Start", "Full Boost"];
+
+    function showLiveFeed(){
+      const feed = document.getElementById('live-feed');
+      const text = document.getElementById('feed-text');
+      
+      const randomName = feedNames[Math.floor(Math.random() * feedNames.length)];
+      const randomItem = feedItems[Math.floor(Math.random() * feedItems.length)];
+      
+      text.innerHTML = `<span style="color:var(--primary)">${randomName}</span> купил: ${randomItem}`;
+      
+      feed.classList.remove('translate-y-[150%]');
+      setTimeout(() => {
+        feed.classList.add('translate-y-[150%]');
+      }, 4000);
+    }
+    // Start feed loop
+    setInterval(showLiveFeed, 12000);
+
     updateCart();
-    startCooldownTimer(); // ✅ применяем кулдаун при загрузке (если уже был)
+    startCooldownTimer(); 
   </script>
 </body>
 </html>
